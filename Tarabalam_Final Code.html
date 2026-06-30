@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarabalam Advanced Multilingual Dashboard</title>
+    <style>
+        :root {
+            --primary: #d35400;
+            --primary-dark: #b33900;
+            --secondary: #2c3e50;
+            --bg: #fbf9f6;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+            --border-color: #e2e8f0;
+
+            /* Strict structural colors from master rules data sheets */
+            --color-anukulam-bg: #e8f8f5;
+            --color-anukulam-border: #27ae60;
+            --color-anukulam-text: #1e8449;
+
+            --color-atyanta-bg: #ebf5fb;
+            --color-atyanta-border: #2980b9;
+            --color-atyanta-text: #21618c;
+
+            --color-jagratha-bg: #fef9e7;
+            --color-jagratha-border: #f39c12;
+            --color-jagratha-text: #b7950b;
+
+            --color-ananukulam-bg: #fdedd8;
+            --color-ananukulam-border: #e67e22;
+            --color-ananukulam-text: #a04000;
+
+            --color-naidhana-bg: #f9ebea;
+            --color-naidhana-border: #c0392b;
+            --color-naidhana-text: #922b21;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1350px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--secondary), #34495e);
+            color: white;
+            padding: 25px 20px;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            border-bottom: 5px solid var(--primary);
+            position: relative;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header h2 {
+            margin: 6px 0 8px 0;
+            font-size: 18px;
+            font-weight: 400;
+            opacity: 0.9;
+            color: #f39c12;
+        }
+
+        .header .milestone-tag {
+            font-size: 13px;
+            font-style: italic;
+            color: #e2e8f0;
+            opacity: 0.85;
+            margin-bottom: 12px;
+            display: block;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        /* Language Switcher Elements */
+        .lang-container {
+            margin: 10px 0 0 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 14px;
+            font-size: 13px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .lang-btn.active {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Primary Navigation Tabs Styling */
+        .navigation-tabs {
+            display: flex;
+            justify-content: center;
+            border-bottom: 3px solid #e2e8f0;
+            margin-top: 5px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #718096;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            outline: none;
+        }
+
+        .nav-tab:hover {
+            color: var(--primary);
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+        }
+
+        /* Optimization containment wrappers for focused views */
+        .card-engine-view {
+            max-width: 550px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .card-about-view {
+            max-width: 850px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--bg);
+            color: var(--secondary);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #4a5568;
+            font-size: 14px;
+        }
+
+        select {
+            width: 100%;
+            padding: 11px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            background-color: #fff;
+            outline: none;
+            color: var(--text-main);
+        }
+
+        select:focus {
+            border-color: var(--primary);
+        }
+
+        .result-panel {
+            margin-top: 20px;
+            border-radius: 10px;
+            padding: 18px;
+            display: none;
+            border-left: 6px solid #ccc;
+        }
+
+        .result-panel.active {
+            display: block;
+        }
+
+        .result-header {
+            font-size: 19px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .meta-row {
+            font-size: 14px;
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        /* Color classes mapping from master rules data schemas */
+        .theme-anukulam { background-color: var(--color-anukulam-bg); border-color: var(--color-anukulam-border); color: var(--color-anukulam-text); }
+        .theme-atyanta { background-color: var(--color-atyanta-bg); border-color: var(--color-atyanta-border); color: var(--color-atyanta-text); }
+        .theme-jagratha { background-color: var(--color-jagratha-bg); border-color: var(--color-jagratha-border); color: var(--color-jagratha-text); }
+        .theme-ananukulam { background-color: var(--color-ananukulam-bg); border-color: var(--color-ananukulam-border); color: var(--color-ananukulam-text); }
+        .theme-naidhana { background-color: var(--color-naidhana-bg); border-color: var(--color-naidhana-border); color: var(--color-naidhana-text); }
+
+        .search-container {
+            margin-bottom: 15px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .matrix-wrapper {
+            overflow-x: auto;
+            max-height: 560px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        th, td {
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: var(--secondary);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        th:first-child, td:first-child {
+            position: sticky;
+            left: 0;
+            background-color: #f8fafc;
+            font-weight: bold;
+            z-index: 5;
+            text-align: left;
+            border-right: 2px solid #cbd5e1;
+        }
+
+        th:first-child {
+            z-index: 15;
+            background-color: var(--secondary);
+        }
+
+        tr:hover td {
+            background-color: #f1f5f9;
+        }
+
+        .grid-atyanta { background-color: var(--color-atyanta-bg) !important; color: var(--color-atyanta-text); font-weight: bold; }
+        .grid-anukulam { background-color: var(--color-anukulam-bg) !important; color: var(--color-anukulam-text); }
+        .grid-naidhana { background-color: var(--color-naidhana-bg) !important; color: var(--color-naidhana-text); }
+        
+        .active-cell {
+            outline: 3px solid var(--primary) !important;
+            font-weight: bold;
+        }
+
+        /* Image Slider Layout Styling */
+        .slider-card {
+            margin-top: 25px;
+            width: 100%;
+        }
+
+        .slider-viewport {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            background-color: #2c3e50;
+            aspect-ratio: 16 / 9;
+        }
+
+        .slider-strip {
+            display: flex;
+            width: 600%; 
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-item {
+            width: 16.6666%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #34495e;
+        }
+
+        .slide-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* fallback text styling when images fail to resolve */
+        .slide-fallback-bg {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 48px;
+            font-weight: bold;
+            z-index: 1;
+            user-select: none;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(44, 62, 80, 0.7);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.2s;
+            z-index: 5;
+            user-select: none;
+        }
+
+        .slider-btn:hover {
+            background-color: rgba(211, 84, 0, 0.9);
+        }
+
+        .slider-btn.prev { left: 15px; }
+        .slider-btn.next { right: 15px; }
+
+        .slider-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .dot.active {
+            background-color: var(--primary);
+        }
+
+        /* "About" Panel Text Content Displays */
+        .info-pane-wrapper {
+            display: none;
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-color);
+            line-height: 1.7;
+        }
+
+        .info-pane-wrapper h3 {
+            color: var(--secondary);
+            font-size: 20px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 10px;
+        }
+
+        .info-pane-wrapper p {
+            font-size: 15px;
+            color: #4a5568;
+            margin-bottom: 20px;
+        }
+
+        .personal-alert-box {
+            background-color: #f0fdf4;
+            border-left: 4px solid #16a34a;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            font-size: 14.5px;
+            color: #14532d;
+        }
+
+        .use-case-section {
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .use-case-section h4 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .use-case-section ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #4a5568;
+            font-size: 14.5px;
+        }
+
+        .use-case-section li {
+            margin-bottom: 6px;
+        }
+
+        /* Footer Element Box Styles */
+        .footer-note {
+            text-align: center;
+            font-size: 13.5px;
+            color: #718096;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            font-weight: 500;
+        }
+
+        .footer-note a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .footer-note a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Mahankali Ravikiran Sharma - Vedic Wisdom for Modern Life</h1>
+        <h2 id="ui-app-title">Tarabalam Mathematical Calculation Table & Matrix</h2>
+        <span id="ui-milestone-tag" class="milestone-tag"></span>
+        
+        <div class="lang-container">
+            <button class="lang-btn" onclick="switchLanguage('te', event)">తెలుగు (Telugu)</button>
+            <button class="lang-btn active" onclick="switchLanguage('en', event)">English</button>
+            <button class="lang-btn" onclick="switchLanguage('hi', event)">हिन्दी (Hindi)</button>
+            <button class="lang-btn" onclick="switchLanguage('ta', event)">தமிழ் (Tamil)</button>
+            <button class="lang-btn" onclick="switchLanguage('kn', event)">ಕನ್ನಡ (Kannada)</button>
+        </div>
+    </div>
+
+    <div class="navigation-tabs">
+        <button id="tab-engine" class="nav-tab active" onclick="switchTab('engine')">Tarabalam Engine</button>
+        <button id="tab-grid" class="nav-tab" onclick="switchTab('grid')">Tarabalam Map</button>
+        <button id="tab-about" class="nav-tab" onclick="switchTab('about')">About</button>
+    </div>
+
+    <div id="view-calculator" class="card card-engine-view dynamic-view" style="display: block;">
+        <div class="card-title" id="ui-engine-title">Tarabalam Engine Process</div>
+        
+        <div class="form-group">
+            <label id="ui-label-birth" for="birthStarSelect">Select Birth Star (Janma Nakshatram):</label>
+            <select id="birthStarSelect" onchange="computeEngine()"></select>
+        </div>
+
+        <div class="form-group">
+            <label id="ui-label-target" for="targetStarSelect">Select Day/Muhurtha Star (Target Nakshatram):</label>
+            <select id="targetStarSelect" onchange="computeEngine()"></select>
+        </div>
+
+        <div id="resultPanel" class="result-panel">
+            <div id="outTaraName" class="result-header"></div>
+            <div class="meta-row"><strong id="ui-out-num">Tarabalam Index Number:</strong> <span id="outTaraNumber"></span></div>
+            <div class="meta-row"><strong id="ui-out-verdict">Final Verdict Status:</strong> <span id="outVerdict"></span></div>
+            <div class="meta-row"><strong id="ui-out-summary">Astrological Meaning:</strong> <span id="outSummary"></span></div>
+            <div class="meta-row"><strong id="ui-out-guidance">Practical Action Guidance:</strong> <span id="outGuidance"></span></div>
+        </div>
+
+        <div class="card slider-card">
+            <div class="card-title" id="ui-slider-title">Vedic Astro Insights & Guides</div>
+            <div class="slider-viewport">
+                <button class="slider-btn prev" onclick="moveSlide(-1)">&#10094;</button>
+                <button class="slider-btn next" onclick="moveSlide(1)">&#10095;</button>
+                <div class="slider-strip" id="sliderStrip">
+                    <div class="slide-item">
+                        <div class="slide-fallback-bg">01</div>
+                        <img src="./1.jpg" alt="Vedic Slide 1" onerror="handleImageError(this)">
+                    </div>
+                    <div class="slide-item">
+                        <div class="slide-fallback-bg">02</div>
+                        <img src="./2.jpg" alt="Vedic Slide 2" onerror="handleImageError(this)">
+                    </div>
+                    <div class="slide-item">
+                        <div class="slide-fallback-bg">03</div>
+                        <img src="./3.jpg" alt="Vedic Slide 3" onerror="handleImageError(this)">
+                    </div>
+                    <div class="slide-item">
+                        <div class="slide-fallback-bg">04</div>
+                        <img src="./4.jpg" alt="Vedic Slide 4" onerror="handleImageError(this)">
+                    </div>
+                    <div class="slide-item">
+                        <div class="slide-fallback-bg">05</div>
+                        <img src="./5.jpg" alt="Vedic Slide 5" onerror="handleImageError(this)">
+                    </div>
+                    <div class="slide-item">
+                        <div class="slide-fallback-bg">06</div>
+                        <img src="./6.jpg" alt="Vedic Slide 6" onerror="handleImageError(this)">
+                    </div>
+                </div>
+            </div>
+            <div class="slider-indicators" id="sliderIndicators">
+                <div class="dot active" onclick="jumpToSlide(0)"></div>
+                <div class="dot" onclick="jumpToSlide(1)"></div>
+                <div class="dot" onclick="jumpToSlide(2)"></div>
+                <div class="dot" onclick="jumpToSlide(3)"></div>
+                <div class="dot" onclick="jumpToSlide(4)"></div>
+                <div class="dot" onclick="jumpToSlide(5)"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-matrix" class="card dynamic-view" style="display: none;">
+        <div class="card-title" id="ui-matrix-title">Complete Tarabalam Map</div>
+        <div class="search-container">
+            <input type="text" id="searchBox" class="search-input" placeholder="Type Nakshatra name to filter records..." onkeyup="filterGridMatrix()">
+        </div>
+        <div class="matrix-wrapper">
+            <table id="matrixTable">
+                <thead>
+                    <tr id="matrixHeader">
+                        <th id="ui-th-cross">Birth Star ➔<br>👇 Day Star</th>
+                    </tr>
+                </thead>
+                <tbody id="matrixBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="view-about-content" class="info-pane-wrapper card-about-view dynamic-view" style="display: none;">
+        <div class="personal-alert-box">
+            🚀 <strong>Developer Note:</strong> This is my first official production-ready project after learning Technology, AI, and Software Coding. My goal was to bridge traditional Vedic knowledge with modern, mobile-first technology, making this timeless guidance simple, accessible, and actionable.
+The platform supports 5 languages — Telugu, English, Hindi, Tamil, and Kannada — with instant real-time language switching across the full interface, grid, results, and suggestions. Thank you for scanning calculations on my dashboard engine, I am incredibly excited to share this milestone!
+        </div>
+
+        <h3>Why Tarabalam?</h3>
+        <p>The application of Tarabalam (the strength or power of the stellar constellation relative to an individual) is a cornerstone of Muhurtha (electional astrology). It serves as a practical, mathematical framework for determining the cosmic alignment and psychological readiness of a person for any major life event. </p>
+        <p>Below are the primary uses and benefits of using the Tarabalam engine in daily life:</p>
+
+        <div class="use-case-section">
+            <h4>1. Planning Auspicious Beginnings (Muhurtha)</h4>
+            <p style="margin:0 0 5px 0; font-size:14px;">The primary use of Tarabalam is to select an ideal date and time for starting critical life activities. When your Tarabalam is strongly favorable (Sampat, Kṣema, Sadhana, Mitra, or Parama Mitra), it indicates that the cosmic energies of that specific day support growth, peace, and success, minimizing friction and unexpected delays.</p>
+        </div>
+
+        <div class="use-case-section">
+            <h4>2. Business and Financial Ventures</h4>
+            <ul>
+                <li><strong>Wealth & Growth (Sampat Tara):</strong> Choosing a day aligned with your 2nd Tara is highly beneficial for launching a business, signing financial contracts, making major investments, or opening a new bank account.</li>
+                <li><strong>Success in Negotiations:</strong> Pitching to clients or sealing partnerships on favorable Tara days ensures smoother communication and mutual cooperation.</li>
+            </ul>
+        </div>
+
+        <div class="use-case-section">
+            <h4>3. Domestic and Family Welfare (Kṣema Tara)</h4>
+            <ul>
+                <li><strong>Real Estate and Housing:</strong> Purchasing property, signing a lease, or performing a Griha Pravesham (housewarming) on a 4th Tara day invokes long-term stability, protection, and peace for the household.</li>
+                <li><strong>Family Milestone Events:</strong> Planning celebrations, long-term family commitments, or domestic transitions during these periods brings harmony to the family unit.</li>
+            </ul>
+        </div>
+
+        <div class="use-case-section">
+            <h4>4. Technical and Educational Pursuits (Sadhana Tara)</h4>
+            <ul>
+                <li><strong>Skill Acquisition & Studies:</strong> Commencing a new course of study, sitting for certifications, or starting complex technical research yields higher focus and retention.</li>
+                <li><strong>Spiritual Practice:</strong> Initiating a mantra japa or dedicated spiritual sadhana on a 6th Tara day enhances spiritual progress and discipline.</li>
+            </ul>
+        </div>
+
+        <div class="use-case-section">
+            <h4>5. Risk Mitigation and Safety</h4>
+            <p style="margin:0 0 8px 0; font-size:14px;">By identifying unfavorable days (Janma, Vipat, Pratyak, and especially Naidhana/Vadha), Tarabalam acts as an early warning system:</p>
+            <ul>
+                <li><strong>Travel Safety:</strong> Avoiding long or hazardous journeys on a Vipat (3rd) or Naidhana (7th) Tara day minimizes the risks of accidents, logistical breakdowns, or health issues during transit.</li>
+                <li><strong>Avoiding Conflicts:</strong> Postponing critical debates, legal filings, or highly sensitive discussions on a Pratyak (5th) Tara day reduces the chance of facing stubborn resistance or misunderstandings.</li>
+            </ul>
+        </div>
+
+        <div class="use-case-section">
+            <h4>6. Medical Interventions</h4>
+            <p style="margin:0; font-size:14px;">While emergency medical care must never be delayed for astrological reasons, scheduling elective surgeries, starting a long-term therapeutic treatment, or beginning a major wellness/fitness regime is best done on an Anukulam day (like Kṣema or Sadhana) to facilitate smooth healing and recovery.</p>
+        </div>
+    </div>
+
+    <div class="footer-note" id="ui-footer-note">
+        For more details email our astro expert: <a href="mailto:priest.mrk@gmail.com">priest.mrk@gmail.com</a>
+    </div>
+</div>
+
+<script>
+    let currentLang = 'en';
+    let slideIndex = 0;
+    const totalSlides = 6;
+
+    // Integrated Five-Language Localized Matrix Schema Registry
+    const languagesDataset = {
+        te: {
+            appTitle: "తారాబలం గణన పట్టిక మరియు సమగ్ర సూచిక",
+            milestoneTag: "✨ తారాబలం అనేది వైదిక జ్యోతిషశాస్త్రంలో ఒక ముఖ్యమైన భాగము, ఇది ఒక వ్యక్తి యొక్క జన్మ నక్షత్రం మరియు ప్రస్తుత రోజు నక్షత్రం మధ్య అనుకూలతను లెక్కించి నూతన పనులకు శుభ ముహూర్తాన్ని నిర్ణయించడానికి ఉపయోగపడుతుంది ✨",
+            engineTitle: "గణన ప్రక్రియ (Tarabalam Engine)",
+            matrixTitle: "తారాబలం సమగ్ర పట్టిక",
+            sliderTitle: "వైదిక జ్యోతిష్య అంతర్దృష్టులు & గైడ్‌లు",
+            labelBirth: "మీ జన్మ నక్షత్రం (Janma Nakshatram):",
+            labelTarget: "దిన / ముహూర్త నక్షత్రం (Target Nakshatram):",
+            thCross: "జన్మ నక్షత్రం ➔<br>👇 దిన నక్షత్రం",
+            searchPlaceholder: "నక్షత్రం పేరుతో వెతకండి (Type Nakshatra Name to Filter)...",
+            outNum: "తారాబలం సంఖ్య (Tarabalam Number):",
+            outVerdict: "నిర్ణయం / ఫలితం (Verdict):",
+            outSummary: "సారాంశం (Summary):",
+            outGuidance: "ప్రయోగ సూచన (Guidance):",
+            footerLabel: "మరిన్ని వివరాల కోసం మా ఆచార్యుని సంപ്രదించండి: ",
+            tabEngine: "తారాబలం ఇంజన్",
+            tabGrid: "తారాబలం పట్టిక",
+            tabAbout: "గురించి",
+            verdicts: { jagratha: "జాగ్రత్త", anukulam: "అనుకూలం", ananukulam: "అననుకూలం", atyanta: "అత్యంత అనుకూలం" },
+            stars: ["అశ్విని", "భరణి", "కృత్తిక", "రోహిణి", "మృగశిర", "ఆరుద్ర", "పునర్వసు", "పుష్యమి", "ఆశ్లేష", "మఖ", "పుబ్బ", "ఉత్తర", "హస్త", "చిత్త", "స్వాతి", "విశాఖ", "అనూరాధ", "జ్యేష్ఠ", "మూల", "పూర్వాషాఢ", "ఉత్తరాషాఢ", "శ్రవణం", "ధనిష్ఠ", "శతభిషం", "పూర్వాభాద్ర", "ఉత్తరాభాద్ర", "రేవతి"],
+            rules: {
+                1: { title: "జన్మ తారా", summary: "మనస్సు/శరీర శ్రమ", guidance: "సాధారణంగా శుభకార్యాలకు నివారించుట మంచిది" },
+                2: { title: "సంపత్ తారా", summary: "లాభం/ధనం/వృద్ధి", guidance: "ధన, వ్యాపార, ప్రారంభ కార్యాలకు మంచిది" },
+                3: { title: "విపత్ తారా", summary: "అడ్డంకులు/నష్టం", guidance: "ప్రయాణం మరియు ముఖ్య కార్యాలలో జాగ్రత్త" },
+                4: { title: "క్షేమ తారా", summary: "శాంతి/రక్షణ/సౌఖ్యం", guidance: "గృహ, కుటుంబ, ఆరోగ్య సంబంధ కార్యాలకు మంచిది" },
+                5: { title: "ప్రత్యక్ తారా", summary: "వ్యతిరేకత/విలంబం", guidance: "ముఖ్య నిర్ణయాలలో ఆలస్యం లేదా విఘ్నాలు రావచ్చు" },
+                6: { title: "సాధన తారా", summary: "సాధన/విజయం", guidance: "విద్య, మంత్రజపం, సాధన, ప్రయత్నాలకు మంచిది" },
+                7: { title: "నైధన తారా", summary: "హాని/సంకట సూచన", guidance: "అత్యంత జాగ్రత్త; సాధ్యమైతే ముఖ్య కార్యాలు నివారించాలి" },
+                8: { title: "మిత్ర తారా", summary: "సహకారం/స్నేహం", guidance: "సంభాషణ, సమావేశం, సంబంధాలకు మంచిది" },
+                9: { title: "పరమ మిత్ర తారా", summary: "అత్యుత్తమ సహకారం", guidance: "అన్ని రకాల ఉత్తమ కార్యములకు అనుకూలమైనది" }
+            }
+        },
+        en: {
+            appTitle: "Tarabalam Mathematical Calculation Table & Matrix",
+            milestoneTag: "✨ Tarabalam is a concept in Vedic astrology that refers to the \"star strength,\" calculating the daily compatibility between a person's birth star and the current day's stars to pick an auspicious time (Muhurtha) for new beginnings ✨",
+            engineTitle: "Tarabalam Engine Process",
+            matrixTitle: "Complete Tarabalam Map",
+            sliderTitle: "Vedic Astro Insights & Guides",
+            labelBirth: "Select Birth Star (Janma Nakshatram):",
+            labelTarget: "Select Day/Muhurtha Star (Target Nakshatram):",
+            thCross: "Birth Star ➔<br>👇 Day Star",
+            searchPlaceholder: "Type Nakshatra name to filter records...",
+            outNum: "Tarabalam Index Number:",
+            outVerdict: "Final Verdict Status:",
+            outSummary: "Astrological Meaning:",
+            outGuidance: "Practical Action Guidance:",
+            footerLabel: "For more details email our astro expert: ",
+            tabEngine: "Tarabalam Engine",
+            tabGrid: "Tarabalam Full Map",
+            tabAbout: "About",
+            verdicts: { jagratha: "Caution (Jagratha)", anukulam: "Auspicious (Anukulam)", ananukulam: "Inauspicious (Ananukulam)", atyanta: "Highly Auspicious" },
+            stars: ["Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra", "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni", "Hasta", "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha", "Mula", "Purva Ashadha", "Uttara Ashadha", "Shravana", "Dhanishta", "Shatabhisha", "Purva Bhadrapada", "Uttara Bhadrapada", "Revati"],
+            rules: {
+                1: { title: "Janma Tara", summary: "Mental/Physical Exertion", guidance: "Avoid for major auspicious beginnings if possible" },
+                2: { title: "Sampat Tara", summary: "Prosperity, Wealth & Growth", guidance: "Excellent for financial transactions and business ventures" },
+                3: { title: "Vipat Tara", summary: "Obstacles & Unexpected Losses", guidance: "Exercise caution during travel and vital initiatives" },
+                4: { title: "Kṣema Tara", summary: "Peace, Protection & Comfort", guidance: "Favorable for domestic, health, and family welfare events" },
+                5: { title: "Pratyak Tara", summary: "Opposition, Delays & Resistance", guidance: "Key choices may encounter hurdles or structural friction" },
+                6: { title: "Sadhana Tara", summary: "Achievement & Technical Success", guidance: "Highly dynamic for educational pursuits and dedicated practices" },
+                7: { title: "Naidhana Tara", summary: "Severe Danger / Conflict Risks", guidance: "Strictly avoid for critical tasks; prioritize safety protocols" },
+                8: { title: "Mitra Tara", summary: "Mutual Cooperation & Harmony", guidance: "Auspicious for meetings, negotiations, and partnerships" },
+                9: { title: "Parama Mitra Tara", summary: "Supreme Support & Fellowship", guidance: "Universally excellent for all productive milestones" }
+            }
+        },
+        hi: {
+            appTitle: "ताराबलम गणना तालिका एवं संपूर्ण मैट्रिक्स",
+            milestoneTag: "✨ वैदिक ज्योतिष में ताराबलम का तात्पर्य \"नक्षत्र बल\" से है, जो किसी व्यक्ति के जन्म नक्षत्र और वर्तमान दिन के नक्षत्र के बीच अनुकूलता की गणना करके नए कार्यों की शुरुआत के लिए एक शुभ समय (मुहूर्त) चुनने में मदद करता है ✨",
+            engineTitle: "ताराबलं गणना इंजन",
+            matrixTitle: "ताराबलं संपूर्ण मानचित्र",
+            sliderTitle: "वैदिक ज्योतिष अंतर्दृष्टि और गाइड",
+            labelBirth: "अपना जन्म नक्षत्र चुनें (Janma Nakshatram):",
+            labelTarget: "दिन / मुहुर्त नक्षत्र चुनें (Target Nakshatram):",
+            thCross: "जन्म नक्षत्र ➔<br>👇 दिन नक्षत्र",
+            searchPlaceholder: "नक्षत्र के नाम से खोजें...",
+            outNum: "ताराबलं गणना संख्या:",
+            outVerdict: "अंतिम निर्णय / परिणाम:",
+            outSummary: "तारा का मुख्य सारांश:",
+            outGuidance: "व्यावहारिक प्रयोग गाइड:",
+            footerLabel: "अधिक जानकारी के लिए हमारे ज्योतिष विशेषज्ञ को ईमेल करें: ",
+            tabEngine: "ताराबलं इंजन",
+            tabGrid: "ताराबलं तालिका",
+            tabAbout: "विवरण",
+            verdicts: { jagratha: "सावधान / सतर्क", anukulam: "अनुकूल / शुभ", ananukulam: "प्रतिकूल / अशुभ", atyanta: "अत्यंत अनुकूल" },
+            stars: ["अश्विनी", "भरणी", "कृत्तिका", "रोहिणी", "मृगशिरा", "आर्द्रा", "पुनर्वसु", "पुष्य", "आश्लेषा", "मघा", "पूर्वाफाल्गुनी", "उत्तराफाल्गुनी", "हस्त", "चित्रा", "स्वाती", "विशाखा", "अनुराधा", "ज्येष्ठा", "मूल", "पूर्वाषाढ़ा", "उत्तराषाढ़ा", "श्रवण", "धनिष्ठा", "शतभीषा", "पूर्वाभाद्रपद", "उत्तराभाद्रपद", "रेवती"],
+            rules: {
+                1: { title: "जन्म तारा", summary: "मानसिक और शारीरिक श्रम", guidance: "सामान्यतः महत्वपूर्ण मांगलिक कार्यों के लिए टालना बेहतर है" },
+                2: { title: "सम्पत तारा", summary: "लाभ, धन और समृद्धि की वृद्धि", guidance: "वित्तीय लेनदेन, व्यापार and नए उपक्रमों के लिए उत्तम" },
+                3: { title: "विपत तारा", summary: "बाधाएं और धन हानि का योग", guidance: "यात्रा और महत्वपूर्ण रणनीतिक कार्यों में अत्यधिक सावधानी रखें" },
+                4: { title: "क्षेम तारा", summary: "शांति, सुरक्षा और उत्तम सुख", guidance: "घरेलू, पारिवारिक और स्वास्थ्य संबंधी कार्यों के लिए शुभ" },
+                5: { title: "प्रत्यक तारा", summary: "विरोध, रुकावट और विलंब", guidance: "महत्वपूर्ण निर्णयों में देरी या बाधाएं आने की संभावना होती है" },
+                6: { title: "साधना तारा", summary: "सिद्धि, साधना और सफलता", guidance: "शिक्षा, मंत्र जाप, तकनीकी प्रयासों के लिए अत्यधिक अनुकूल" },
+                7: { title: "निधन तारा", summary: "हानि और गंभीर संकट का संकेत", guidance: "अत्यंत सावधानी बरतें; यदि संभव हो तो शुभ कार्यों को टालें" },
+                8: { title: "मित्र तारा", summary: "सहयोग, सौहार्द और मित्रता", guidance: "संवाद, बैठकें और आपसी संबंधों को मजबूत करने के लिए अच्छा" },
+                9: { title: "परम मित्र तारा", summary: "सर्वोत्तम सहयोग और पूर्ण फल", guidance: "सभी प्रकार के श्रेष्ठ एवं रचनात्मक कार्यों के लिए सर्वोत्तम" }
+            }
+        },
+        ta: {
+            appTitle: "தாராபலம் கணக்கீட்டு அட்டவணை மற்றும் மேட்ரிக்ஸ்",
+            milestoneTag: "✨ தாராபலம் என்பது வேத ஜோதிடத்தில் \"நட்சத்திர பலம்\" என்பதைக் குறிக்கிறது, இது ஒரு நபரின் பிறந்த நட்சத்திரத்திற்கும் தற்போதைய நாளின் நட்சத்திரத்திற்கும் இடையிலான பொருத்தத்தைக் கணக்கிட்டு புதிய தொடக்கங்களுக்கான சுப நேரத்தை (முஹூர்த்தம்) தேர்வு செய்ய உதவுகிறது ✨",
+            engineTitle: "தாராபலம் கணக்கீட்டு முறைமை",
+            matrixTitle: "முழுமையான தாராபலம் 27x27 குறிப்பு வரைபடம்",
+            sliderTitle: "வேத ஜோதிட நுண்ணறிவுகள் & வழிகாட்டிகள்",
+            labelBirth: "உங்கள் ஜென்ம நட்சத்திரத்தைத் தேர்ந்தெடுக்கவும்:",
+            labelTarget: "தினசரி / முஹூர்த்த நட்சத்திரம்:",
+            thCross: "ஜென்ம நட்சத்திரம் ➔<br>👇 தினசரி நட்சத்திரம்",
+            searchPlaceholder: "நட்சத்திரத்தின் பெயரைத் தட்டச்சு செய்து தேடவும்...",
+            outNum: "தாராபலம் கணக்கீட்டு எண்:",
+            outVerdict: "இறுதி முடிவு / பலன்:",
+            outSummary: "பலன்களின் சுருக்கம்:",
+            outGuidance: "பயன்பாட்டு வழிகாட்டுதல்:",
+            footerLabel: "மேலும் விவரங்களுக்கு எங்களது ஜோதிட நிபுணரை மின்னஞ்சல் செய்யவும்: ",
+            tabEngine: "தாராபலம் கிளையண்ட்",
+            tabGrid: "தாரபலம் அட்டவணை",
+            tabAbout: "பற்றி",
+            verdicts: { jagratha: "எச்சரிக்கை / கவனம்", anukulam: "அனுகூலம் / சாதகம்", ananukulam: "பிரதிகூலம் / சாதகமற்றது", atyanta: "மிகவும் சாதகமானது" },
+            stars: ["அஸ்வினி", "பரணி", "கார்த்திகை", "ரோகிணி", "மிருகசீரிடம்", "திருவாதிரை", "புனர்பூசம்", "பூசம்", "ஆயில்யம்", "மகம்", "பூரம்", "உத்திரம்", "அஸ்தம்", "சித்திரை", "சுவாதி", "விசாக்கம்", "அனுஷம்", "கேட்டை", "மூலம்", "பூராடம்", "உத்திராடம்", "திருவோணம்", "அவிட்டம்", "சதயம்", "பூரட்டாதி", "உத்திரட்டாதி", "ரேவதி"],
+            rules: {
+                1: { title: "ஜென்ம தாரை", summary: "மன மற்றும் உடல் ரீதியான உழைப்பு", guidance: "பொதுவாக சுப காரியங்களைத் தவிர்ப்பது நல்லது" },
+                2: { title: "சம்பத் தாரை", summary: "செல்வம், லாபம் மற்றும் வளர்ச்சி", guidance: "பணப் பரிவர்த்தனைகள் மற்றும் வணிகத் தொடக்கங்களுக்கு மிக நன்று" },
+                3: { title: "விபத் தாரை", summary: "தடைகள் மற்றும் இழப்புகள்", guidance: "பயணங்கள் மற்றும் முக்கிய முயற்சிகளின் போது கவனமாக இருக்கவும்" },
+                4: { title: "க்ஷேம தாரை", summary: "அமைதி, பாதுகாப்பு மற்றும் சுகம்", guidance: "குடும்பம், ஆரோக்கியம் சார்ந்த சுப நிகழ்வுகளுக்கு ஏற்றது" },
+                5: { title: "பிரத்யக் தாரை", summary: "எதிர்ப்பு மற்றும் காரிய தாமதம்", guidance: "முக்கிய முடிவுகள் எடுப்பதில் தடைகள் அல்லது தாமதங்கள் வரலாம்" },
+                6: { title: "சாதன தாரை", summary: "முயற்சி வெற்றி மற்றும் அது சாதனை", guidance: "கல்வி, மந்திர ஜபம் மற்றும் புதிய முயற்சிகளுக்கு மிகவும் உகந்தது" },
+                7: { title: "நைதன தாரை", summary: "ஆபத்து மற்றும் பெரும் நஷ்டம்", guidance: "மிகவும் எச்சரிக்கையாக இருக்கவும்; சுப காரியங்களைத் தவிர்த்தல் நன்று" },
+                8: { title: "மித்ர தாரை", summary: "ஒத்துழைப்பு மற்றும் நட்பு", guidance: "பேச்சுவார்த்தைகள், சந்திப்புகள் மற்றும் உறவுகளுக்கு நன்று" },
+                9: { title: "பரம மித்ர தாரை", summary: "உன்னதமான ஆதரவு மற்றும் உதவி", guidance: "அனைத்து வகையான நற்காரியங்களுக்கும் மிகச் சிறந்த தாரையாகும்" }
+            }
+        },
+        kn: {
+            appTitle: "ತಾರಾಬಲಂ ಲೆಕ್ಕಾಚಾರದ ಕೋಷ್ಟಕ ಮತ್ತು ಮ್ಯಾಟ್ರಿಕ್ಸ್",
+            milestoneTag: "✨ ತಾರಾಬಲಂ ಎಂಬುದು ವೈದಿಕ ಜ್ಯೋತಿಷ್ಯದಲ್ಲಿ \"ನಕ್ಷತ್ರ ಬಲ\"ವನ್ನು ಸೂಚಿಸುತ್ತದೆ, ಇದು ವ್ಯಕ್ತಿಯ ಜನ್ಮ ನಕ್ಷತ್ರ ಮತ್ತು ಪ್ರಸ್ತುತ ದಿನದ ನಕ್ಷತ್ರದ ನಡುವಿನ ಹೊಂದಾಣಿಕೆಯನ್ನು ಲೆಕ್ಕಹಾಕಿ ಹೊಸ ಕೆಲಸಗಳ ಆರಂಭಕ್ಕೆ ಶುಭ ಮುಹೂರ್ತವನ್ನು ಆಯ್ಕೆ ಮಾಡಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ ✨",
+            engineTitle: "ತಾರಾಬಲಂ ಗಣನೆ ಪ್ರಕ್ರಿಯೆ",
+            matrixTitle: "ಸಂಪೂರ್ಣ ತಾರಾಬಲಂ 27x27 ಮಾಸ್ಟರ್ ಗ್ರಿಡ್ ನಕ್ಷೆ",
+            sliderTitle: "ವೈದಿಕ ಜ್ಯೋತಿಷ್ಯ ಒಳನೋಟಗಳು & ಮಾರ್ಗದರ್ಶಿಗಳು",
+            labelBirth: "ನಿಮ್ಮ ಜನ್ಮ ನಕ್ಷತ್ರವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ:",
+            labelTarget: "ದಿನ / ಮುಹೂರ್ತ ನಕ್ಷತ್ರವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ:",
+            thCross: "ಜನ್ಮ ನಕ್ಷತ್ರ ➔<br>👇 ದಿನದ ನಕ್ಷತ್ರ",
+            searchPlaceholder: "ನಕ್ಷತ್ರದ ಹೆಸರನ್ನು ಟೈಪ್ ಮಾಡಿ ಹುಡುಕಿ...",
+            outNum: "ತಾರಾಬಲಂ ಗಣನೆ ಸಂಖ್ಯೆ:",
+            outVerdict: "ಅಂತಿಮ ತೀರ್ಪು / ಫಲಿತಾಂಶ:",
+            outSummary: "ಫಲಿತಾಂಶದ ಸಾರಾಂಶ:",
+            outGuidance: "ಪ್ರಾಯೋಗಿಕ ಸೂಚನೆಗಳು:",
+            footerLabel: "ಹೆಚ್ಚಿನ ವಿವರಗಳಿಗಾಗಿ ನಮ್ಮ ಜ್ಯೋತಿಷ್ಯ ತಜ್ಞರನ್ನು ಇಮೇಲ್ ಮಾಡಿ: ",
+            tabEngine: "ತಾರಾಬಲಂ ಇಂಜಿನ್",
+            tabGrid: "ತಾರಾಬಲಮ್ ಟೇಬಲ್",
+            tabAbout: "ಬಗ್ಗೆ",
+            verdicts: { jagratha: "ಎಚ್ಚರಿಕೆ / ಜಾಗ್ರತೆ", anukulam: "ಅನುಕೂಲ / ಶುಭ", ananukulam: "ಅನನುಕೂಲ / ಅಶುಭ", atyanta: "ಅತ್ಯಂತ ಆನುಕೂಲಕರ" },
+            stars: ["ಅಶ್ವಿನಿ", "ಭರಣಿ", "ಕೃತಿಕಾ", "ರೋಹಿಣಿ", "ಮೃಗಶಿರ", "ಆರಿದ್ರಾ", "ಪುನರ್ವಸು", "ಪುಷ್ಯ", "ಆಶ್ಲೇಷಾ", "ಮಖಾ", "ಪೂರ್ವಾಫಾಲ್ಗುಣಿ", "ಉತ್ತರಾಫಾಲ್ಗುಣಿ", "ಹಸ್ತಾ", "ಚಿತ್ರಾ", "ಸ್ವಾತಿ", "ವಿಶಾಖಾ", "ಅನುರಾಧಾ", "ಜ್ಯೇಷ್ಠಾ", "ಮೂಲಾ", "ಪೂರ್ವಾಷಾಢ", "ಉತ್ತರಾಷಾಢ", "ಶ್ರವಣ", "ಧನಿಷ್ಠಾ", "ಶತಭಿಷ", "ಪೂರ್ವಾಭಾದ್ರಪದ", "ಉತ್ತರಾಭಾದ್ರಪದ", "ರೇವತಿ"],
+            rules: {
+                1: { title: "ಜನ್ಮ ತಾರಾ", summary: "ಮಾನಸಿಕ ಮತ್ತು ದೈಹಿಕ ಶ್ರಮ", guidance: "ಸಾಮಾನ್ಯವಾಗಿ ಶುಭ ಕಾರ್ಯಗಳಿಗೆ ಇದನ್ನು ವರ್ಜಿಸುವುದು ಉತ್ತಮ" },
+                2: { title: "ಸಂಪತ್ ತಾರಾ", summary: "ಲಾಭ, ಧನ ಧಾನ್ಯ ಮತ್ತು ವೃದ್ಧಿ", guidance: "ಹಣಕಾಸು, ವ್ಯಾಪಾರ ಹಾಗೂ ಹೊಸ ಉದ್ಯೋಗ ಆರಂಭಕ್ಕೆ ಉತ್ತಮ" },
+                3: { title: "ವಿಪತ್ ತಾರಾ", summary: "ಅಡೆತಡೆಗಳು ಮತ್ತು ನಷ್ಟದ ಭೀತಿ", guidance: "ಪ್ರಯಾಣ ಮತ್ತು ಪ್ರಮುಖ ಕಾರ್ಯಗಳನ್ನು ಮಾಡುವಾಗ ಜಾಗರೂಕರಾಗಿರಿ" },
+                4: { title: "ಕ್ಷೇಮ ತಾರಾ", summary: "ಶಾಂತಿ, ರಕ್ಷಣೆ ಮತ್ತು ಸೌಖ್ಯ", guidance: "ಗೃಹ ಪ್ರವೇಶ, ಕೌಟುಂಬಿಕ ಮತ್ತು ಆರೋಗ್ಯ ಸಂಬಂಧಿತ ಕಾರ್ಯಗಳಿಗೆ ಶುಭ" },
+                5: { title: "ಪ್ರತ್ಯಕ್ ತಾರಾ", summary: "ವಿರೋಧ ಮತ್ತು ಕೆಲಸದಲ್ಲಿ ವಿಳಂಬ", guidance: "ಪ್ರಮುಖ ನಿರ್ಧಾರಗಳಲ್ಲಿ ಅಡೆತಡೆಗಳು ಎದುರಾಗುವ ಸಾಧ್ಯತೆ ಇರುತ್ತದೆ" },
+                6: { title: "ಸಾಧನಾ ತಾರಾ", summary: "ಸಾಧನೆ ಮತ್ತು ನಿರೀಕ್ಷಿತ ಯಶಸ್ಸು", guidance: "ವಿದ್ಯಾಭ್ಯಾಸ, ಮಂತ್ರ ಜಪ ಮತ್ತು ತಾಂತ್ರಿಕ ಪ್ರಯತ್ನಗಳಿಗೆ ಸೂಕ್ತ" },
+                7: { title: "ನೈಧನ ತಾರಾ", summary: "ಹಾನಿ ಮತ್ತು ಸಂಕಟದ ಮುನ್ಸೂಚನೆ", guidance: "ಅತ್ಯಂತ ಜಾಗರೂಕರಾಗಿರಿ; ಸಾಧ್ಯವಾದರೆ ಶುಭ ಕಾರ್ಯಗಳನ್ನು ಮುಂದೂಡಿ" },
+                8: { title: "ಮಿತ್ರ ತಾರಾ", summary: "ಸಹಕಾರ ಮತ್ತು ಸೌಹಾರ್ದತೆ", guidance: "ಸಂವಹನ, ಸಭೆಗಳು ಮತ್ತು ಹೊಸ ಸಂಬಂಧಗಳನ್ನು ಬೆಳೆಸಲು ಒಳ್ಳೆಯದು" },
+                9: { title: "ಪರಮ ಮಿತ್ರ ತಾರಾ", summary: "ಉತ್ತಮ ಸಹಕಾರ ಮತ್ತು ಪರಿಪೂರ್ಣ ಫಲ", guidance: "ಎಲ್ಲಾ ರೀತಿಯ ಸತ್ಕಾರ್ಯಗಳ ಆರಂಭಕ್ಕೆ ಅತ್ಯಂತ ಶ್ರೇಷ್ಠವಾದದ್ದು" }
+            }
+        }
+    };
+
+    function switchTab(targetView) {
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.dynamic-view').forEach(v => v.style.display = 'none');
+
+        if (targetView === 'engine') {
+            document.getElementById('tab-engine').classList.add('active');
+            document.getElementById('view-calculator').style.display = 'block';
+        } else if (targetView === 'grid') {
+            document.getElementById('tab-grid').classList.add('active');
+            document.getElementById('view-matrix').style.display = 'block';
+            
+            const b = parseInt(document.getElementById("birthStarSelect").value);
+            const t = parseInt(document.getElementById("targetStarSelect").value);
+            setTimeout(() => {
+                const exactCell = document.querySelector(`td[data-b="${b}"][data-t="${t}"]`);
+                if (exactCell) {
+                    exactCell.classList.add("active-cell");
+                    exactCell.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+                }
+            }, 50);
+        } else if (targetView === 'about') {
+            document.getElementById('tab-about').classList.add('active');
+            document.getElementById('view-about-content').style.display = 'block';
+        }
+    }
+
+    function switchLanguage(langCode, evt) {
+        currentLang = langCode;
+        
+        document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+        if (evt && evt.target) {
+            evt.target.classList.add('active');
+        } else {
+            const btnIdxMap = { te: 1, en: 2, hi: 3, ta: 4, kn: 5 };
+            const matchedBtn = document.querySelector(`.lang-container .lang-btn:nth-child(${btnIdxMap[langCode]})`);
+            if (matchedBtn) matchedBtn.classList.add('active');
+        }
+
+        const strings = languagesDataset[langCode];
+        document.getElementById("ui-app-title").textContent = strings.appTitle;
+        document.getElementById("ui-milestone-tag").textContent = strings.milestoneTag;
+        document.getElementById("ui-engine-title").textContent = strings.engineTitle;
+        document.getElementById("ui-matrix-title").textContent = strings.matrixTitle;
+        document.getElementById("ui-label-birth").textContent = strings.labelBirth;
+        document.getElementById("ui-label-target").textContent = strings.labelTarget;
+        document.getElementById("ui-th-cross").innerHTML = strings.thCross;
+        document.getElementById("searchBox").placeholder = strings.searchPlaceholder;
+        document.getElementById("ui-out-num").textContent = strings.outNum;
+        document.getElementById("ui-out-verdict").textContent = strings.outVerdict;
+        document.getElementById("ui-out-summary").textContent = strings.outSummary;
+        document.getElementById("ui-out-guidance").textContent = strings.outGuidance;
+        document.getElementById("ui-slider-title").textContent = strings.sliderTitle;
+
+        // Apply dynamically translated text to tab selectors
+        document.getElementById("tab-engine").textContent = strings.tabEngine;
+        document.getElementById("tab-grid").textContent = strings.tabGrid;
+        document.getElementById("tab-about").textContent = strings.tabAbout;
+
+        // Apply dynamically translated prefix label for footer text
+        document.getElementById("ui-footer-note").innerHTML = `${strings.footerLabel} <a href="mailto:priest.mrk@gmail.com">priest.mrk@gmail.com</a>`;
+
+        repopulateDropdowns();
+        rebuildMatrixGrid();
+        computeEngine();
+    }
+
+    function repopulateDropdowns() {
+        const bSel = document.getElementById("birthStarSelect");
+        const tSel = document.getElementById("targetStarSelect");
+        
+        const prevB = bSel.value || "4";
+        const prevT = tSel.value || "5";
+
+        bSel.innerHTML = "";
+        tSel.innerHTML = "";
+
+        languagesDataset[currentLang].stars.forEach((starName, i) => {
+            bSel.options.add(new Option(`${i + 1}. ${starName}`, i + 1));
+            tSel.options.add(new Option(`${i + 1}. ${starName}`, i + 1));
+        });
+
+        bSel.value = prevB;
+        tSel.value = prevT;
+    }
+
+    function calcFormula(b, t) {
+        let d = (t - b) + 1;
+        if (d <= 0) d += 27;
+        let r = d % 9;
+        return r === 0 ? 9 : r;
+    }
+
+    function computeEngine() {
+        const b = parseInt(document.getElementById("birthStarSelect").value);
+        const t = parseInt(document.getElementById("targetStarSelect").value);
+        
+        const num = calcFormula(b, t);
+        const localizedConfig = languagesDataset[currentLang].rules[num];
+        const verdicts = languagesDataset[currentLang].verdicts;
+
+        let styleToken = "theme-jagratha";
+        let verdictText = verdicts.jagratha;
+
+        if (num === 9) { styleToken = "theme-atyanta"; verdictText = verdicts.atyanta; }
+        else if ([2, 4, 6, 8].includes(num)) { styleToken = "theme-anukulam"; verdictText = verdicts.anukulam; }
+        else if (num === 7) { styleToken = "theme-naidhana"; verdictText = verdicts.ananukulam; }
+        else if (num === 5) { styleToken = "theme-ananukulam"; }
+
+        const panel = document.getElementById("resultPanel");
+        panel.className = `result-panel ${styleToken} active`;
+
+        document.getElementById("outTaraName").textContent = localizedConfig.title;
+        document.getElementById("outTaraNumber").textContent = num;
+        document.getElementById("outVerdict").textContent = verdictText;
+        document.getElementById("outSummary").textContent = localizedConfig.summary;
+        document.getElementById("outGuidance").textContent = localizedConfig.guidance;
+
+        document.querySelectorAll("#matrixTable td").forEach(c => c.classList.remove("active-cell"));
+        const targetCell = document.querySelector(`td[data-b="${b}"][data-t="${t}"]`);
+        if (targetCell) targetCell.classList.add("active-cell");
+    }
+
+    function rebuildMatrixGrid() {
+        const headerRow = document.getElementById("matrixHeader");
+        const bodyContainer = document.getElementById("matrixBody");
+
+        while (headerRow.cells.length > 1) headerRow.deleteCell(1);
+        bodyContainer.innerHTML = "";
+
+        const currentLangData = languagesDataset[currentLang];
+
+        currentLangData.stars.forEach(s => {
+            let th = document.createElement("th");
+            th.textContent = s;
+            headerRow.appendChild(th);
+        });
+
+        currentLangData.stars.forEach((targetStar, ti) => {
+            let tr = document.createElement("tr");
+            let leadCell = document.createElement("td");
+            leadCell.textContent = targetStar;
+            tr.appendChild(leadCell);
+
+            currentLangData.stars.forEach((birthStar, bi) => {
+                let cell = document.createElement("td");
+                let n = calcFormula(bi + 1, ti + 1);
+                
+                cell.textContent = currentLangData.rules[n].title.split(" ")[0];
+                cell.setAttribute("data-b", bi + 1);
+                cell.setAttribute("data-t", ti + 1);
+
+                if (n === 9) cell.className = "grid-atyanta";
+                else if ([2, 4, 6, 8].includes(n)) cell.className = "grid-anukulam";
+                else if (n === 7) cell.className = "grid-naidhana";
+
+                cell.onclick = function() {
+                    document.getElementById("birthStarSelect").value = bi + 1;
+                    document.getElementById("targetStarSelect").value = ti + 1;
+                    switchTab('engine');
+                };
+
+                tr.appendChild(cell);
+            });
+            bodyContainer.appendChild(tr);
+        });
+    }
+
+    function filterGridMatrix() {
+        const searchInputText = document.getElementById("searchBox").value.toLowerCase();
+        const matrixRows = document.querySelectorAll("#matrixBody tr");
+
+        matrixRows.forEach(rowItem => {
+            const rowHeaderLabel = rowItem.cells[0].textContent.toLowerCase();
+            rowItem.style.display = rowHeaderLabel.includes(searchInputText) ? "" : "none";
+        });
+    }
+
+    // Slider controls runtime functions
+    function moveSlide(direction) {
+        slideIndex += direction;
+        if (slideIndex >= totalSlides) slideIndex = 0;
+        if (slideIndex < 0) slideIndex = totalSlides - 1;
+        updateSliderPosition();
+    }
+
+    function jumpToSlide(index) {
+        slideIndex = index;
+        updateSliderPosition();
+    }
+
+    // Handles absolute position transformation
+    function updateSliderPosition() {
+        const offset = -slideIndex * 100;
+        document.getElementById('sliderStrip').style.transform = `translateX(${offset / totalSlides}%)`;
+        
+        const dots = document.querySelectorAll('#sliderIndicators .dot');
+        dots.forEach(d => d.classList.remove('active'));
+        if(dots[slideIndex]) dots[slideIndex].classList.add('active');
+    }
+
+    // Handles fallback when an image completely fails to resolve natively
+    function handleImageError(imageElement) {
+        imageElement.style.display = 'none';
+        const parentSlide = imageElement.closest('.slide-item');
+        if (parentSlide) {
+            const fallbackNode = parentSlide.querySelector('.slide-fallback-bg');
+            if (fallbackNode) {
+                fallbackNode.style.opacity = '1';
+                fallbackNode.style.color = '#e2e8f0';
+                fallbackNode.style.fontSize = '32px';
+                fallbackNode.style.background = '#34495e';
+            }
+        }
+    }
+
+    window.onload = function() {
+        const englishBtn = document.querySelector('.lang-container .lang-btn:nth-child(2)');
+        switchLanguage('en', { target: englishBtn });
+        updateSliderPosition();
+    };
+</script>
+
+</body>
+</html>
