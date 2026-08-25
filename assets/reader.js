@@ -78,6 +78,27 @@
     spec.fields.forEach(x=>textOrHide($(x.id),r[x.field]));
     const src=$('sourceLink');
     if(src){ if(r.source_url){ src.href=r.source_url; src.style.display='inline'; } else src.style.display='none'; }
+
+    const sourceReference=$('sourceReference');
+    if(sourceReference){
+      sourceReference.textContent = spec.reference ? spec.reference(r) : $('readerKicker').textContent;
+    }
+
+    const sourcePage=$('sourcePage');
+    const sourcePageRow=$('sourcePageRow');
+    if(sourcePage && sourcePageRow){
+      if(r.source_page){ sourcePage.textContent=r.source_page; sourcePageRow.style.display='grid'; }
+      else sourcePageRow.style.display='none';
+    }
+
+    const verifiedStatus=$('verifiedStatus');
+    if(verifiedStatus){
+      verifiedStatus.textContent = r.verification_status === 'Verified' ? '✓ Verified' : (r.verification_status || 'Unverified');
+      verifiedStatus.classList.toggle('verified-badge', r.verification_status === 'Verified');
+    }
+
+    const recordId=$('recordId');
+    if(recordId) recordId.textContent=r[spec.key] || '';
   }
   $('prev')?.addEventListener('click',()=>openIndex(currentIndex-1));
   $('next')?.addEventListener('click',()=>openIndex(currentIndex+1));
