@@ -3,106 +3,65 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Bramha.org — Vedic Wisdom for Modern Life. Explore verified Śāstra, Vedic mantras, articles, and practical Vedic tools.">
+  <meta name="description" content="Bramha.org — verified Śāstra, Vedic mantras, traditional knowledge and practical Vedic tools.">
   <title>Bramha.org | Vedic Wisdom for Modern Life</title>
   <link rel="stylesheet" href="./assets/bramha.css">
-  <style>
-    .home-hero{padding:52px 38px;position:relative;overflow:hidden}
-    .home-hero:after{content:'ॐ';position:absolute;right:28px;top:2px;font-size:150px;line-height:1;color:rgba(255,255,255,.055);font-family:serif;pointer-events:none}
-    .home-hero .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.15em;font-weight:800;color:#f8b26a;margin-bottom:10px}
-    .home-hero p{max-width:760px;font-size:17px}
-    .home-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
-    .home-actions a{text-decoration:none}
-    .home-actions .ghost{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff}
-    .section-title{margin:34px 0 8px;font-size:24px}
-    .section-intro{margin:0 0 18px;color:var(--muted);line-height:1.65}
-    .portal-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-    .portal-card{display:block;text-decoration:none;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow);transition:transform .18s ease,border-color .18s ease}
-    .portal-card:hover{transform:translateY(-2px);border-color:#d4a983}
-    .portal-card .icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--soft);color:var(--accent-2);font-size:22px;margin-bottom:14px}
-    .portal-card h2{font-size:20px;margin:0 0 8px;color:var(--accent-2)}
-    .portal-card p{margin:0;color:#5f6873;line-height:1.6}
-    .portal-card .meta{display:inline-block;margin-top:14px;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.03em}
-    .status-strip{margin-top:20px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-    .status-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
-    .status-item strong{display:block;color:var(--accent-2);font-size:18px}
-    .status-item span{font-size:12px;color:var(--muted)}
-    @media(max-width:720px){.portal-grid,.status-strip{grid-template-columns:1fr}.home-hero{padding:34px 24px}.home-hero:after{font-size:105px}}
-  </style>
 </head>
 <body>
-<div class="site-shell">
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="./">Bramha.org</a>
-      <nav class="nav" aria-label="Primary navigation">
-        <a class="active" href="./">Home</a>
-        <a href="./tarabalam/">Tarabalam</a>
-        <a href="./dharma-sutra/">Dharma Sūtra</a>
-        <a href="./gruhya-sutra/">Gṛhya Sūtra</a>
-        <a href="./vedic-mantras/">Vedic Mantras</a>
-        <a href="./articles/">Articles</a>
-        <a href="./search/">Search</a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="page">
+<div class="announcement-bar"><div class="announcement-inner"><span>Verified Śāstra Library</span><span class="announcement-dot"></span><span>Traditional Knowledge · Modern Access</span><span class="announcement-dot"></span><span>Human-reviewed sources only</span></div></div>
+<header class="site-header">
+  <div class="masthead">
+    <a class="brand-lockup" href="./"><span class="brand-seal">ब्रह्म</span><span class="brand-copy"><span class="brand-name">Bramha.org</span><span class="brand-tagline">Vedic Wisdom for Modern Life</span></span></a>
+    <div class="masthead-right">A digital home for verified Śāstra, Mantra,<br>traditional learning and Vedic tools</div>
+  </div>
+  <nav class="navbar"><div class="nav-inner">
+    <a class="nav-link active" href="./">Home</a>
+    <a class="nav-link" href="./dharma-sutra/">Dharma Sūtra</a>
+    <a class="nav-link" href="./gruhya-sutra/">Gṛhya Sūtra</a>
+    <a class="nav-link" href="./vedic-mantras/">Vedic Mantras</a>
+    <a class="nav-link" href="./tarabalam/">Tarabalam</a>
+    <a class="nav-link" href="./articles/">Articles</a>
+    <a class="nav-link search-nav" href="./search/">Search</a>
+  </div></nav>
+</header>
+<main>
+  <div class="page" style="padding-bottom:0">
     <section class="hero home-hero">
-      <div class="eyebrow">Bramha.org</div>
+      <div class="eyebrow">Bramha.org · Digital Śāstra Platform</div>
       <h1>Vedic Wisdom for Modern Life</h1>
-      <p>A growing digital platform for verified Śāstra, Vedic mantras, traditional knowledge, and practical tools — presented with clear sources and careful human review.</p>
-      <div class="home-actions">
-        <a class="btn" href="./dharma-sutra/">Explore Śāstra Library</a>
-        <a class="btn ghost" href="./tarabalam/">Open Tarabalam Tool</a>
-      </div>
+      <div class="lead">Preserving authoritative tradition with careful sources, human verification and clear digital access.</div>
+      <p class="sublead">Explore Āpastamba Dharma Sūtra, Gṛhya Sūtra, Vedic Mantras, research articles and practical Vedic tools in one scholarly platform.</p>
+      <div class="home-actions"><a class="btn" href="./dharma-sutra/">Enter Śāstra Library →</a><a class="btn ghost" href="./tarabalam/">Open Tarabalam</a></div>
     </section>
 
-    <div class="status-strip" aria-label="Library status">
-      <div class="status-item"><strong>1,341</strong><span>Dharma Sūtra records in the private review database</span></div>
-      <div class="status-item"><strong>374</strong><span>Gṛhya Sūtra records in the private review database</span></div>
-      <div class="status-item"><strong>Verified only</strong><span>Public readers display only human-verified, explicitly published content</span></div>
+    <div class="status-strip">
+      <div class="status-item"><strong>1,341</strong><span>Dharma Sūtra records in the review library</span></div>
+      <div class="status-item"><strong>374</strong><span>Gṛhya Sūtra records in the review library</span></div>
+      <div class="status-item"><strong>Verified Only</strong><span>Public pages expose only reviewed and explicitly published content</span></div>
     </div>
 
-    <h2 class="section-title">Explore Bramha.org</h2>
-    <p class="section-intro">Choose a library, tool, or research section. The Śāstra readers are connected to the Bramha.org CMS and automatically expose only approved material.</p>
-
+    <h2 class="section-title">Explore the Knowledge Portal</h2><div class="section-ornament">◆</div>
+    <p class="section-intro">A traditional knowledge portal organized for serious study, daily reference and gradual scholarly expansion.</p>
     <div class="portal-grid">
-      <a class="portal-card" href="./dharma-sutra/">
-        <div class="icon">ध</div><h2>Āpastamba Dharma Sūtra</h2>
-        <p>Browse by Praśna, Paṭala, Khāṇḍa, and Sūtra with Sanskrit, Telugu, English, commentary, references, and sources when verified.</p>
-        <span class="meta">ŚĀSTRA LIBRARY →</span>
-      </a>
-      <a class="portal-card" href="./gruhya-sutra/">
-        <div class="icon">गृ</div><h2>Āpastamba Gṛhya Sūtra</h2>
-        <p>Browse domestic ritual Sūtras by structural hierarchy. Unreviewed and questionable source cells remain hidden from public readers.</p>
-        <span class="meta">ŚĀSTRA LIBRARY →</span>
-      </a>
-      <a class="portal-card" href="./vedic-mantras/">
-        <div class="icon">ॐ</div><h2>Vedic Mantras</h2>
-        <p>A structured home for mantra text, script variants, meanings, Bhāṣyam, Prayoga or Viniyoga, audio, and source references.</p>
-        <span class="meta">VEDIC LIBRARY →</span>
-      </a>
-      <a class="portal-card" href="./tarabalam/">
-        <div class="icon">✦</div><h2>Tarabalam Calculator</h2>
-        <p>Your existing multilingual Tarabalam engine, 27×27 reference map, five-language interface, practical guidance, and Vedic Astro guides.</p>
-        <span class="meta">VEDIC TOOL →</span>
-      </a>
-      <a class="portal-card" href="./articles/">
-        <div class="icon">✍</div><h2>Articles & Research</h2>
-        <p>Long-form explanations and research notes with explicit source references and the same review-before-publish workflow.</p>
-        <span class="meta">KNOWLEDGE →</span>
-      </a>
-      <a class="portal-card" href="./search/">
-        <div class="icon">⌕</div><h2>Search Bramha.org</h2>
-        <p>Search public verified content across Sanskrit or transliteration, Telugu, English translations, and Sūtra display names.</p>
-        <span class="meta">SEARCH →</span>
-      </a>
+      <a class="portal-card" href="./dharma-sutra/"><div class="icon">ध</div><h2>Āpastamba Dharma Sūtra</h2><p>Browse by Praśna, Paṭala, Khāṇḍa and Sūtra with source-backed text, translation, commentary and references.</p><span class="meta">ŚĀSTRA LIBRARY →</span></a>
+      <a class="portal-card" href="./gruhya-sutra/"><div class="icon">गृ</div><h2>Āpastamba Gṛhya Sūtra</h2><p>Domestic ritual Sūtras presented only after careful verification of text, structure and source evidence.</p><span class="meta">ŚĀSTRA LIBRARY →</span></a>
+      <a class="portal-card" href="./vedic-mantras/"><div class="icon">ॐ</div><h2>Vedic Mantras</h2><p>Structured mantra text, script forms, meanings, Bhāṣyam, Prayoga or Viniyoga, audio and source references.</p><span class="meta">VEDIC RESOURCES →</span></a>
+      <a class="portal-card" href="./tarabalam/"><div class="icon">✦</div><h2>Tarabalam Calculator</h2><p>The existing multilingual Tarabalam engine, 27×27 reference map and practical guidance, preserved as a Vedic tool.</p><span class="meta">VEDIC TOOL →</span></a>
+      <a class="portal-card" href="./articles/"><div class="icon">शा</div><h2>Articles & Research</h2><p>Long-form explanations and research notes built around explicit source references and editorial review.</p><span class="meta">KNOWLEDGE →</span></a>
+      <a class="portal-card" href="./search/"><div class="icon">⌕</div><h2>Search Bramha.org</h2><p>Search verified Sanskrit/transliteration, Telugu, English translation and structural Sūtra references.</p><span class="meta">SEARCH →</span></a>
     </div>
+  </div>
 
-    <div class="notice" style="margin-top:24px"><strong>Editorial principle:</strong> database presence does not mean publication. Śāstra material appears publicly only after human verification and an explicit Publish = YES decision.</div>
-  </main>
-  <footer class="footer">Bramha.org — Vedic Wisdom for Modern Life</footer>
-</div>
-</body>
-</html>
+  <section class="feature-band"><div class="feature-band-inner">
+    <div class="feature-box"><div class="num">01</div><h3>Source First</h3><p>Every public Śāstra record is tied to a known source and exact structural reference.</p></div>
+    <div class="feature-box"><div class="num">02</div><h3>Human Verified</h3><p>Database presence never means publication; review and explicit approval are required.</p></div>
+    <div class="feature-box"><div class="num">03</div><h3>Built to Grow</h3><p>Future layers include script switching, audio, bookmarks, notes, reading history and verified AI retrieval.</p></div>
+  </div></section>
+</main>
+<footer class="footer"><div class="footer-inner">
+  <div><div class="footer-seal">ब्रह्म</div><h3>Bramha.org</h3><p>Vedic Wisdom for Modern Life — a growing digital platform for verified Śāstra, Vedic resources and traditional knowledge.</p></div>
+  <div><h3>Śāstra Library</h3><p><a href="./dharma-sutra/">Dharma Sūtra</a><br><a href="./gruhya-sutra/">Gṛhya Sūtra</a><br><a href="./vedic-mantras/">Vedic Mantras</a></p></div>
+  <div><h3>Resources</h3><p><a href="./articles/">Articles & Research</a><br><a href="./search/">Search</a><br><a href="./tarabalam/">Tarabalam Tool</a></p></div>
+  <div><h3>Editorial Principle</h3><p>Only content marked <strong>Verified</strong> and explicitly approved for publication appears publicly.</p></div>
+</div><div class="footer-bottom">© 2026 Bramha.org · Verified tradition, carefully presented.</div></footer>
+</body></html>
