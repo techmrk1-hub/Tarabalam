@@ -1,0 +1,58 @@
+:root {
+  --bg: #fbf8f3;
+  --surface: #ffffff;
+  --ink: #24303b;
+  --muted: #6b7280;
+  --line: #e6ddd2;
+  --accent: #b44c16;
+  --accent-2: #7b2d0c;
+  --soft: #fff4e8;
+  --success: #176b47;
+  --shadow: 0 10px 30px rgba(44, 62, 80, .08);
+}
+* { box-sizing: border-box; }
+body { margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); color:var(--ink); }
+a { color:inherit; }
+.site-shell { min-height:100vh; }
+.topbar { position:sticky; top:0; z-index:20; background:rgba(255,255,255,.96); backdrop-filter: blur(10px); border-bottom:1px solid var(--line); }
+.topbar-inner { max-width:1180px; margin:auto; padding:14px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.brand { text-decoration:none; font-weight:800; letter-spacing:.2px; color:var(--accent-2); }
+.nav { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+.nav a { text-decoration:none; font-size:14px; color:#4b5563; padding:7px 9px; border-radius:8px; }
+.nav a:hover,.nav a.active { background:var(--soft); color:var(--accent-2); }
+.page { max-width:1180px; margin:0 auto; padding:30px 20px 60px; }
+.hero { background:linear-gradient(135deg,#2c3e50,#34495e); color:#fff; border-radius:18px; padding:30px; box-shadow:var(--shadow); border-bottom:5px solid #d35400; }
+.hero h1 { margin:0 0 8px; font-size:clamp(26px,4vw,42px); }
+.hero p { margin:0; color:#e5e7eb; line-height:1.6; }
+.breadcrumb { margin:0 0 14px; font-size:13px; color:var(--muted); }
+.card { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:var(--shadow); }
+.grid { display:grid; gap:18px; }
+.grid.two { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.controls { margin-top:20px; display:grid; gap:12px; grid-template-columns:repeat(4,minmax(0,1fr)); }
+label { display:block; font-size:12px; font-weight:700; color:#6b7280; margin-bottom:6px; text-transform:uppercase; letter-spacing:.04em; }
+select,input { width:100%; border:1px solid #cfd7df; border-radius:10px; padding:11px 12px; background:#fff; color:var(--ink); font-size:14px; }
+button { border:0; border-radius:10px; padding:10px 14px; cursor:pointer; font-weight:700; }
+.btn { background:var(--accent); color:#fff; }
+.btn.secondary { background:#eef2f5; color:#334155; }
+.reader { margin-top:20px; }
+.kicker { color:var(--accent); font-weight:800; font-size:13px; text-transform:uppercase; letter-spacing:.08em; }
+.reader h2 { margin:6px 0 14px; font-size:26px; }
+.section { padding:16px 0; border-top:1px solid var(--line); }
+.section:first-of-type { border-top:0; }
+.section h3 { margin:0 0 8px; font-size:14px; color:#7c2d12; }
+.section p { margin:0; white-space:pre-wrap; line-height:1.75; }
+.deva { font-size:24px; line-height:1.8; }
+.telugu { font-size:22px; line-height:1.8; }
+.translit { font-size:18px; line-height:1.8; }
+.reader-nav { display:flex; justify-content:space-between; gap:10px; margin-top:18px; }
+.notice { margin-top:18px; border:1px solid #f0cfae; background:#fff7ed; color:#8a3b12; border-radius:12px; padding:14px; line-height:1.5; }
+.empty { text-align:center; padding:38px 20px; color:var(--muted); }
+.search-box { margin-top:20px; display:flex; gap:10px; }
+.search-results { margin-top:18px; display:grid; gap:12px; }
+.result { padding:16px; border:1px solid var(--line); background:#fff; border-radius:12px; }
+.result a { text-decoration:none; color:var(--accent-2); font-weight:800; }
+.result p { margin:7px 0 0; color:#4b5563; line-height:1.5; }
+.badge { display:inline-block; font-size:11px; padding:4px 7px; border-radius:999px; background:var(--soft); color:var(--accent-2); font-weight:700; margin-right:6px; }
+.footer { color:#6b7280; font-size:13px; text-align:center; padding:28px 20px; }
+@media (max-width:800px){ .grid.two,.controls { grid-template-columns:1fr 1fr; } .topbar-inner{align-items:flex-start;flex-direction:column;} }
+@media (max-width:560px){ .grid.two,.controls { grid-template-columns:1fr; } .search-box{flex-direction:column;} .hero{padding:22px;} }

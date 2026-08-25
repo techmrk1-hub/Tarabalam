@@ -1,0 +1,21 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Āpastamba Dharma Sūtra | Bramha.org</title><link rel="stylesheet" href="../assets/bramha.css"></head><body><div class="site-shell">
+<header class="topbar"><div class="topbar-inner"><a class="brand" href="../">Bramha.org</a><nav class="nav"><a href="../">Home</a><a href="../tarabalam/">Tarabalam</a><a class="active" href="./">Dharma Sūtra</a><a href="../gruhya-sutra/">Gṛhya Sūtra</a><a href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles</a><a href="../search/">Search</a></nav></div></header>
+<main class="page"><div class="breadcrumb">Śāstra Library / Āpastamba Dharma Sūtra</div><section class="hero"><h1>Āpastamba Dharma Sūtra</h1><p>Verified teachings from the Bramha.org CMS. Only content explicitly marked Verified and Publish = YES appears here.</p></section>
+<div class="controls"><div><label>Praśna</label><select id="f1"></select></div><div><label>Paṭala</label><select id="f2"></select></div><div><label>Khāṇḍa</label><select id="f3"></select></div><div><label>Sūtra</label><select id="f4"></select></div></div>
+<div id="readerState"></div>
+<article id="reader" class="card reader" style="display:none"><div id="readerKicker" class="kicker"></div><h2 id="readerTitle"></h2>
+<div class="section"><h3>Sanskrit (Devanagari)</h3><p id="devanagari" class="deva"></p></div>
+<div class="section"><h3>Sanskrit / Transliteration</h3><p id="translit" class="translit"></p></div>
+<div class="section"><h3>Telugu</h3><p id="telugu" class="telugu"></p></div>
+<div class="section"><h3>English Translation</h3><p id="english"></p></div>
+<div class="section"><h3>Word Meaning</h3><p id="wordMeaning"></p></div>
+<div class="section"><h3>Simple Meaning</h3><p id="simpleMeaning"></p></div>
+<div class="section"><h3>Commentary / Explanation</h3><p id="commentary"></p></div>
+<div class="section"><h3>Prayoga</h3><p id="prayoga"></p></div>
+<div class="section"><h3>Cross References</h3><p id="crossRefs"></p></div>
+<div class="section"><h3>Source</h3><p><span id="source"></span> <a id="sourceLink" target="_blank" rel="noopener">Open source</a></p></div>
+<div class="reader-nav"><button id="prev" class="btn secondary">← Previous</button><button id="next" class="btn">Next →</button></div></article></main>
+<footer class="footer">Bramha.org — Vedic Wisdom for Modern Life</footer></div>
+<script src="../assets/config.js"></script><script src="../assets/api.js"></script><script>
+window.READER_SPEC={table:'dharma_sutras',key:'unique_id',indexFields:['unique_id','prashna','patala','khanda','sutra_number','display_name'],order:'prashna.asc,patala.asc,khanda.asc,sutra_number.asc',filters:[{id:'f1',field:'prashna',label:'Praśna'},{id:'f2',field:'patala',label:'Paṭala'},{id:'f3',field:'khanda',label:'Khāṇḍa'},{id:'f4',field:'sutra_number',label:'Sūtra'}],kicker:r=>`Praśna ${r.prashna} · Paṭala ${r.patala} · Khāṇḍa ${r.khanda} · Sūtra ${r.sutra_number}`,fields:[{id:'devanagari',field:'sanskrit_devanagari'},{id:'translit',field:'sanskrit_transliteration'},{id:'telugu',field:'telugu_script'},{id:'english',field:'english_translation'},{id:'wordMeaning',field:'word_meaning'},{id:'simpleMeaning',field:'simple_meaning'},{id:'commentary',field:'commentary'},{id:'prayoga',field:'prayoga'},{id:'crossRefs',field:'cross_references'},{id:'source',field:'source'}]};
+</script><script src="../assets/reader.js"></script></body></html>
