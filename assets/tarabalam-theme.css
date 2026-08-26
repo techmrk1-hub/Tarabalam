@@ -18,3 +18,22 @@ label{font-size:10px!important;text-transform:uppercase;letter-spacing:.07em;col
 .result-panel{border-radius:0!important;border-color:#d3af75!important;background:#fff4de!important}.result-header{font-family:'EB Garamond',serif!important;color:#6b0906!important;font-size:25px!important}.meta-row{border-color:#e0caa8!important}.matrix-wrapper{border-color:#d6b47d!important}.tarabalam-table th{background:#6b0906!important;color:#fff5df!important}.tarabalam-table td:first-child{background:#f2e0bd!important;color:#5a3721!important}.use-case-section h4{font-family:'EB Garamond',serif!important;color:#6b0906!important;font-size:22px!important}.footer-note{border-radius:0!important;background:#f3e2c3!important;border:1px solid #d5b47d!important;color:#684a33!important}
 .tarabalam-footer{background:linear-gradient(90deg,#450402,#6b0906,#450402);color:#f0d9ac;border-top:4px solid #c99947;display:flex;justify-content:space-between;gap:18px;padding:15px 28px;font-family:'EB Garamond',serif;font-size:15px}.tarabalam-footer a{color:#efcb83;text-decoration:none}
 @media(max-width:760px){.tarabalam-utility span:last-child,.tarabalam-header-links{display:none}.tarabalam-utility,.tarabalam-masthead{padding-inline:14px}.tarabalam-brand img{width:50px;height:50px}.tarabalam-brand strong{font-size:30px}.tarabalam-global-nav{justify-content:flex-start}.tarabalam-global-nav a{padding:10px 15px;font-size:14px}.tarabalam-ticker{padding:7px 14px;grid-template-columns:1fr}.tarabalam-ticker span{display:none}.container{padding:18px 12px 40px!important}.header{padding:24px 17px!important}.header h1{font-size:23px!important}.header h2{font-size:20px!important}.tarabalam-footer{padding:14px;flex-direction:column}}
+
+/* V9.1 — Desktop font-size polish only */
+@media (min-width: 1101px){
+  .tarabalam-utility{font-size:16px}
+  .tarabalam-brand strong{font-size:39px!important}
+  .tarabalam-brand small{font-size:16px!important}
+  .tarabalam-header-links a{font-size:17px}
+  .tarabalam-global-nav a{font-size:18px}
+  .tarabalam-ticker{font-size:17px}
+  .header h1{font-size:30px!important}
+  .header h2{font-size:26px!important}
+  .nav-tab{font-size:19px!important}
+  .card-title{font-size:26px!important}
+  label{font-size:12px!important}
+  select{font-size:16px!important}
+  .result-header{font-size:27px!important}
+  .use-case-section h4{font-size:24px!important}
+  .tarabalam-footer{font-size:17px}
+}
