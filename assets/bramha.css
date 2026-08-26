@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@400;600;700&family=Noto+Serif+Telugu:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&family=Noto+Serif+Telugu:wght@400;600;700&display=swap');
 
 :root{
   --maroon:#6b0906;
@@ -178,4 +178,182 @@ button,input,select{font:inherit}
 }
 @media(max-width:760px){
  .v4-hero{height:520px;min-height:520px}.v4-hero-manuscript{inset:0;opacity:.28}.v4-hero-overlay{background:linear-gradient(90deg,rgba(68,8,5,.84),rgba(68,8,5,.48))}.v4-hero-inner{padding:38px 22px;justify-content:flex-end}.v4-hero h1{font-size:50px}.v4-hero p{font-size:18px}.v4-feature-row,.v4-feature-row.reverse{display:flex;flex-direction:column;min-height:0}.v4-feature-row.reverse .v4-feature-image{order:1}.v4-feature-row.reverse .v4-feature-copy{order:2}.v4-feature-image{min-height:280px}.v4-feature-copy{padding:34px 24px}.v4-feature-copy h2{font-size:36px}.v4-feature-copy .lead{font-size:19px}.v4-announcements{padding:52px 14px}.v4-section-head h2{font-size:34px}.v4-ann-featured{grid-template-columns:1fr}.v4-ann-image{min-height:240px}.v4-library-grid{grid-template-columns:1fr}.v4-library-grid>div{border-left:0;border-top:1px solid rgba(246,213,146,.25)}.v4-library-grid>div:first-child{border-top:0}.v4-footer-title{padding:24px 14px 4px}.inner-title-block h1{font-size:39px}
+}
+
+/* ===== V5 clarity pass: crisp Windows/Edge typography & header ===== */
+:root{
+  --serif: Georgia, 'Times New Roman', Times, serif;
+  --sans: 'Segoe UI', Arial, Helvetica, sans-serif;
+}
+html{
+  -webkit-text-size-adjust:100%;
+  text-rendering:optimizeLegibility;
+}
+body{
+  font-family:var(--sans);
+  font-size:16px;
+  font-weight:400;
+  line-height:1.55;
+  -webkit-font-smoothing:auto;
+  -moz-osx-font-smoothing:auto;
+}
+body, body *{
+  text-shadow:none !important;
+}
+.site-header,.utility-bar,.primary-nav,.ticker{
+  -webkit-font-smoothing:auto;
+  text-rendering:geometricPrecision;
+}
+.utility-bar,.utility-message,.utility-lang,
+.header-tool,.header-search input,.ticker-inner,.ticker-label,
+.nav-link,.dropdown a{
+  font-family:var(--sans);
+}
+.utility-bar{font-size:12.5px;font-weight:600}
+.utility-inner{padding-top:7px;padding-bottom:7px}
+.masthead{
+  padding-top:20px;
+  padding-bottom:18px;
+  min-height:104px;
+}
+.brand-lockup{gap:16px}
+.brand-seal-img{
+  width:76px;height:76px;
+  box-shadow:0 0 0 2px #d9af5e;
+}
+.brand-name{
+  font-family:var(--serif);
+  font-size:40px;
+  line-height:1;
+  font-weight:700;
+  letter-spacing:0;
+}
+.brand-tagline{
+  font-family:var(--sans);
+  font-size:12.5px;
+  line-height:1.25;
+  font-weight:700;
+  letter-spacing:.035em;
+  margin-top:7px;
+}
+.header-tools{gap:30px}
+.header-tool{
+  font-size:12px;
+  line-height:1.2;
+  font-weight:600;
+}
+.header-tool .ico{
+  font-family:var(--sans);
+  font-size:23px;
+  margin-bottom:6px;
+}
+.header-search form{height:42px}
+.header-search input{
+  font-size:14px;
+  font-weight:500;
+  padding:10px 13px;
+}
+.header-search button{font-family:var(--sans);font-size:17px}
+.primary-nav{
+  box-shadow:0 1px 2px rgba(50,12,3,.12);
+}
+.nav-link{
+  font-size:14px;
+  line-height:1;
+  font-weight:700;
+  letter-spacing:.025em;
+  padding-top:17px;
+  padding-bottom:16px;
+}
+.dropdown a{
+  font-size:14px;
+  line-height:1.3;
+  font-weight:600;
+}
+.ticker-inner{
+  font-size:13px;
+  line-height:1.25;
+  padding-top:9px;
+  padding-bottom:9px;
+}
+.ticker-label{font-weight:800;letter-spacing:.02em}
+
+/* Crisp headings: use Georgia, never soft imported Garamond */
+.hero-title,.section-head,.inner-title-block h1,.reader h2,.section h3,
+.reference-section h3,.card h2,.card h3,.result>a,.footer h3,.footer-brand,
+.v4-hero h1,.v4-mini-title,.v4-feature-copy h2,.v4-section-head h2,
+.v4-ann-copy h3,.v4-ann-list h3,.v4-library-grid strong,.v4-footer-title,
+.library-heading,.feature-card h2,.feature-card h3{
+  font-family:var(--serif);
+}
+
+/* V5 hero clarity */
+.v4-hero{
+  height:min(66vh,660px);
+  min-height:520px;
+  background-position:center 58%;
+}
+.v4-hero-overlay{
+  background:linear-gradient(90deg,rgba(58,8,5,.72) 0%,rgba(78,12,7,.46) 34%,rgba(37,15,8,.16) 65%,rgba(18,10,4,.10) 100%);
+}
+.v4-hero-manuscript{opacity:.30;mix-blend-mode:multiply}
+.v4-hero-inner{
+  padding:58px 74px;
+  text-shadow:none;
+}
+.v4-hero-kicker{
+  font-family:var(--sans);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.14em;
+}
+.v4-hero h1{
+  font-size:clamp(50px,4.25vw,72px);
+  line-height:.98;
+  letter-spacing:-.012em;
+  font-weight:700;
+  max-width:660px;
+}
+.v4-hero p{
+  font-family:var(--sans);
+  max-width:690px;
+  font-size:17px;
+  line-height:1.6;
+  font-weight:500;
+}
+.v4-hero-dots i{width:8px;height:8px}
+.hero-arrow{
+  width:38px;height:38px;
+  font-size:22px;
+  box-shadow:none;
+}
+
+/* Body/editorial copy should stay crisp */
+.v4-intro p,.v4-feature-copy .lead,.v4-feature-copy p,
+.v4-ann-copy p,.v4-ann-list p,.update-item p,.section p,.reference-row,
+.footer p,.footer a,.result p,.notice,.empty{
+  font-family:var(--sans);
+}
+.v4-feature-copy .lead{font-size:19px;line-height:1.55;font-weight:500}
+.v4-feature-copy p{font-size:15.5px;line-height:1.75}
+.v4-links a{font-family:var(--sans);font-size:15px;font-weight:700}
+.v4-ann-copy p,.v4-ann-list p{font-size:14.5px;line-height:1.7}
+.footer a,.footer p{font-size:13.5px}
+
+/* Reader: crisp English + dedicated Indic script fonts */
+.reader,.reader p,.reader-side,.reference-row{font-family:var(--sans)}
+.reader h2,.section h3,.reference-section h3{font-family:var(--serif)}
+.translit{font-family:Georgia,'Times New Roman',serif!important;font-size:19px!important;line-height:1.7!important}
+.deva{font-family:var(--deva), 'Nirmala UI', Mangal, serif!important;font-weight:600}
+.telugu{font-family:var(--telugu), 'Nirmala UI', Gautami, serif!important;font-weight:600}
+
+@media(max-width:760px){
+  .masthead{min-height:auto;padding-top:14px;padding-bottom:13px}
+  .brand-name{font-size:30px}
+  .brand-tagline{font-size:11px}
+  .brand-seal-img{width:54px;height:54px}
+  .nav-link{font-size:13px;padding-top:13px;padding-bottom:13px}
+  .v4-hero-inner{padding:34px 22px}
+  .v4-hero h1{font-size:44px;line-height:1.02}
+  .v4-hero p{font-size:15.5px}
 }
