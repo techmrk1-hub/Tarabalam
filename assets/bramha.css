@@ -98,3 +98,23 @@
   .footer-col a,.footer-col span,.footer-col p{font-size:15px}
   .footer-bottom-inner{font-size:13px}
 }
+
+/* V9.2 — About page aligned with the Sringeri-style V9.1 homepage */
+.sr-about-intro{background:#efa52d url('./visuals/hero-manuscript.jpg') left center/58% auto no-repeat;position:relative;border-top:1px solid #ed9a1d;border-bottom:1px solid #e9d9c5}
+.sr-about-intro:before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(239,165,45,.84) 0%,rgba(239,165,45,.94) 46%,#f0ad3c 100%)}
+.sr-about-intro-inner{position:relative;z-index:1;padding:76px 38px 82px;color:#fff;max-width:1340px}
+.sr-about-eyebrow{font-size:13px;font-weight:700;letter-spacing:.12em;color:#fff;text-transform:uppercase;margin-bottom:13px}
+.sr-about-intro h1{font-family:var(--serif);font-size:52px;line-height:1.05;font-weight:400;margin:0 0 18px;color:#fff}
+.sr-about-intro p{font-size:20px;line-height:1.65;max-width:790px;margin:0;color:#fff}
+.sr-about-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:44px;padding:58px 28px 62px}
+.sr-about-grid article{border-top:4px solid var(--orange);padding-top:24px}
+.sr-about-grid h2,.sr-about-copy h2{font-family:var(--serif);font-size:31px;font-weight:400;color:#4e4138;margin:0 0 16px}
+.sr-about-grid p,.sr-about-copy p{font-size:18px;line-height:1.7;color:#51453c;margin:0}
+.sr-about-feature{background:#f3f0eb;padding:62px 0}
+.sr-about-feature-grid{display:grid;grid-template-columns:1.05fr 1fr;align-items:stretch;max-width:1260px}
+.sr-about-photo{min-height:410px;background-size:cover;background-position:center}.sr-about-photo.shastra{background-image:url('./visuals/card-shastra.jpg')}
+.sr-about-copy{background:#fff;padding:58px 62px;display:flex;flex-direction:column;justify-content:center}.sr-about-copy .sr-about-eyebrow{color:var(--orange)}.sr-about-copy .sr-action{align-self:flex-start;margin-top:28px}
+.sr-about-principles{padding:64px 28px 78px}.sr-about-principles .sr-section-title{margin-bottom:38px}
+.sr-about-principle-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:34px}.sr-about-principle-grid>div{padding-top:20px;border-top:1px solid #e0d9d0}.sr-about-principle-grid span{font-family:var(--serif);font-size:38px;color:#e9b083}.sr-about-principle-grid h3{font-family:var(--serif);font-size:25px;font-weight:400;color:#4e4238;margin:9px 0 12px}.sr-about-principle-grid p{font-size:16px;line-height:1.65;color:#5b4e43;margin:0}
+@media(max-width:900px){.sr-about-grid{grid-template-columns:1fr}.sr-about-feature-grid{grid-template-columns:1fr}.sr-about-principle-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.sr-about-intro-inner{padding:48px 20px}.sr-about-intro h1{font-size:40px}.sr-about-intro p{font-size:17px}.sr-about-grid{padding:40px 20px}.sr-about-copy{padding:36px 24px}.sr-about-principle-grid{grid-template-columns:1fr}.sr-about-principles{padding:44px 20px 55px}}

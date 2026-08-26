@@ -517,16 +517,30 @@
             text-decoration: underline;
         }
     </style>
+<link rel="stylesheet" href="../assets/bramha.css">
 <link rel="stylesheet" href="../assets/tarabalam-theme.css">
 </head>
 <body>
-<div class="tarabalam-site-header">
-  <div class="tarabalam-utility"><span>Verified Śāstra Library &nbsp; • &nbsp; Traditional Knowledge &nbsp; • &nbsp; Human-reviewed sources only</span><span>संस्कृतम् &nbsp; | &nbsp; తెలుగు &nbsp; | &nbsp; English</span></div>
-  <div class="tarabalam-masthead"><a class="tarabalam-brand" href="../"><img src="../assets/visuals/brand-seal.png" alt="Bramha.org emblem"><span><strong>Bramha.org</strong><small>Vedic Wisdom for Modern Life</small></span></a><div class="tarabalam-header-links"><a href="../about.html">About</a><a href="../search/">Verification</a><a href="../articles/">Sources</a></div></div>
-  <nav class="tarabalam-global-nav"><a href="../">⌂</a><a href="../dharma-sutra/">Śāstra</a><a href="../vedic-mantras/">Vedic Resources</a><a class="active" href="./">Tools</a><a href="../articles/">Articles</a><a href="../search/">Search</a></nav>
-  <div class="tarabalam-ticker"><strong>Announcements</strong><span>Tarabalam remains the same calculation engine; only the Bramha.org interface has changed.</span></div>
+<div class="sr-top-notice">
+  <div class="sr-top-notice-inner"><span>Bramha.org Traditional Tools — Tarabalam multilingual calculator</span><a href="#tarabalam-tool">Open Tool</a></div>
 </div>
-<div class="container">
+<header class="sr-header">
+  <div class="sr-header-inner">
+    <a class="sr-brand" href="../" aria-label="Bramha.org home"><img src="../assets/visuals/brand-seal.png" alt="Bramha.org emblem"><span class="sr-brand-text"><span class="sr-brand-name">Bramha.org</span><span class="sr-brand-sub">Vedic Wisdom for Modern Life</span></span></a>
+    <button class="mobile-menu-btn" aria-label="Menu">☰</button>
+    <nav class="sr-main-nav primary-nav" aria-label="Main navigation"><div class="nav-inner">
+      <div class="nav-item has-menu"><a class="nav-link" href="../dharma-sutra/">ŚĀSTRA</a><div class="dropdown"><a href="../dharma-sutra/">Dharma Sūtra</a><a href="../gruhya-sutra/">Gṛhya Sūtra</a></div></div>
+      <div class="nav-item"><a class="nav-link" href="../vedic-mantras/">VEDIC MANTRAS</a></div>
+      <div class="nav-item"><a class="nav-link" href="../articles/">ARTICLES</a></div>
+      <div class="nav-item has-menu"><a class="nav-link active" href="./">TRADITIONAL TOOLS</a><div class="dropdown"><a href="./">Tarabalam</a></div></div>
+      <div class="nav-item"><a class="nav-link" href="../about.html">ABOUT</a></div>
+      <div class="nav-item"><a class="nav-link" href="#footer">CONTACT</a></div>
+      <div class="nav-item"><a class="nav-link sr-search-link" href="../search/" aria-label="Search">⌕</a></div>
+    </div></nav>
+  </div>
+</header>
+<section class="tarabalam-v9-intro"><div class="page-width"><div class="tarabalam-v9-eyebrow">TRADITIONAL TOOLS</div><h1>Tarabalam</h1><p>Calculate the relationship between Janma Nakshatra and the selected day or Muhūrta Nakshatra through the existing five-language Tarabalam engine.</p></div></section>
+<div class="container" id="tarabalam-tool">
     <div class="header">
         <h1>Mahankali Ravikiran Sharma - Vedic Wisdom for Modern Life</h1>
         <h2 id="ui-app-title">Tarabalam Mathematical Calculation Table & Matrix</h2>
@@ -686,7 +700,16 @@ The platform supports 5 languages — Telugu, English, Hindi, Tamil, and Kannada
         For more details email our astro expert: <a href="mailto:priest.mrk@gmail.com">priest.mrk@gmail.com</a>
     </div>
 </div>
-<div class="tarabalam-footer"><div><strong>Bramha.org</strong> · Vedic Wisdom for Modern Life</div><div><a href="../dharma-sutra/">Dharma Sūtra</a> · <a href="../gruhya-sutra/">Gṛhya Sūtra</a> · <a href="../vedic-mantras/">Vedic Mantras</a> · <a href="../">Home</a></div></div>
+<footer id="footer" class="sr-light-footer">
+  <div class="sr-connect page-width"><h2>Connect with us</h2><div class="sr-socials"><a href="#" aria-label="YouTube">▶</a><a href="#" aria-label="WhatsApp">◉</a><a href="#" aria-label="Telegram">➤</a><a href="mailto:contact@bramha.org" aria-label="Email">✉</a></div></div>
+  <div class="sr-footer-grid page-width">
+    <div><h3>Śāstra</h3><a href="../dharma-sutra/">Dharma Sūtra</a><a href="../gruhya-sutra/">Gṛhya Sūtra</a><a href="../search/">Search Library</a></div>
+    <div><h3>Vedic Resources</h3><a href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles</a><a href="../articles/">Source References</a></div>
+    <div><h3>Traditional Tools</h3><a href="./">Tarabalam</a><span>More tools after review</span></div>
+    <div><h3>Contact</h3><p>Bramha.org<br>Digital Śāstra & Vedic Knowledge Platform</p><a href="mailto:contact@bramha.org">contact@bramha.org</a></div>
+  </div>
+  <div class="sr-footer-bottom"><div class="page-width">© 2026 Bramha.org. All rights reserved.</div></div>
+</footer>
 
 <script>
     let currentLang = 'en';
@@ -1079,5 +1102,6 @@ The platform supports 5 languages — Telugu, English, Hindi, Tamil, and Kannada
     };
 </script>
 
+<script src="../assets/site.js"></script>
 </body>
 </html>
