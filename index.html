@@ -37,18 +37,19 @@
 
   <main>
     <section class="trad-hero-wrap">
-      <div class="trad-hero page-width">
+      <div class="trad-hero page-width" id="homeHero" aria-roledescription="carousel" aria-label="Bramha.org featured slides">
+        <img id="heroImage" class="trad-hero-bg" src="assets/visuals/hero-temple.jpg" alt="Traditional temple architecture at sunset">
         <div class="trad-hero-manuscript" aria-hidden="true"></div>
         <div class="trad-hero-copy">
-          <div class="trad-eyebrow">BRAHMA.ORG · DIGITAL ŚĀSTRA PLATFORM</div>
-          <h1>Preserving the Eternal.<br><span>Inspiring the Future.</span></h1>
+          <div class="trad-eyebrow" id="heroEyebrow">BRAHMA.ORG · DIGITAL ŚĀSTRA PLATFORM</div>
+          <h1><span id="heroTitle">Preserving the Eternal.</span><br><span id="heroHighlight">Inspiring the Future.</span></h1>
           <div class="trad-divider"><span>❖</span></div>
-          <p>Explore verified Dharma Sūtras, Vedic mantras, traditional tools and timeless knowledge through a carefully structured digital library.</p>
-          <a class="trad-btn" href="dharma-sutra/">EXPLORE BRAMHA.ORG&nbsp; »</a>
+          <p id="heroDescription">Explore verified Dharma Sūtras, Vedic mantras, traditional tools and timeless knowledge through a carefully structured digital library.</p>
+          <a class="trad-btn" id="heroButton" href="dharma-sutra/">EXPLORE BRAMHA.ORG&nbsp; »</a>
         </div>
-        <a class="trad-arrow left" href="articles/" aria-label="Previous feature">‹</a>
-        <a class="trad-arrow right" href="dharma-sutra/" aria-label="Next feature">›</a>
-        <div class="trad-dots" aria-hidden="true"><span class="active"></span><span></span><span></span><span></span></div>
+        <button class="trad-arrow left" id="heroPrev" type="button" aria-label="Previous slide">‹</button>
+        <button class="trad-arrow right" id="heroNext" type="button" aria-label="Next slide">›</button>
+        <div class="trad-dots" id="heroDots" aria-label="Slide selection"></div>
       </div>
     </section>
 
@@ -137,6 +138,9 @@
   </footer>
 
   <script src="assets/site.js"></script>
+  <script src="assets/config.js"></script>
+  <script src="assets/api.js"></script>
+  <script src="assets/home-slides.js"></script>
   <script>
     (function(){const el=document.getElementById('todayDate'); if(el){const d=new Date(); el.textContent=d.toLocaleDateString('en-US',{weekday:'short',day:'2-digit',month:'long',year:'numeric'}).toUpperCase();}})();
   </script>
