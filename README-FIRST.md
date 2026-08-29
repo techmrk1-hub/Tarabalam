@@ -1,31 +1,21 @@
-# Bramha.org V10 — Full Source Code
+# Bramha.org V11 — Upload This Folder's CONTENTS to GitHub Root
 
-This is the complete deploy-ready Bramha.org V10 Traditional Heritage website source.
+After extracting this ZIP, you should immediately see:
 
-## IMPORTANT — GitHub upload
-Upload the CONTENTS of this folder directly into the repository root.
-Do not upload this folder itself as another nested folder.
+- `index.html`
+- `about.html`
+- `CNAME`
+- `assets/`
+- `dharma-sutra/`
+- `gruhya-sutra/`
+- `vedic-mantras/`
+- `articles/`
+- `search/`
+- `tarabalam/`
 
-The repository root must contain:
-- index.html
-- about.html
-- CNAME
-- favicon.png
-- sitemap.xml
-- robots.txt
-- assets/
-- dharma-sutra/
-- gruhya-sutra/
-- vedic-mantras/
-- articles/
-- search/
-- tarabalam/
+Upload these items directly to the repository root on the `main` branch.
+Do **not** create a `bramha-org-v11-sringeri-sister/` folder inside GitHub.
 
-## Existing Tarabalam images
-Keep your existing root files 1.jpg, 2.jpg, 3.jpg, 4.jpg, 5.jpg and 6.jpg in GitHub.
-Tarabalam still references those existing images.
+The homepage adds `assets/v11-sringeri-sister.css` and keeps the existing Supabase-powered `assets/home-slides.js` slideshow.
 
-## Safety
-The Supabase frontend configuration uses only the publishable key.
-The public readers still filter to Publish=true and Verification Status=Verified.
-Tarabalam calculation logic is preserved.
+If root `1.jpg` through `6.jpg` already exist in GitHub, keep them because Tarabalam may reference them.
