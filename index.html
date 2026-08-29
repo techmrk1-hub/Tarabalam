@@ -1,4 +1,144 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Articles & Research | Bramha.org</title><link rel="stylesheet" href="../assets/bramha.css"></head><body><div class="utility-bar"><div class="utility-inner"><div class="utility-message"><span>Verified Śāstra Library</span><span class="utility-dot"></span><span>Traditional Knowledge</span><span class="utility-dot"></span><span>Human-reviewed sources only</span></div><div class="utility-lang"><span>संस्कृतम्</span><span>తెలుగు</span><span>English</span></div></div></div>
-<header class="site-header"><div class="masthead"><a class="brand-lockup brand-lockup-full" href="../"><img class="brand-full-img" src="../assets/visuals/bramha-logo-trim.png" alt="Bramha.org logo"></a><div class="header-tools"><a class="header-tool" href="../about.html"><span class="ico">⌂</span>About</a><a class="header-tool" href="../search/"><span class="ico">✓</span>Verification</a><a class="header-tool" href="../articles/"><span class="ico">▤</span>Sources</a><a class="header-tool" href="#footer"><span class="ico">✉</span>Contact</a></div><div class="header-search"><form action="../search/" method="get"><input name="q" placeholder="Search Śāstra Library…" aria-label="Search"><button aria-label="Submit search">⌕</button></form></div><button class="mobile-menu-btn" aria-label="Menu">☰</button></div></header>
-<nav class="primary-nav"><div class="nav-inner"><div class="nav-item"><a class="nav-link nav-home" href="../" aria-label="Home">⌂</a></div><div class="nav-item has-menu"><a class="nav-link" href="#">Śāstra <span class="nav-caret">⌄</span></a><div class="dropdown"><a href="../dharma-sutra/">Āpastamba Dharma Sūtra</a><a href="../gruhya-sutra/">Āpastamba Gṛhya Sūtra</a></div></div><div class="nav-item has-menu"><a class="nav-link" href="#">Vedic Resources <span class="nav-caret">⌄</span></a><div class="dropdown"><a href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles & Research</a></div></div><div class="nav-item has-menu"><a class="nav-link" href="#">Tools <span class="nav-caret">⌄</span></a><div class="dropdown"><a href="../tarabalam/">Tarabalam</a></div></div><div class="nav-item"><a class="nav-link active" href="../articles/">Articles</a></div><div class="nav-item"><a class="nav-link" href="../search/">Search</a></div></div></nav>
-<div class="ticker"><div class="ticker-inner"><span class="ticker-label">♟ &nbsp; Announcements</span><span class="ticker-rule"></span><span>New: Dharma Sūtra reader with verified source references and traditional typography.</span><a href="../dharma-sutra/">Open Reader →</a></div></div><div class="inner-title-block"><div class="inner"><div class="breadcrumb"><a href="../">Home</a> / Resources / Articles</div><h1>Articles & Research</h1><p>Source-aware writing on Dharma, Śāstra and Vedic knowledge, governed by the same review-before-publish policy.</p></div></div><main class="inner-wrap"><nav class="subnav"><a href="../vedic-mantras/">Vedic Mantras</a><a class="active" href="../articles/">Articles & Research</a><a href="../search/">Search</a></nav><div id="state" class="search-results"></div></main><footer class="footer" id="footer"><div class="footer-inner"><div class="footer-col"><div class="footer-brand">Bramha.org</div><p>Preserving verified Śāstra, Vedic resources and traditional knowledge in a clear digital form.</p></div><div class="footer-col"><h3>Śāstra</h3><a href="../dharma-sutra/">Dharma Sūtra</a><a href="../gruhya-sutra/">Gṛhya Sūtra</a><a href="../vedic-mantras/">Vedic Mantras</a></div><div class="footer-col"><h3>Resources</h3><a href="../articles/">Articles</a><a href="../search/">Search</a><a href="../articles/">Sources</a></div><div class="footer-col"><h3>Vedic Tools</h3><a href="../tarabalam/">Tarabalam</a><p>Additional traditional tools will be added only after careful review.</p></div><div class="footer-col"><h3>Editorial Principle</h3><p>Public Śāstra pages expose only records marked <strong>Verified</strong> and explicitly approved for publication.</p></div></div><div class="footer-bottom"><div class="footer-bottom-inner"><span>© 2026 Bramha.org. All rights reserved.</span><span class="footer-inline"><a href="../about.html">About</a><a href="../search/">Verification</a><a href="../articles/">Sources</a></span></div></div></footer><script src="../assets/site.js"></script><script src="../assets/config.js"></script><script src="../assets/api.js"></script><script>sbFetch('articles?select=article_id,title,summary,slug,language,published_date&publish=eq.true&verification_status=eq.Verified&order=published_date.desc&limit=100').then(rows=>{const s=document.getElementById('state'); if(!rows.length){s.innerHTML='<div class="card empty">No verified articles are public yet.</div>';return;} s.innerHTML=rows.map(r=>`<div class="result"><span class="badge">${escapeHtml(r.language||'Article')}</span><a href="#">${escapeHtml(r.title)}</a><p>${escapeHtml(r.summary||'')}</p></div>`).join('');}).catch(e=>document.getElementById('state').innerHTML=`<div class="notice">${escapeHtml(e.message)}</div>`);</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bramha.org | Vedic Wisdom for Modern Life</title>
+  <meta name="description" content="Bramha.org — a source-grounded digital home for Śāstra, Vedic resources and traditional tools.">
+  <link rel="stylesheet" href="assets/bramha.css">
+</head>
+<body class="traditional-home">
+  <div class="trad-topbar">
+    <div class="trad-topbar-inner">
+      <span>✦ Bramha.org Digital Śāstra Library — source-verified traditional knowledge</span>
+      <a href="dharma-sutra/">Explore Now</a>
+    </div>
+  </div>
+
+  <header class="trad-header">
+    <div class="trad-header-inner page-width">
+      <a class="trad-brand" href="./" aria-label="Bramha.org home">
+        <img src="assets/visuals/bramha-logo-trim.png" alt="Bramha.org — Vedic Wisdom for Modern Life">
+      </a>
+      <button class="mobile-menu-btn" aria-label="Menu">☰</button>
+      <nav class="trad-nav primary-nav" aria-label="Main navigation">
+        <div class="nav-inner">
+          <div class="nav-item has-menu"><a class="nav-link" href="dharma-sutra/">ŚĀSTRA <span class="nav-caret">⌄</span></a><div class="dropdown"><a href="dharma-sutra/">Āpastamba Dharma Sūtra</a><a href="gruhya-sutra/">Āpastamba Gṛhya Sūtra</a></div></div>
+          <div class="nav-item has-menu"><a class="nav-link" href="vedic-mantras/">VEDIC RESOURCES <span class="nav-caret">⌄</span></a><div class="dropdown"><a href="vedic-mantras/">Vedic Mantras</a><a href="articles/">Articles & Research</a></div></div>
+          <div class="nav-item has-menu"><a class="nav-link" href="tarabalam/">TRADITIONAL TOOLS <span class="nav-caret">⌄</span></a><div class="dropdown"><a href="tarabalam/">Tarabalam</a></div></div>
+          <div class="nav-item"><a class="nav-link" href="articles/">ARTICLES</a></div>
+          <div class="nav-item"><a class="nav-link" href="about.html">ABOUT</a></div>
+          <div class="nav-item"><a class="nav-link" href="#footer">CONTACT</a></div>
+          <div class="nav-item"><a class="nav-link trad-search" href="search/" aria-label="Search">⌕</a></div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="trad-hero-wrap">
+      <div class="trad-hero page-width">
+        <div class="trad-hero-manuscript" aria-hidden="true"></div>
+        <div class="trad-hero-copy">
+          <div class="trad-eyebrow">BRAHMA.ORG · DIGITAL ŚĀSTRA PLATFORM</div>
+          <h1>Preserving the Eternal.<br><span>Inspiring the Future.</span></h1>
+          <div class="trad-divider"><span>❖</span></div>
+          <p>Explore verified Dharma Sūtras, Vedic mantras, traditional tools and timeless knowledge through a carefully structured digital library.</p>
+          <a class="trad-btn" href="dharma-sutra/">EXPLORE BRAMHA.ORG&nbsp; »</a>
+        </div>
+        <a class="trad-arrow left" href="articles/" aria-label="Previous feature">‹</a>
+        <a class="trad-arrow right" href="dharma-sutra/" aria-label="Next feature">›</a>
+        <div class="trad-dots" aria-hidden="true"><span class="active"></span><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <section class="trad-entry-section page-width">
+      <article class="trad-entry-card">
+        <div class="trad-entry-image shastra"></div>
+        <div class="trad-entry-copy">
+          <div class="trad-icon">▣</div>
+          <h2>ŚĀSTRA LIBRARY</h2>
+          <strong>Dharma Sūtra · Gṛhya Sūtra</strong>
+          <p>Explore the Āpastamba tradition with structured navigation, verified references and script-aware readers.</p>
+          <a href="dharma-sutra/">EXPLORE LIBRARY&nbsp; »</a>
+        </div>
+      </article>
+      <article class="trad-entry-card">
+        <div class="trad-entry-image resources"></div>
+        <div class="trad-entry-copy">
+          <div class="trad-icon">ॐ</div>
+          <h2>VEDIC RESOURCES</h2>
+          <strong>Mantras · Meanings · Articles</strong>
+          <p>Discover authentic Vedic mantras, meanings, source references and curated articles for deeper study.</p>
+          <a href="vedic-mantras/">EXPLORE RESOURCES&nbsp; »</a>
+        </div>
+      </article>
+      <article class="trad-entry-card">
+        <div class="trad-entry-image tools"></div>
+        <div class="trad-entry-copy">
+          <div class="trad-icon">✦</div>
+          <h2>TRADITIONAL TOOLS</h2>
+          <strong>Tarabalam · Vedic Tools</strong>
+          <p>Use traditional calculations and source-aware tools for observances, Muhūrta and practical needs.</p>
+          <a href="tarabalam/">EXPLORE TOOLS&nbsp; »</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="trad-announcements">
+      <div class="page-width">
+        <div class="trad-section-heading"><span></span><h2>ANNOUNCEMENTS</h2><span></span></div>
+        <div class="trad-ann-grid">
+          <article class="trad-ann-card"><time>AUGUST 29, 2026</time><h3>Dharma Sūtra Digital Reader</h3><p>Verified source references, structured navigation and script-aware reading are available in the public reader.</p><a href="dharma-sutra/">LEARN MORE&nbsp; »</a></article>
+          <article class="trad-ann-card"><time>AUGUST 29, 2026</time><h3>Human-reviewed Publishing</h3><p>Public Śāstra pages expose only content marked Verified and explicitly approved for publication.</p><a href="about.html#verification">LEARN MORE&nbsp; »</a></article>
+          <article class="trad-ann-card"><time>AUGUST 29, 2026</time><h3>Traditional Tools</h3><p>Tarabalam remains available as a five-language tool within Bramha.org’s traditional knowledge platform.</p><a href="tarabalam/">LEARN MORE&nbsp; »</a></article>
+          <article class="trad-ann-card"><time>AUGUST 29, 2026</time><h3>Vedic Resources Expansion</h3><p>Mantras, articles and reference material are being organized under a common source-aware reading experience.</p><a href="vedic-mantras/">LEARN MORE&nbsp; »</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="trad-date-band">
+      <div class="page-width trad-date-inner">
+        <div class="trad-date-label">☷ &nbsp; TODAY</div>
+        <div class="trad-date-center">
+          <div class="deva">शास्त्रम् · मन्त्रः · परम्परा · प्रमाणम्</div>
+          <div>Śāstra · Mantra · Tradition · Source</div>
+          <strong id="todayDate"></strong>
+        </div>
+        <a href="search/" class="trad-date-action">SEARCH LIBRARY&nbsp; »</a>
+      </div>
+    </section>
+
+    <section class="trad-quote-band">
+      <div class="trad-quote-manuscript" aria-hidden="true"></div>
+      <div class="page-width trad-quote-inner">
+        <div class="trad-guru-art" aria-hidden="true">ॐ</div>
+        <div>
+          <div class="deva trad-quote-deva">विद्या · धर्मः · परम्परा · साधना</div>
+          <p>Knowledge is preserved through careful study, trustworthy sources and living tradition.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="trad-footer">
+    <div class="page-width trad-footer-grid">
+      <div class="trad-footer-brand">
+        <img src="assets/visuals/bramha-logo-trim.png" alt="Bramha.org logo">
+        <p>A digital initiative dedicated to preserving and presenting authentic Vedic knowledge and Dharma through source-grounded digital study.</p>
+      </div>
+      <div><h3>ŚĀSTRA LIBRARY</h3><a href="dharma-sutra/">Dharma Sūtra</a><a href="gruhya-sutra/">Gṛhya Sūtra</a><a href="search/">Search Library</a></div>
+      <div><h3>VEDIC RESOURCES</h3><a href="vedic-mantras/">Mantras</a><a href="articles/">Articles</a><a href="articles/">Source References</a></div>
+      <div><h3>TRADITIONAL TOOLS</h3><a href="tarabalam/">Tarabalam</a><span>More tools after review</span></div>
+      <div><h3>ABOUT BRAMHA.ORG</h3><a href="about.html">Mission & Vision</a><a href="about.html#verification">Verification Policy</a><a href="about.html">Editorial Policy</a></div>
+      <div><h3>CONNECT WITH US</h3><div class="trad-socials"><a href="#">▶</a><a href="#">◉</a><a href="#">➤</a><a href="mailto:contact@bramha.org">✉</a></div><a href="mailto:contact@bramha.org">contact@bramha.org</a></div>
+    </div>
+    <div class="trad-footer-bottom"><div class="page-width"><span>© 2026 Bramha.org. All rights reserved.</span><span>Made with ♥ for Dharma</span><a href="search/">Sitemap / Search</a></div></div>
+  </footer>
+
+  <script src="assets/site.js"></script>
+  <script>
+    (function(){const el=document.getElementById('todayDate'); if(el){const d=new Date(); el.textContent=d.toLocaleDateString('en-US',{weekday:'short',day:'2-digit',month:'long',year:'numeric'}).toUpperCase();}})();
+  </script>
+</body>
+</html>

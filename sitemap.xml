@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://bramha.org/</loc>
-    <priority>1.00</priority>
-  </url>
+  <url><loc>https://bramha.org/</loc></url>
+  <url><loc>https://bramha.org/dharma-sutra/</loc></url>
+  <url><loc>https://bramha.org/gruhya-sutra/</loc></url>
+  <url><loc>https://bramha.org/vedic-mantras/</loc></url>
+  <url><loc>https://bramha.org/articles/</loc></url>
+  <url><loc>https://bramha.org/tarabalam/</loc></url>
+  <url><loc>https://bramha.org/search/</loc></url>
+  <url><loc>https://bramha.org/about.html</loc></url>
 </urlset>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bramha.org/sitemap.xml
