@@ -5,20 +5,22 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Search the public verified Śāstra corpus across transliteration, Telugu, English, and titles.">
   <title>Search Bramha.org</title>
-  <link rel="icon" href="/favicon.png" type="image/png">
-  <link rel="apple-touch-icon" href="/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAADiklEQVR42k2LXWxTZQCG3++c75x27Tk97bq1XTco+6Nkbvy4qHMyAnEJMTHBLEZjQow/F96IV0TiFTfGkKCJF2YGb4xcoRFEEMkccRkYxK0EYWtct7VjWUalW7t2bc/p+fs+b8T4XD0XzwP8j6mpKfrEs9+NapzzHZzz+NTpRPDUIDQA4JyTfxPy38g5J+dPH49MnD3eb+Svv+Xq8z9z7qzm565WNjKTW5y7GaOUulhd+v4IAHHi/Fn/k5ekzp2Tclvptv0H4s92Dx36UAj0PwPXwMLkD6gtXwSVvNCSY+g8fAxgddiFzDe//3RtvNjwZMdOnCmKY28eC+7tocPdzx0eJ4He3XaDO4sX3ueZHz8jiWQ30Kggc/0L7iElpvS8DEkLH+iIK52Pluduv/PG60wYbp0VduzpPwOlNcJc2XF1nVqlmqhE9hPu6SOCOkB84X2CsbEtMtMV4FJLjCVHR14cOTF++eSW0NR9dEQMt/XCVVxBVKld2YTf24bQriHYpQrcqonmroPwkhBcowYuBGRW5a4Uir779amP91EqezlEjW9n00RUq/C07IRvYBTFxQXEBofBXBurcymofU+Dai1oTNxEY/4+Cb13RPB3D3UJ8PgAIpG1K1+hkl+FKAlwlq6hunQTDggaloVy5gbI4xsQqRd8VzOqkSq47AMc26ZQImDVInSvB7F4Enb6CkKNMhRuIj/9OZjD4WEGmv7+Be7mEuREAtbdbUCmgMsIRa0AonRCUVXUHlzCxsNptPljiO6Jgovb4C5BMBbB4+wk+B/fQmtuhxRLgBA/HPggOLpLCPWh/YWXID68BSKKSP82AXMzC5/aiiYlCH0ti3xOB3s0D15cBZVFrFz+BLWlO4SaLGuxeYOztA3IGlh+AcZ6AStmBD3KOgCGlXQdIYODmnVUKssoZWYhSWAzd2Yc8YMuo8X+03zbejAlaD3TJNzhQg16UVk2IVIPnBqDtV7A7kMU0Z4q9EyK2YudQkjbuV5O5T6iuZzotpubdVCqlFJPcaU5gGCbg8FXcxAKByFJATh7J4CChsptDquQYFG5FfXlWk5/7XmV9p78NI4LVwPO3F8IDx+FYBkQO/zwSmUg2QEILuTSK+CODEEi8EXrgnn/HrYl2hDXNmzaEh+YKVq/jrE4ZSzJiNTRB7hVwG0GVBUQAYRlkC7A2xSGnpnlUjlEpDl9a+zLS+V/APFuma7mY/e+AAAAAElFTkSuQmCC">
+  <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAADiklEQVR42k2LXWxTZQCG3++c75x27Tk97bq1XTco+6Nkbvy4qHMyAnEJMTHBLEZjQow/F96IV0TiFTfGkKCJF2YGb4xcoRFEEMkccRkYxK0EYWtct7VjWUalW7t2bc/p+fs+b8T4XD0XzwP8j6mpKfrEs9+NapzzHZzz+NTpRPDUIDQA4JyTfxPy38g5J+dPH49MnD3eb+Svv+Xq8z9z7qzm565WNjKTW5y7GaOUulhd+v4IAHHi/Fn/k5ekzp2Tclvptv0H4s92Dx36UAj0PwPXwMLkD6gtXwSVvNCSY+g8fAxgddiFzDe//3RtvNjwZMdOnCmKY28eC+7tocPdzx0eJ4He3XaDO4sX3ueZHz8jiWQ30Kggc/0L7iElpvS8DEkLH+iIK52Pluduv/PG60wYbp0VduzpPwOlNcJc2XF1nVqlmqhE9hPu6SOCOkB84X2CsbEtMtMV4FJLjCVHR14cOTF++eSW0NR9dEQMt/XCVVxBVKld2YTf24bQriHYpQrcqonmroPwkhBcowYuBGRW5a4Uir779amP91EqezlEjW9n00RUq/C07IRvYBTFxQXEBofBXBurcymofU+Dai1oTNxEY/4+Cb13RPB3D3UJ8PgAIpG1K1+hkl+FKAlwlq6hunQTDggaloVy5gbI4xsQqRd8VzOqkSq47AMc26ZQImDVInSvB7F4Enb6CkKNMhRuIj/9OZjD4WEGmv7+Be7mEuREAtbdbUCmgMsIRa0AonRCUVXUHlzCxsNptPljiO6Jgovb4C5BMBbB4+wk+B/fQmtuhxRLgBA/HPggOLpLCPWh/YWXID68BSKKSP82AXMzC5/aiiYlCH0ti3xOB3s0D15cBZVFrFz+BLWlO4SaLGuxeYOztA3IGlh+AcZ6AStmBD3KOgCGlXQdIYODmnVUKssoZWYhSWAzd2Yc8YMuo8X+03zbejAlaD3TJNzhQg16UVk2IVIPnBqDtV7A7kMU0Z4q9EyK2YudQkjbuV5O5T6iuZzotpubdVCqlFJPcaU5gGCbg8FXcxAKByFJATh7J4CChsptDquQYFG5FfXlWk5/7XmV9p78NI4LVwPO3F8IDx+FYBkQO/zwSmUg2QEILuTSK+CODEEi8EXrgnn/HrYl2hDXNmzaEh+YKVq/jrE4ZSzJiNTRB7hVwG0GVBUQAYRlkC7A2xSGnpnlUjlEpDl9a+zLS+V/APFuma7mY/e+AAAAAElFTkSuQmCC">
   <meta name="theme-color" content="#1c1c1a">
   <meta name="application-name" content="Bramha.org">
   <meta property="og:site_name" content="Bramha.org">
   <meta property="og:image" content="https://bramha.org/bramha-logo-trim.png">
   <meta name="twitter:card" content="summary">
   <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="../assets/minimal.css?v=19">
+  <link rel="stylesheet" href="../assets/brand-mark.css?v=23">
+  <link rel="stylesheet" href="../assets/brand-lockup.css?v=23">
+  <link rel="stylesheet" href="../assets/minimal.css?v=23">
 </head>
 <body>
 <header class="m-header">
   <div class="m-bar">
-    <a class="m-logo" href="../" aria-label="Bramha.org home"><img src="/brand-seal.png" alt="Bramha.org — Illuminating the Intellect through Vedic Wisdom" width="40" height="40"><span>Bramha.org</span></a>
+    <a class="m-logo" href="../" aria-label="Bramha.org home"><span class="m-brand-mark" role="img" aria-label="Bramha.org"></span><span>Bramha.org</span></a>
     <button class="m-menu" type="button" aria-label="Menu" aria-expanded="false">Menu</button>
     <nav class="m-nav" aria-label="Main">
       <a href="../">Home</a>
@@ -39,9 +41,9 @@
 </main>
 <footer class="m-footer" id="footer">
   <div class="m-footer-grid">
-    <div><div class="m-footer-brand"><img src="/bramha-logo-trim.png" alt="Bramha.org — Illuminating the Intellect through Vedic Wisdom"></div><p>A source-grounded digital platform for Śāstra, Vedic resources, and traditional tools.</p></div>
-    <div><h3>Library</h3><a href="../dharma-sutra/">Dharma Sūtra</a><a href="../gruhya-sutra/">Gṛhya Sūtra</a><a href="../search/">Search</a></div>
-    <div><h3>Tools</h3><a href="../tarabalam/">Tarabalam</a><a href="../vedic-mantras/">Mantras</a><a href="../articles/">Articles</a></div>
+    <div><div class="m-footer-brand"><span class="m-brand-lockup" role="img" aria-label="Bramha.org"></span></div><p>A student-friendly digital repository for verified Śāstra, Vedic knowledge, and traditional tools.</p></div>
+    <div><h3>Library</h3><a href="../dharma-sutra/">Dharma Sūtra</a><a href="../gruhya-sutra/">Gṛhya Sūtra</a><a href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles</a></div>
+    <div><h3>Tools</h3><a href="../tarabalam/">Tarabalam</a><a href="../search/">Search</a></div>
     <div><h3>Bramha.org</h3><a href="../about.html">About</a><a href="mailto:contact@bramha.org">Contact</a></div>
   </div>
   <div class="m-footer-bottom">© 2026 Bramha.org</div>
