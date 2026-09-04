@@ -546,6 +546,10 @@ select:focus { border-bottom-color: var(--ink); }
 /* About */
 .m-about { padding: 56px 0 24px; }
 .m-about-mark { width: min(280px, 70vw); height: auto; margin: 0 0 28px; }
+.m-about-contact { padding: 0 0 64px; }
+.m-about-contact h2 { margin: 0 0 12px; font-size: 22px; }
+.m-about-contact p { margin: 0 0 8px; color: var(--muted); }
+.m-about-contact a { text-decoration: underline; text-underline-offset: 3px; }
 .m-about h1 { font-size: clamp(36px, 6vw, 56px); margin: 0 0 16px; }
 .m-about > p { font-size: 18px; color: var(--muted); max-width: 52ch; }
 .m-about-grid {
