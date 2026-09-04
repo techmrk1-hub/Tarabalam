@@ -1,20 +1,50 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vedic Mantras | Bramha.org</title><link rel="stylesheet" href="../assets/bramha.css?v=13"></head><body><div class="v12-topbar"><span>Bramha.org — Vedic wisdom, Śāstra and traditional knowledge.</span><a href="../dharma-sutra/">Explore Śāstra</a></div>
-<header class="v12-header" id="v12Header"><div class="v12-header-inner">
-<a class="v12-brand" href="../" aria-label="Bramha.org home"><img src="../assets/visuals/bramha-logo-trim.png" alt="Bramha.org — Vedic Wisdom for Modern Life"></a>
-<button class="v12-mobile" type="button" aria-label="Menu" onclick="document.getElementById('v12Header').classList.toggle('open')">☰</button>
-<nav class="v12-nav" aria-label="Main navigation">
-<div class="shastra"><a href="../dharma-sutra/">Śāstra</a><div class="v12-menu"><a href="../dharma-sutra/">Āpastamba Dharma Sūtra</a><a href="../gruhya-sutra/">Āpastamba Gṛhya Sūtra</a></div></div>
-<div class="vedic"><a href="../vedic-mantras/">Vedic Resources</a><div class="v12-menu"><a href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles &amp; Research</a></div></div>
-<div class="tools"><a href="../tarabalam/">Traditional Tools</a><div class="v12-menu"><a href="../tarabalam/">Tarabalam</a></div></div>
-<a href="../articles/">Articles</a><a href="../about.html">About</a><a href="#footer">Contact</a><a href="../search/" aria-label="Search">⌕</a>
-</nav></div></header>
-<div class="v12-spectrum" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-<div class="inner-title-block"><div class="inner"><div class="breadcrumb"><a href="../">Home</a> / Vedic Resources / Mantras</div><h1>Vedic Mantras</h1><p>Verified mantra text, scripts, meanings, Bhāṣyam, Prayoga or Viniyoga, audio and source references.</p></div></div><main class="inner-wrap"><nav class="subnav"><a class="active" href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles & Research</a><a href="../search/">Search</a></nav><div id="state" class="search-results"></div></main><footer class="v12-footer" id="footer">
-<div class="v12-connect"><h2>Connect with Bramha.org</h2><a href="mailto:contact@bramha.org" aria-label="Email">✉</a><a href="../search/" aria-label="Search">⌕</a><a href="../articles/" aria-label="Articles">▤</a></div>
-<div class="v12-footer-grid">
-<div class="v12-footer-brand"><img src="../assets/visuals/bramha-logo-trim.png" alt="Bramha.org logo"><p>A source-grounded digital platform for Śāstra, Vedic resources and traditional tools.</p></div>
-<div><h3>Śāstra</h3><a href="../dharma-sutra/">Dharma Sūtra</a><a href="../gruhya-sutra/">Gṛhya Sūtra</a><a href="../search/">Search Library</a></div>
-<div><h3>Vedic Resources</h3><a href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles</a></div>
-<div><h3>Traditional Tools</h3><a href="../tarabalam/">Tarabalam</a><span>More tools after review</span></div>
-<div><h3>About</h3><a href="../about.html">Mission &amp; Vision</a><a href="../about.html#verification">Verification Policy</a><a href="mailto:contact@bramha.org">Contact</a></div>
-</div><div class="v12-footer-bottom">© 2026 Bramha.org · Vedic Wisdom for Modern Life</div></footer><script src="../assets/site.js"></script><script src="../assets/config.js"></script><script src="../assets/api.js"></script><script>sbFetch('vedic_mantras?select=mantra_id,title,veda,shakha,slug&publish=eq.true&verification_status=eq.Verified&order=title.asc&limit=200').then(rows=>{const s=document.getElementById('state'); if(!rows.length){s.innerHTML='<div class="card empty">No verified mantras are public yet.</div>';return;} s.innerHTML=rows.map(r=>`<div class="result"><span class="badge">${escapeHtml(r.veda||'Veda')}</span><a href="#">${escapeHtml(r.title||r.mantra_id)}</a></div>`).join('');}).catch(e=>document.getElementById('state').innerHTML=`<div class="notice">${escapeHtml(e.message)}</div>`);</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vedic Mantras | Bramha.org</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="../assets/minimal.css?v=18">
+</head>
+<body>
+<header class="m-header">
+  <div class="m-bar">
+    <a class="m-logo" href="../" aria-label="Bramha.org home"><img src="../assets/brand/android-chrome-192x192.png" alt="Bramha.org — Illuminating the Intellect through Vedic Wisdom" width="40" height="40"><span>Bramha.org</span></a>
+    <button class="m-menu" type="button" aria-label="Menu" aria-expanded="false">Menu</button>
+    <nav class="m-nav" aria-label="Main">
+      <a href="../">Home</a>
+      <a href="../dharma-sutra/">Dharma Sūtra</a>
+      <a href="../gruhya-sutra/">Gṛhya Sūtra</a>
+      <a class="active" href="../vedic-mantras/">Mantras</a>
+      <a href="../articles/">Articles</a>
+      <a href="../tarabalam/">Tarabalam</a>
+      <a href="../search/">Search</a>
+      <a href="../about.html">About</a>
+    </nav>
+  </div>
+</header>
+<div class="inner-title-block"><div class="inner"><div class="breadcrumb"><a href="../">Home</a> / Vedic Mantras</div><h1>Vedic Mantras</h1><p>Verified mantra text, scripts, meanings, Bhāṣyam, Prayoga or Viniyoga, audio and source references.</p></div></div>
+<main class="inner-wrap">
+  <nav class="subnav"><a class="active" href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles</a><a href="../search/">Search</a></nav>
+  <div id="state" class="search-results"></div>
+</main>
+<footer class="m-footer" id="footer">
+  <div class="m-footer-grid">
+    <div><div class="m-footer-brand"><img src="../assets/brand/bramha-logo-480w.webp" alt="Bramha.org — Illuminating the Intellect through Vedic Wisdom"></div><p>A source-grounded digital platform for Śāstra, Vedic resources, and traditional tools.</p></div>
+    <div><h3>Library</h3><a href="../dharma-sutra/">Dharma Sūtra</a><a href="../gruhya-sutra/">Gṛhya Sūtra</a><a href="../search/">Search</a></div>
+    <div><h3>Tools</h3><a href="../tarabalam/">Tarabalam</a><a href="../vedic-mantras/">Mantras</a><a href="../articles/">Articles</a></div>
+    <div><h3>Bramha.org</h3><a href="../about.html">About</a><a href="mailto:contact@bramha.org">Contact</a></div>
+  </div>
+  <div class="m-footer-bottom">© 2026 Bramha.org</div>
+</footer>
+<script src="/js/site.js"></script>
+<script src="/js/config.js"></script>
+<script src="/js/api.js"></script>
+<script>sbFetch('vedic_mantras?select=mantra_id,title,veda,shakha,slug&publish=eq.true&verification_status=eq.Verified&order=title.asc&limit=200').then(rows=>{const s=document.getElementById('state'); if(!rows.length){s.innerHTML='<div class="card empty">No verified mantras are public yet.</div>';return;} s.innerHTML=rows.map(r=>`<div class="result"><span class="badge">${escapeHtml(r.veda||'Veda')}</span><a href="#">${escapeHtml(r.title||r.mantra_id)}</a></div>`).join('');}).catch(e=>document.getElementById('state').innerHTML=`<div class="notice">${escapeHtml(e.message)}</div>`);</script>
+</body>
+</html>
