@@ -1,0 +1,21 @@
+{
+  "name": "Bramha.org",
+  "short_name": "Bramha",
+  "description": "Illuminating the Intellect through Vedic Wisdom",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f6f3",
+  "theme_color": "#1c1c1a",
+  "icons": [
+    {
+      "src": "android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

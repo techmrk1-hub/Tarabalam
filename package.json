@@ -1,0 +1,16 @@
+{
+  "name": "bramha-org",
+  "private": true,
+  "description": "Bramha.org digital Śāstra library and Tarabalam traditional timing tool",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 43147",
+    "preview": "vite preview --host 127.0.0.1 --port 43147",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "vite": "^7.1.5"
+  }
+}
