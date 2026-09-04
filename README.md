@@ -4,7 +4,7 @@ Static site from [techmrk1-hub/Tarabalam](https://github.com/techmrk1-hub/Taraba
 
 The homepage hero reads approved slide rows from the **Articles** table (language `Homepage Slide`, Featured + Verified + Publish). If fewer than two CMS slides are public, built-in fallback slides are shown.
 
-Brand files live in `assets/brand/`. Favicons and PWA icons are served from the site root. Runtime scripts (`site.js`, library helpers, homepage slides) are copied to `/js/` so production builds keep working.
+Brand files live in `assets/brand/`. Favicons and hero photographs that already live at the repository root (`favicon.png`, `bramha-logo-trim.png`, `hero-manuscript.jpg`, and the other card images) are used when the newer brand pack is not present. Runtime scripts (`site.js`, library helpers, homepage slides) are served from `/js/`.
 
 Slides autoplay every 7 seconds and support arrows and dots.
 
@@ -29,13 +29,26 @@ Then open [http://127.0.0.1:43147](http://127.0.0.1:43147). The Tarabalam tool i
 
 Requires Node.js 20+.
 
-## Production
+## Production build
 
 ```bash
 npm run build
 npm run preview
 ```
 
-The production build is the `dist/` folder (gitignored). Host `dist` on any static host after `npm run build`.
+The production build is the `dist/` folder (gitignored). Point any static host at `dist/`.
 
-Custom domain `bramha.org` is recorded in `public/CNAME`.
+## GitHub Pages (no Vercel)
+
+The site is a static multi-page app. To serve it from this repository:
+
+1. Open [Tarabalam Settings → Pages](https://github.com/techmrk1-hub/Tarabalam/settings/pages)
+2. Set **Source** to **Deploy from a branch**
+3. Branch **main**, folder **/ (root)**
+4. Save
+
+Custom domain `bramha.org` is already in the root `CNAME` file. After Pages is on, attach that domain in the same settings page if you want the site on bramha.org.
+
+## Repository
+
+https://github.com/techmrk1-hub/Tarabalam
