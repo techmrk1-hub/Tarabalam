@@ -1,22 +1,26 @@
 # Bramha.org
 
-Static site from [techmrk1-hub/Tarabalam](https://github.com/techmrk1-hub/Tarabalam): the **Bramha.org** digital Śāstra knowledge library plus the **Tarabalam** traditional timing dashboard, presented in a quiet minimalist UI. Tarabalam calculation logic is unchanged.
+Static site from [techmrk1-hub/Tarabalam](https://github.com/techmrk1-hub/Tarabalam): the **Bramha.org** digital Śāstra knowledge library plus the **Tarabalam** traditional timing dashboard. Tarabalam calculation logic is unchanged.
 
-The homepage hero reads approved slide rows from the **Articles** table (language `Homepage Slide`, Featured + Verified + Publish). If fewer than two CMS slides are public, built-in fallback slides are shown.
+The live site is [https://bramha.org/](https://bramha.org/).
 
-Brand marks and favicons use files already published at the site root: `/favicon.png` (tab icon and Apple touch icon), `/brand-seal.png` (header mark), and `/bramha-logo-trim.png` (footer and About). Runtime scripts (`site.js`, library helpers, homepage slides, Tarabalam engine) are served from `/js/`.
+Brand marks and favicons use files at the site root:
 
-Slides autoplay every 7 seconds and support arrows and dots.
+- `/favicon.png` — tab icon and Apple touch icon
+- `/brand-seal.png` — header mark
+- `/bramha-logo-trim.png` — footer and About
 
-## What’s here
+Runtime scripts are served from `/js/`. The homepage hero reads approved slide rows from the Articles table (language `Homepage Slide`, Featured + Verified + Publish). If fewer than two CMS slides are public, built-in fallback slides are shown.
 
-- **Home** — knowledge library landing page (`index.html`)
-- **Tarabalam** — multilingual Tarabalam calculator (`tarabalam/`)
-- **Śāstra readers** — Āpastamba Dharma Sūtra and Gṛhya Sūtra (`dharma-sutra/`, `gruhya-sutra/`)
-- **Vedic mantras, articles, search** — additional library sections
+## Pages
+
+- **Home** — `index.html`
+- **Tarabalam** — `tarabalam/`
+- **Śāstra readers** — `dharma-sutra/`, `gruhya-sutra/`
+- **Vedic mantras, articles, search** — `vedic-mantras/`, `articles/`, `search/`
 - **About** — `about.html`
 
-Sūtra/article data is loaded from Supabase using the public (publishable) key in `assets/config.js`.
+Sūtra and article data loads from Supabase using the public key in `assets/config.js`.
 
 ## Run locally
 
@@ -29,25 +33,14 @@ Then open [http://127.0.0.1:43147](http://127.0.0.1:43147). The Tarabalam tool i
 
 Requires Node.js 20+.
 
-## Production build
-
-```bash
-npm run build
-npm run preview
-```
-
-The production build is the `dist/` folder (gitignored). Point any static host at `dist/`.
-
 ## GitHub Pages (no Vercel)
-
-The site is a static multi-page app. To serve it from this repository:
 
 1. Open [Tarabalam Settings → Pages](https://github.com/techmrk1-hub/Tarabalam/settings/pages)
 2. Set **Source** to **Deploy from a branch**
 3. Branch **main**, folder **/ (root)**
 4. Save
 
-Custom domain `bramha.org` is already in the root `CNAME` file. After Pages is on, attach that domain in the same settings page if you want the site on bramha.org.
+Custom domain `bramha.org` is already in the root `CNAME` file.
 
 ## Repository
 
