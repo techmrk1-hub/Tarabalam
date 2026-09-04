@@ -4,7 +4,15 @@ Static site from [techmrk1-hub/Tarabalam](https://github.com/techmrk1-hub/Taraba
 
 The live site is [https://bramha.org/](https://bramha.org/).
 
-Header, footer, About, and tab icons use the uploaded Bramha.org brand pack (circular Brahma lotus emblem + full lockup). Favicons are inlined on every page. The header mark and footer lockup are in `assets/brand-mark.css` and `assets/brand-lockup.css` so they render on GitHub Pages.
+Branding comes from the uploaded 18-file Bramha.org logo pack in `assets/brand/`. Pages reuse those files through shared paths. Header, footer, and the tab icon also embed the matching pack files so GitHub Pages still shows the brand if a binary path is not on `main` yet.
+
+| Location | Asset |
+| --- | --- |
+| Header emblem | `/assets/brand/bramha-icon-circle.png` |
+| Footer lockup (cream background) | `/assets/brand/bramha-logo-480w.webp` |
+| About lockup | `/assets/brand/bramha-logo-full-transparent.png` |
+| Favicon / Apple / PWA | `/favicon.ico`, `/favicon-16x16.png`, `/favicon-32x32.png`, `/apple-touch-icon.png`, `/android-chrome-192x192.png`, `/android-chrome-512x512.png` |
+| Social preview | `https://bramha.org/android-chrome-512x512.png` |
 
 Runtime scripts are served from `/js/`. The homepage hero reads approved slide rows from the Articles table (language `Homepage Slide`, Featured + Verified + Publish). If fewer than two CMS slides are public, built-in fallback slides are shown.
 
