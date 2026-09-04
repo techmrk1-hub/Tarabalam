@@ -13,6 +13,7 @@ function copyClassicRuntime() {
   for (const file of CLASSIC_SCRIPTS) {
     cpSync(resolve(root, 'assets', file), resolve(destDir, file));
   }
+  cpSync(resolve(root, 'js', 'tarabalam-engine.js'), resolve(destDir, 'tarabalam-engine.js'));
 }
 
 function classicRuntimePlugin() {

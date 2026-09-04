@@ -8,14 +8,15 @@
   "theme_color": "#1c1c1a",
   "icons": [
     {
-      "src": "favicon.png",
+      "src": "/favicon.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "bramha-logo-trim.png",
+      "src": "/bramha-logo-trim.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }

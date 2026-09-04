@@ -4,7 +4,7 @@ Static site from [techmrk1-hub/Tarabalam](https://github.com/techmrk1-hub/Taraba
 
 The homepage hero reads approved slide rows from the **Articles** table (language `Homepage Slide`, Featured + Verified + Publish). If fewer than two CMS slides are public, built-in fallback slides are shown.
 
-Brand files live in `assets/brand/`. Favicons and hero photographs that already live at the repository root (`favicon.png`, `bramha-logo-trim.png`, `hero-manuscript.jpg`, and the other card images) are used when the newer brand pack is not present. Runtime scripts (`site.js`, library helpers, homepage slides) are served from `/js/`.
+Brand marks and favicons use files already published at the site root: `/favicon.png` (tab icon and Apple touch icon), `/brand-seal.png` (header mark), and `/bramha-logo-trim.png` (footer and About). Runtime scripts (`site.js`, library helpers, homepage slides, Tarabalam engine) are served from `/js/`.
 
 Slides autoplay every 7 seconds and support arrows and dots.
 
