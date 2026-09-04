@@ -84,9 +84,17 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; letter-spacing: -0
   letter-spacing: -0.03em;
   white-space: nowrap;
 }
-.m-logo img,
-.m-logo .m-brand-mark { width: 48px; height: 48px; object-fit: contain; }
-.m-logo span { line-height: 1; }
+.m-logo .m-brand-mark,
+.m-logo .m-brand-mark img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  object-position: center;
+  flex-shrink: 0;
+}
+.m-logo .m-brand-mark { line-height: 0; }
+.m-logo .m-brand-mark img { display: block; }
+.m-logo > span:last-child { line-height: 1; }
 .m-menu {
   display: none;
   border: 1px solid var(--line-strong);
@@ -147,7 +155,17 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; letter-spacing: -0
 }
 .m-footer p { color: var(--muted); max-width: 280px; }
 .m-footer-brand { font-family: var(--serif); font-size: 22px; margin-bottom: 8px; }
-.m-footer-brand img { width: min(200px, 100%); height: auto; display: block; margin-bottom: 10px; }
+.m-footer-brand .m-brand-lockup {
+  width: min(220px, 100%);
+  margin-bottom: 10px;
+}
+.m-footer-brand .m-brand-lockup img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
 .m-footer-bottom {
   width: var(--shell);
   margin: 28px auto 0;
@@ -549,7 +567,20 @@ select:focus { border-bottom-color: var(--ink); }
 
 /* About */
 .m-about { padding: 56px 0 24px; }
-.m-about-mark { width: min(280px, 70vw); height: auto; margin: 0 0 28px; }
+.m-about-mark {
+  width: min(280px, 70vw);
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  margin: 0 0 28px;
+}
+.m-about-mark img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
 .m-about-contact { padding: 0 0 64px; }
 .m-about-contact h2 { margin: 0 0 12px; font-size: 22px; }
 .m-about-contact p { margin: 0 0 8px; color: var(--muted); }
@@ -801,6 +832,12 @@ tr:hover td { background: #f3f2ee; }
   .m-list a em { display: none; }
   .m-layers, .m-about-grid, .m-steps, .m-footer-grid { grid-template-columns: 1fr 1fr; }
   .controls { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .m-logo { font-size: 22px; gap: 10px; }
+  .m-logo .m-brand-mark,
+  .m-logo .m-brand-mark img { width: 40px; height: 40px; }
+  .m-footer-brand .m-brand-lockup { width: min(180px, 100%); }
 }
 @media (max-width: 960px) {
   .m-menu { display: block; }
