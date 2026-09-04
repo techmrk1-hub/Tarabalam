@@ -35,37 +35,5 @@
                 8: { title: "మిత్ర తారా", summary: "సహకారం/స్నేహం", guidance: "సంభాషణ, సమావేశం, సంబంధాలకు మంచిది" },
                 9: { title: "పరమ మిత్ర తారా", summary: "అత్యుత్తమ సహకారం", guidance: "అన్ని రకాల ఉత్తమ కార్యములకు అనుకూలమైనది" }
             }
-        },
-        en: {
-            appTitle: "Tarabalam Mathematical Calculation Table & Matrix",
-            milestoneTag: "✨ Tarabalam is a concept in Vedic astrology that refers to the \"star strength,\" calculating the daily compatibility between a person's birth star and the current day's stars to pick an auspicious time (Muhurtha) for new beginnings ✨",
-            engineTitle: "Tarabalam Engine Process",
-            matrixTitle: "Complete Tarabalam Map",
-            sliderTitle: "Vedic Astro Insights & Guides",
-            labelBirth: "Select Birth Star (Janma Nakshatram):",
-            labelTarget: "Select Day/Muhurtha Star (Target Nakshatram):",
-            thCross: "Birth Star ➔<br>👇 Day Star",
-            searchPlaceholder: "Type Nakshatra name to filter records...",
-            outNum: "Tarabalam Index Number:",
-            outVerdict: "Final Verdict Status:",
-            outSummary: "Astrological Meaning:",
-            outGuidance: "Practical Action Guidance:",
-            footerLabel: "For more details email our astro expert: ",
-            tabEngine: "Tarabalam Engine",
-            tabGrid: "Tarabalam Full Map",
-            tabAbout: "About",
-            verdicts: { jagratha: "Caution (Jagratha)", anukulam: "Auspicious (Anukulam)", ananukulam: "Inauspicious (Ananukulam)", atyanta: "Highly Auspicious" },
-            stars: ["Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra", "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni", "Hasta", "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha", "Mula", "Purva Ashadha", "Uttara Ashadha", "Shravana", "Dhanishta", "Shatabhisha", "Purva Bhadrapada", "Uttara Bhadrapada", "Revati"],
-            rules: {
-                1: { title: "Janma Tara", summary: "Mental/Physical Exertion", guidance: "Avoid for major auspicious beginnings if possible" },
-                2: { title: "Sampat Tara", summary: "Prosperity, Wealth & Growth", guidance: "Excellent for financial transactions and business ventures" },
-                3: { title: "Vipat Tara", summary: "Obstacles & Unexpected Losses", guidance: "Exercise caution during travel and vital initiatives" },
-                4: { title: "Kṣema Tara", summary: "Peace, Protection & Comfort", guidance: "Favorable for domestic, health, and family welfare events" },
-                5: { title: "Pratyak Tara", summary: "Opposition, Delays & Resistance", guidance: "Key choices may encounter hurdles or structural friction" },
-                6: { title: "Sadhana Tara", summary: "Achievement & Technical Success", guidance: "Highly dynamic for educational pursuits and dedicated practices" },
-                7: { title: "Naidhana Tara", summary: "Severe Danger / Conflict Risks", guidance: "Strictly avoid for critical tasks; prioritize safety protocols" },
-                8: { title: "Mitra Tara", summary: "Mutual Cooperation & Harmony", guidance: "Auspicious for meetings, negotiations, and partnerships" },
-                9: { title: "Parama Mitra Tara", summary: "Supreme Support & Fellowship", guidance: "Universally excellent for all productive milestones" }
-            }
         }
     };
