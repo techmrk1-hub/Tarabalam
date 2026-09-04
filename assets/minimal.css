@@ -14,7 +14,7 @@
   --deva: "Noto Serif Devanagari", serif;
   --telugu: "Noto Serif Telugu", serif;
   --radius: 2px;
-  --shell: min(1080px, calc(100% - 40px));
+  --shell: min(1200px, calc(100% - 48px));
   --color-anukulam-bg: #f3f7f4;
   --color-anukulam-border: #b7cbbd;
   --color-anukulam-text: #2f5a3c;
@@ -67,30 +67,33 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; letter-spacing: -0
 .m-bar {
   width: var(--shell);
   margin: 0 auto;
-  min-height: 64px;
+  min-height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 28px;
 }
 .m-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   text-decoration: none;
   font-family: var(--serif);
-  font-size: 20px;
+  font-size: 26px;
+  font-weight: 600;
   letter-spacing: -0.03em;
   white-space: nowrap;
 }
-.m-logo img { width: 40px; height: 40px; object-fit: contain; }
+.m-logo img,
+.m-logo .m-brand-mark { width: 48px; height: 48px; object-fit: contain; }
 .m-logo span { line-height: 1; }
 .m-menu {
   display: none;
   border: 1px solid var(--line-strong);
   background: transparent;
-  padding: 8px 12px;
-  font-size: 13px;
+  padding: 10px 14px;
+  font-size: 15px;
+  font-weight: 500;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   cursor: pointer;
@@ -98,14 +101,15 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; letter-spacing: -0
 .m-nav {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 18px;
 }
 .m-nav a {
   text-decoration: none;
-  font-size: 13px;
-  letter-spacing: 0.04em;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #4a4946;
 }
 .m-nav a:hover,
 .m-nav a.active { color: var(--ink); }
@@ -157,8 +161,8 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; letter-spacing: -0
 .m-slides {
   position: relative;
   width: 100%;
-  height: calc(100svh - 65px);
-  min-height: calc(100svh - 65px);
+  height: calc(100svh - 81px);
+  min-height: calc(100svh - 81px);
   background: #2a2723;
   overflow: hidden;
   color: #f4f2ec;
@@ -791,14 +795,14 @@ tr:hover td { background: #f3f2ee; }
 }
 .footer-note a { color: var(--ink); }
 
-@media (max-width: 900px) {
-  :root { --shell: min(100% - 32px, 1080px); }
+@media (max-width: 980px) {
+  :root { --shell: min(100% - 32px, 1200px); }
   .m-list a { grid-template-columns: 1fr; gap: 6px; }
   .m-list a em { display: none; }
   .m-layers, .m-about-grid, .m-steps, .m-footer-grid { grid-template-columns: 1fr 1fr; }
   .controls { grid-template-columns: 1fr 1fr; }
 }
-@media (max-width: 760px) {
+@media (max-width: 960px) {
   .m-menu { display: block; }
   .m-nav {
     display: none;
@@ -817,8 +821,8 @@ tr:hover td { background: #f3f2ee; }
   .m-nav a { padding: 12px 4px; border-bottom: 1px solid var(--line); }
   .m-hero { padding-top: 20px; }
   .m-slides {
-    height: calc(100svh - 65px);
-    min-height: calc(100svh - 65px);
+    height: calc(100svh - 81px);
+    min-height: calc(100svh - 81px);
   }
   .m-slides-copy { bottom: 72px; }
   .m-slides-copy h1 { font-size: 34px; }
