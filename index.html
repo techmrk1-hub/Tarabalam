@@ -4,57 +4,95 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Bramha.org | Digital Śāstra Knowledge Library</title>
-  <meta name="description" content="Bramha.org is a student-friendly digital knowledge library for Dharma Sūtras, Gṛhya Sūtras, Vedic texts, articles, commentaries and traditional reference material.">
-  <link rel="stylesheet" href="assets/bramha.css?v=14">
+  <meta name="description" content="A quiet digital library for Dharma Sūtras, Gṛhya Sūtras, Vedic texts, articles, and traditional tools such as Tarabalam.">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="assets/minimal.css?v=18">
 </head>
-<body class="v13-home v14-home" data-bramha-build="V14-knowledge-library">
-<header class="v13-header" id="v13Header">
-  <div class="v13-utility"><div class="v13-shell"><a class="v13-library" href="search/">Digital Knowledge Library</a><div class="v13-utility-links"><a href="articles/">Articles</a><span>•</span><a href="search/">Search</a><span>•</span><a href="mailto:contact@bramha.org">Contact</a></div></div></div>
-  <div class="v13-masthead v13-shell"><a class="v13-brand" href="./" aria-label="Bramha.org home"><img src="assets/visuals/bramha-logo-trim.png" alt="Bramha.org — Vedic Wisdom for Modern Life"></a><button class="v13-menu-button" type="button" aria-label="Open menu" aria-expanded="false">Menu</button></div>
-  <nav class="v13-nav" aria-label="Main navigation"><div class="v13-shell v13-nav-inner">
-    <a class="active" href="./">Home</a>
-    <div class="v13-nav-group"><button type="button">Śāstra Library</button><div class="v13-submenu"><a href="dharma-sutra/">Āpastamba Dharma Sūtra</a><a href="gruhya-sutra/">Āpastamba Gṛhya Sūtra</a></div></div>
-    <div class="v13-nav-group"><button type="button">Vedic Texts</button><div class="v13-submenu"><a href="vedic-mantras/">Vedic Mantras</a></div></div>
-    <a href="articles/">Articles &amp; Research</a><a href="search/">Search Library</a><a href="tarabalam/">Traditional Tools</a><a href="about.html">About</a>
-  </div></nav>
+<body>
+<header class="m-header">
+  <div class="m-bar">
+    <a class="m-logo" href="./" aria-label="Bramha.org home"><img src="assets/brand/android-chrome-192x192.png" alt="Bramha.org — Illuminating the Intellect through Vedic Wisdom" width="40" height="40"><span>Bramha.org</span></a>
+    <button class="m-menu" type="button" aria-label="Menu" aria-expanded="false">Menu</button>
+    <nav class="m-nav" aria-label="Main">
+      <a class="active" href="./">Home</a>
+      <a href="dharma-sutra/">Dharma Sūtra</a>
+      <a href="gruhya-sutra/">Gṛhya Sūtra</a>
+      <a href="vedic-mantras/">Mantras</a>
+      <a href="articles/">Articles</a>
+      <a href="tarabalam/">Tarabalam</a>
+      <a href="search/">Search</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
 </header>
 <main>
-  <section class="v13-hero" aria-label="Featured Bramha.org knowledge"><div class="v13-hero-stage" id="homeHero" aria-roledescription="carousel" aria-label="Featured knowledge slides">
-    <img id="heroImage" class="v13-hero-image" src="assets/visuals/hero-manuscript.jpg" alt="Traditional manuscript and Śāstra knowledge"><div class="v13-hero-overlay"></div>
-    <div class="v13-hero-copy"><div class="v13-eyebrow" id="heroEyebrow">BRAMHA.ORG · DIGITAL ŚĀSTRA KNOWLEDGE LIBRARY</div><h1><span id="heroTitle">Read. Compare. Understand.</span><span id="heroHighlight">One Place for Traditional Knowledge.</span></h1><p id="heroDescription">A student-friendly repository for Sūtras, Vedic texts, articles, meanings, traditional commentaries, explanations, Prayoga and cross-references.</p><a id="heroButton" class="v13-primary-button" href="search/">Search the Library</a></div>
-    <button class="v13-hero-arrow v13-left" id="heroPrev" type="button" aria-label="Previous slide">‹</button><button class="v13-hero-arrow v13-right" id="heroNext" type="button" aria-label="Next slide">›</button><div class="v13-hero-dots" id="heroDots" aria-label="Slide selection"></div>
-  </div></section>
-
-  <section class="v14-search-band"><div class="v13-shell"><div class="v14-search-copy"><span>SEARCH BRAMHA.ORG</span><h2>Find a Sūtra, mantra, topic, article or commentary</h2></div><form class="v14-search-box" action="search/"><input name="q" aria-label="Search Bramha.org" placeholder="Search Dharma, Śāstra, mantra, author, topic…"><button>Search</button></form></div></section>
-
-  <section class="v13-section"><div class="v13-shell"><div class="v13-heading"><span class="v13-kicker">KNOWLEDGE COLLECTIONS</span><h2>Browse the Library</h2><p>Organized as a reference library—not a course website. Open exactly the text or topic you need.</p></div>
-    <div class="v13-card-grid v13-grid-4">
-      <a class="v13-image-card v14-link-card" href="dharma-sutra/"><img src="assets/visuals/card-shastra.jpg" alt="Dharma Sūtra"><div><h3>Dharma Sūtra</h3><p>Sūtra text with scripts, translation, word meaning, explanations, Prayoga and cross-references.</p><span>Browse Sūtras →</span></div></a>
-      <a class="v13-image-card v14-link-card" href="gruhya-sutra/"><img src="assets/visuals/hero-manuscript.jpg" alt="Gṛhya Sūtra"><div><h3>Gṛhya Sūtra</h3><p>Domestic ritual texts arranged for quick navigation and layered understanding.</p><span>Browse Sūtras →</span></div></a>
-      <a class="v13-image-card v14-link-card" href="vedic-mantras/"><img src="assets/visuals/card-mantras.jpg" alt="Vedic Mantras"><div><h3>Vedic Texts &amp; Mantras</h3><p>Text, meaning, Bhāṣya-related material, Viniyoga/Prayoga and references as verified material is added.</p><span>Browse Texts →</span></div></a>
-      <a class="v13-image-card v14-link-card" href="articles/"><img src="assets/visuals/card-tools.jpg" alt="Articles and Research"><div><h3>Articles &amp; Research</h3><p>Topic-based knowledge articles that connect Śāstra passages, traditional interpretations and references.</p><span>Browse Articles →</span></div></a>
+  <section class="m-slides" id="homeHero" aria-roledescription="carousel" aria-label="Featured knowledge slides">
+    <img id="heroImage" class="m-slides-image" src="/media/hero-manuscript.jpg" alt="Traditional manuscript and Śāstra knowledge">
+    <div class="m-slides-veil" aria-hidden="true"></div>
+    <div class="m-slides-copy">
+      <p class="m-kicker" id="heroEyebrow">Bramha.org · Digital Śāstra library</p>
+      <h1><span id="heroTitle">Read. Compare. Understand.</span><span id="heroHighlight">One place for traditional knowledge.</span></h1>
+      <p id="heroDescription">A student-friendly repository for Sūtras, Vedic texts, articles, meanings, traditional commentaries, Prayoga, and cross-references.</p>
+      <a id="heroButton" class="m-slides-link" href="search/">Search the library</a>
     </div>
-  </div></section>
-
-  <section class="v13-section v13-tint"><div class="v13-shell"><div class="v13-heading"><span class="v13-kicker">STUDENT-FRIENDLY READER</span><h2>One Text, Many Layers of Understanding</h2><p>Students can begin with the simple view and progressively open deeper explanatory layers without losing the original text.</p></div>
-    <div class="v14-layer-grid">
-      <article><b>01</b><h3>Original Text</h3><p>Devanagari, transliteration and regional scripts.</p></article>
-      <article><b>02</b><h3>Word-by-Word</h3><p>Padārtha / word meaning for close study.</p></article>
-      <article><b>03</b><h3>Translation</h3><p>Clear translation separated from commentary.</p></article>
-      <article><b>04</b><h3>Simple Explanation</h3><p>A student-friendly first understanding of the passage.</p></article>
-      <article><b>05</b><h3>Traditional Commentaries</h3><p>Multiple Bhāṣya, Vṛtti, Ṭīkā or other attested commentarial traditions can be stored independently.</p></article>
-      <article><b>06</b><h3>Prayoga &amp; Context</h3><p>Ritual application, usage, notes and contextual explanation.</p></article>
-      <article><b>07</b><h3>Cross References</h3><p>Related Śruti, Smṛti, Sūtra and other source connections.</p></article>
-      <article><b>08</b><h3>Source &amp; Variants</h3><p>Edition, page, variant reading and verification metadata kept behind the knowledge record.</p></article>
+    <button class="m-slides-arrow prev" id="heroPrev" type="button" aria-label="Previous slide">‹</button>
+    <button class="m-slides-arrow next" id="heroNext" type="button" aria-label="Next slide">›</button>
+    <div class="m-slides-dots" id="heroDots" aria-label="Slide selection"></div>
+  </section>
+  <section class="m-hero">
+    <div class="m-shell">
+      <form class="m-search" action="search/">
+        <input name="q" aria-label="Search Bramha.org" placeholder="Search a sūtra, mantra, topic, or article">
+        <button type="submit">Search</button>
+      </form>
     </div>
-  </div></section>
-
-  <section class="v13-section v14-topic-section"><div class="v13-shell"><div class="v13-heading"><span class="v13-kicker">TOPIC KNOWLEDGE PAGES</span><h2>Not Only Texts—Every Topic Can Become a Knowledge Hub</h2><p>Future topic pages can gather all relevant Sūtras, mantras, articles and commentaries into one student-friendly reference view.</p></div>
-    <div class="v14-topic-demo"><aside><span>Example topic</span><h3>Upākarman</h3><p>A single topic page may connect Dharma Sūtra rules, Gṛhya procedure, Smṛti references, traditional explanations and modern research notes.</p></aside><div class="v14-topic-tabs"><span>Primary Texts</span><span>Commentaries</span><span>Prayoga</span><span>Related Articles</span><span>Cross References</span><span>Bibliography</span></div></div>
-  </div></section>
-
-  <section class="v13-section v13-pillars"><div class="v13-shell"><div class="v13-heading v13-heading-light"><span class="v13-kicker">BRAMHA.ORG PRINCIPLE</span><h2>Knowledge First. Source Always.</h2><p>The interface may be simple for students, while the underlying content remains source-aware and human-reviewed.</p></div><div class="v13-pillar-grid v13-grid-4"><article><div class="v13-symbol">ग्र</div><h3>Grantha</h3><p>Preserve the text and its traditional structure.</p></article><article><div class="v13-symbol">भा</div><h3>Bhāṣya</h3><p>Keep different commentaries separately attributed.</p></article><article><div class="v13-symbol">वि</div><h3>Vicāra</h3><p>Compare interpretations without silently merging them.</p></article><article><div class="v13-symbol">प्र</div><h3>Pramāṇa</h3><p>Attach source and verification information to every public knowledge record.</p></article></div></div></section>
+  </section>
+  <section class="m-section">
+    <div class="m-shell">
+      <h2>Library</h2>
+      <div class="m-list">
+        <a href="dharma-sutra/"><strong>Dharma Sūtra</strong><span>Āpastamba text with scripts, translation, word meaning, and commentary.</span><em>Open</em></a>
+        <a href="gruhya-sutra/"><strong>Gṛhya Sūtra</strong><span>Domestic ritual texts arranged for navigation and layered reading.</span><em>Open</em></a>
+        <a href="vedic-mantras/"><strong>Vedic Mantras</strong><span>Text, meaning, viniyoga, and references as verified material is added.</span><em>Open</em></a>
+        <a href="articles/"><strong>Articles</strong><span>Topic-based notes connecting Śāstra passages and traditional interpretation.</span><em>Open</em></a>
+        <a href="tarabalam/"><strong>Tarabalam</strong><span>Five-language calculator for Janma Nakshatra and day-star relationship.</span><em>Open</em></a>
+      </div>
+    </div>
+  </section>
 </main>
-<footer class="v13-footer"><div class="v13-shell v13-footer-grid"><div class="v13-footer-brand"><img src="assets/visuals/bramha-logo-trim.png" alt="Bramha.org"><p>A student-friendly digital repository for verified Śāstra, Vedic knowledge, articles and commentaries.</p></div><div><h3>Śāstra Library</h3><a href="dharma-sutra/">Dharma Sūtra</a><a href="gruhya-sutra/">Gṛhya Sūtra</a></div><div><h3>Knowledge</h3><a href="vedic-mantras/">Vedic Texts</a><a href="articles/">Articles &amp; Research</a><a href="search/">Search</a></div><div><h3>Reference</h3><a href="tarabalam/">Traditional Tools</a><span>More collections as verified</span></div><div><h3>Bramha.org</h3><a href="about.html">About</a><a href="mailto:contact@bramha.org">Contact</a></div></div><div class="v13-footer-bottom">© 2026 Bramha.org · Digital Śāstra Knowledge Library</div></footer>
-<script src="assets/config.js"></script><script src="assets/api.js"></script><script src="assets/home-slides.js"></script><script>(()=>{const h=document.getElementById('v13Header'),m=h?.querySelector('.v13-menu-button');m?.addEventListener('click',()=>{const o=h.classList.toggle('menu-open');m.setAttribute('aria-expanded',String(o))});h?.querySelectorAll('.v13-nav-group>button').forEach(b=>b.addEventListener('click',()=>{if(innerWidth<=820)b.parentElement.classList.toggle('open')}));})();</script>
-</body></html>
+<footer class="m-footer" id="footer">
+  <div class="m-footer-grid">
+    <div>
+      <div class="m-footer-brand"><img src="assets/brand/bramha-logo-480w.webp" alt="Bramha.org — Illuminating the Intellect through Vedic Wisdom"></div>
+      <p>A student-friendly digital repository for verified Śāstra, Vedic knowledge, and traditional tools.</p>
+    </div>
+    <div>
+      <h3>Library</h3>
+      <a href="dharma-sutra/">Dharma Sūtra</a>
+      <a href="gruhya-sutra/">Gṛhya Sūtra</a>
+      <a href="vedic-mantras/">Vedic Mantras</a>
+      <a href="articles/">Articles</a>
+    </div>
+    <div>
+      <h3>Tools</h3>
+      <a href="tarabalam/">Tarabalam</a>
+      <a href="search/">Search</a>
+    </div>
+    <div>
+      <h3>Bramha.org</h3>
+      <a href="about.html">About</a>
+      <a href="mailto:contact@bramha.org">Contact</a>
+    </div>
+  </div>
+  <div class="m-footer-bottom">© 2026 Bramha.org</div>
+</footer>
+<script src="/js/site.js"></script>
+<script src="/js/config.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/home-slides.js"></script>
+</body>
+</html>
