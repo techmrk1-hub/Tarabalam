@@ -21,7 +21,7 @@
       title: 'Read. Compare. Understand.',
       highlight: 'One place for traditional knowledge.',
       description: 'A student-friendly repository for Sūtras, Vedic texts, articles, meanings, commentaries, Prayoga and cross-references.',
-      imageUrl: '/media/hero-manuscript.jpg',
+      imageUrl: '/hero-manuscript.jpg',
       altText: 'Traditional manuscript and Śāstra knowledge',
       buttonText: 'Search the library',
       buttonUrl: 'search/'
@@ -32,7 +32,7 @@
       title: 'Āpastamba Dharma Sūtra',
       highlight: 'Text, meaning, commentary, context.',
       description: 'Read by Praśna, Paṭala, Khāṇḍa and Sūtra, with layered views for students and researchers.',
-      imageUrl: '/media/card-shastra.jpg',
+      imageUrl: '/card-shastra.jpg',
       altText: 'Dharma Sūtra manuscript',
       buttonText: 'Open Dharma Sūtra',
       buttonUrl: 'dharma-sutra/'
@@ -43,7 +43,7 @@
       title: 'Mantras and source notes',
       highlight: 'Published only when verified.',
       description: 'Text, meaning, viniyoga and references as reviewed material is added to the public library.',
-      imageUrl: '/media/card-mantras.jpg',
+      imageUrl: '/card-mantras.jpg',
       altText: 'Vedic mantra study',
       buttonText: 'Browse Vedic texts',
       buttonUrl: 'vedic-mantras/'
@@ -54,7 +54,7 @@
       title: 'Tarabalam',
       highlight: 'Five languages. One calculation.',
       description: 'Find the relationship between Janma Nakshatra and the selected day or Muhūrta Nakshatra.',
-      imageUrl: '/media/hero-temple.jpg',
+      imageUrl: '/hero-temple.jpg',
       altText: 'Temple architecture at dusk',
       buttonText: 'Open Tarabalam',
       buttonUrl: 'tarabalam/'
@@ -70,7 +70,6 @@
     if (!raw) return '';
     if (raw.startsWith('/')) return `${location.origin}${raw}`;
 
-    // Accept Google Drive share links when the file is shared as "Anyone with the link".
     const fileMatch = raw.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
     const idMatch = raw.match(/[?&]id=([^&]+)/i);
     const id = fileMatch?.[1] || idMatch?.[1];

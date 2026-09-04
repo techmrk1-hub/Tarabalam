@@ -70,6 +70,7 @@
     if (!raw) return '';
     if (raw.startsWith('/')) return `${location.origin}${raw}`;
 
+    // Accept Google Drive share links when the file is shared as "Anyone with the link".
     const fileMatch = raw.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
     const idMatch = raw.match(/[?&]id=([^&]+)/i);
     const id = fileMatch?.[1] || idMatch?.[1];
