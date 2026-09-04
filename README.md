@@ -4,11 +4,7 @@ Static site from [techmrk1-hub/Tarabalam](https://github.com/techmrk1-hub/Taraba
 
 The live site is [https://bramha.org/](https://bramha.org/).
 
-Brand marks and favicons use files at the site root:
-
-- `/favicon.png` — tab icon and Apple touch icon
-- `/brand-seal.png` — header mark
-- `/bramha-logo-trim.png` — footer and About
+Header, footer, About, and tab icons use the uploaded Bramha.org brand pack (circular Brahma lotus emblem + full lockup). Favicons are inlined on every page. The header mark and footer lockup are in `assets/brand-mark.css` and `assets/brand-lockup.css` so they render on GitHub Pages.
 
 Runtime scripts are served from `/js/`. The homepage hero reads approved slide rows from the Articles table (language `Homepage Slide`, Featured + Verified + Publish). If fewer than two CMS slides are public, built-in fallback slides are shown.
 
