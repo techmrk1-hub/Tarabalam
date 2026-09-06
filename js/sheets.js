@@ -1,6 +1,6 @@
 (function () {
   const SYSTEM_RULES = [
-    { role: 'id', patterns: ['unique id', 'uniqueid', 'sutra id', 'sutra_id', 'record id', 'record_id', 'id'] },
+    { role: 'id', patterns: ['unique id', 'uniqueid', 'sutra id', 'sutra_id', 'record id', 'record_id', 'mantra id', 'mantra_id', 'id'] },
     { role: 'article_id', patterns: ['article id', 'article_id'] },
     { role: 'slug', patterns: ['slug'] },
     { role: 'sort', patterns: ['sort order', 'sort_order', 'sort'] },
@@ -38,7 +38,7 @@
     connection: 'idle',
     lastSuccessAt: null,
     lastError: null,
-    counts: { dharma: 0, gruhya: 0, articles: 0 },
+    counts: { dharma: 0, gruhya: 0, articles: 0, mantras: 0 },
     tabs: {},
     source: null,
     sheetName: null,
@@ -168,7 +168,7 @@
     if (kind === 'gruhya' && row.patala != null && row.section_number != null && row.sutra_number != null) {
       return `GS-Pa${row.patala}-Sec${row.section_number}-S${row.sutra_number}`;
     }
-    return row.article_id || '';
+    return row.article_id || row.unique_id || '';
   }
 
   function defaultDisplay(kind, row) {
@@ -178,8 +178,17 @@
   }
 
   function defaultSlug(kind, row) {
-    if (kind === 'dharma') return `apastamba-dharma-sutra/${row.prashna}/${row.patala}/${row.khanda}/${row.sutra_number}`;
-    if (kind === 'gruhya') return `apastamba-gruhya-sutra/${row.patala}/${row.section_number}/${row.sutra_number}`;
+    if (kind === 'dharma') return `prasna-${row.prashna}-patala-${row.patala}-khanda-${row.khanda}-sutra-${row.sutra_number}`;
+    if (kind === 'gruhya') return `patala-${row.patala}-khanda-${row.section_number}-sutra-${row.sutra_number}`;
+    if (kind === 'mantras') {
+      return String(row.title || row.unique_id || 'mantra')
+        .normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 80) || 'mantra';
+    }
     return row.slug || '';
   }
 
@@ -220,7 +229,11 @@
       summary: '',
       content: '',
       featured_image_url: '',
-      source_references: ''
+      source_references: '',
+      author: '',
+      published_date: '',
+      updated_at: '',
+      category: ''
     };
 
     columns.forEach((col) => {
@@ -252,6 +265,10 @@
       if (col.role === 'telugu' && blank(row.telugu_script)) row.telugu_script = String(value || '');
       if (col.role === 'translation' && blank(row.english_translation)) row.english_translation = String(value || '');
       if (col.role === 'language' && blank(row.language)) row.language = String(value || '').trim();
+      if (col.role === 'author' && blank(row.author)) row.author = String(value || '').trim();
+      if (col.role === 'published_date' && blank(row.published_date)) row.published_date = String(value || '').trim();
+      if (col.role === 'updated' && blank(row.updated_at)) row.updated_at = String(value || '').trim();
+      if (col.role === 'category' && blank(row.category)) row.category = String(value || '').trim();
       if (col.role === 'featured') row.featured = asBoolean(value);
       if (col.role === 'image' && blank(row.featured_image_url)) row.featured_image_url = String(value || '').trim();
       if (col.folded === 'title' && blank(row.title)) row.title = String(value || '').trim();
@@ -491,8 +508,8 @@
     const text = await fetchText(bust, 'Apps Script web app');
     let json;
     try { json = JSON.parse(text); } catch { throw new Error(`Apps Script web app returned non-JSON from ${url}`); }
-    const pack = json.dharma || json.gruhya || json.articles ? json : json.data || json;
-    const list = pack[kind] || pack[`${kind}_sutras`] || [];
+    const pack = json.dharma || json.gruhya || json.articles || json.mantras ? json : json.data || json;
+    const list = pack[kind] || pack[`${kind}_sutras`] || pack.vedic_mantras || [];
     if (!Array.isArray(list)) throw new Error(`Apps Script JSON missing array for ${kind}`);
     const headers = pack.headers?.[kind] || (list[0] ? Object.keys(list[0]) : []);
     const rows = list.map((item) => (Array.isArray(item) ? item : headers.map((header) => item[header] ?? '')));
