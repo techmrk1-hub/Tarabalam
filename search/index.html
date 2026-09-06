@@ -18,7 +18,7 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="../assets/brand-mark.css?v=29">
   <link rel="stylesheet" href="../assets/brand-lockup.css?v=29">
-  <link rel="stylesheet" href="../assets/minimal.css?v=34">
+  <link rel="stylesheet" href="../assets/minimal.css?v=35">
   <script src="/js/brand.js"></script>
 </head>
 <body>
@@ -53,12 +53,12 @@
   <div class="m-footer-bottom">© 2026 Bramha.org</div>
 </footer>
 <script src="/js/site.js"></script>
-<script src="/js/config.js?v=34"></script>
-<script src="/js/sheets.js?v=34"></script>
-<script src="/js/api.js?v=34"></script>
+<script src="/js/config.js?v=35"></script>
+<script src="/js/sheets.js?v=35"></script>
+<script src="/js/api.js?v=35"></script>
 <script>
 const q=document.getElementById('q'),out=document.getElementById('results');
-function hay(row){return [row.display_name,row.sanskrit_transliteration,row.telugu_script,row.english_translation,row.unique_id].filter(Boolean).join(' ').toLowerCase();}
+function hay(row){return String(row.searchText || [row.display_name,row.sanskrit_transliteration,row.telugu_script,row.english_translation,row.unique_id].filter(Boolean).join(' ')).toLowerCase();}
 async function loadKind(kind,table,fallbackQuery){
   try{
     const loaded=await loadCmsTable(table);
@@ -85,7 +85,11 @@ async function run(){
       ...g.filter(x=>hay(x).includes(needle)).slice(0,25).map(x=>({...x,type:'Gṛhya Sūtra',href:`../gruhya-sutra/?id=${encodeURIComponent(x.unique_id)}`}))
     ];
     if(!rows.length){out.innerHTML='<div class="card empty">No public verified matches found.</div>';return;}
-    out.innerHTML=rows.map(r=>`<div class="result"><span class="badge">${escapeHtml(r.type)}</span><a href="${r.href}">${escapeHtml(r.display_name||r.unique_id)}</a><p>${escapeHtml((r.english_translation||'').slice(0,240))}</p></div>`).join('');
+    out.innerHTML=rows.map(r=>{
+      const snippet=(r.displayFields||[]).find(f=>f.role==='translation')||(r.displayFields||[]).find(f=>f.role==='content');
+      const preview=(snippet?.value||r.english_translation||'').slice(0,240);
+      return `<div class="result"><span class="badge">${escapeHtml(r.type)}</span><a href="${r.href}">${escapeHtml(r.display_name||r.unique_id)}</a><p>${escapeHtml(preview)}</p></div>`;
+    }).join('');
   }catch(e){out.innerHTML=`<div class="notice">${escapeHtml(e.message)}</div>`;}
 }
 document.getElementById('go').onclick=run;
