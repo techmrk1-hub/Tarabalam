@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Noto+Serif+Devanagari:wght@400;600&family=Noto+Serif+Telugu:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Noto+Serif+Devanagari:wght@400;600&family=Noto+Serif+Telugu:wght@400;600&family=Noto+Serif+Tamil:wght@400;600&family=Noto+Serif+Kannada:wght@400;600&display=swap');
 
 :root {
   --bg: #f7f6f3;
@@ -13,6 +13,8 @@
   --serif: "Source Serif 4", Georgia, serif;
   --deva: "Noto Serif Devanagari", serif;
   --telugu: "Noto Serif Telugu", serif;
+  --tamil: "Noto Serif Tamil", serif;
+  --kannada: "Noto Serif Kannada", serif;
   --radius: 2px;
   --shell: min(1200px, calc(100% - 48px));
   --color-anukulam-bg: #f3f7f4;
@@ -53,6 +55,31 @@ button, input, select { font: inherit; color: inherit; }
 h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.02em; }
 .deva { font-family: var(--deva); }
 .telugu { font-family: var(--telugu); }
+.tamil { font-family: var(--tamil); }
+.kannada { font-family: var(--kannada); }
+
+/* Tarabalam: apply the selected script to titles, labels, buttons, and the map */
+#tarabalam-tool[lang="te"],
+#tarabalam-tool[lang="te"] :is(h1, h2, h3, h4, button, input, select, th, td, label, .card-title, .milestone-tag, .result-header) {
+  font-family: var(--telugu), var(--sans);
+}
+#tarabalam-tool[lang="hi"],
+#tarabalam-tool[lang="hi"] :is(h1, h2, h3, h4, button, input, select, th, td, label, .card-title, .milestone-tag, .result-header) {
+  font-family: var(--deva), var(--sans);
+}
+#tarabalam-tool[lang="ta"],
+#tarabalam-tool[lang="ta"] :is(h1, h2, h3, h4, button, input, select, th, td, label, .card-title, .milestone-tag, .result-header) {
+  font-family: var(--tamil), var(--sans);
+}
+#tarabalam-tool[lang="kn"],
+#tarabalam-tool[lang="kn"] :is(h1, h2, h3, h4, button, input, select, th, td, label, .card-title, .milestone-tag, .result-header) {
+  font-family: var(--kannada), var(--sans);
+}
+.lang-btn[data-lang="te"] { font-family: var(--telugu), var(--sans); }
+.lang-btn[data-lang="hi"] { font-family: var(--deva), var(--sans); }
+.lang-btn[data-lang="ta"] { font-family: var(--tamil), var(--sans); }
+.lang-btn[data-lang="kn"] { font-family: var(--kannada), var(--sans); }
+
 .page-width, .m-shell, .inner, .inner-wrap { width: var(--shell); margin-left: auto; margin-right: auto; }
 
 /* Header */
