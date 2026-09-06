@@ -1,0 +1,24 @@
+name: Assemble Tarabalam engine
+on:
+  push:
+    paths:
+      - '_assemble/**'
+      - '.github/workflows/assemble-engine.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode and write engine
+        run: python3 -c "import base64,gzip,pathlib; raw=''.join(pathlib.Path(f'_assemble/p{i}.b64').read_text().strip() for i in (1,2,3)); data=gzip.decompress(base64.b64decode(raw)); pathlib.Path('js/tarabalam-engine.js').write_bytes(data); print(len(data))"
+      - name: Commit assembled engine
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add js/tarabalam-engine.js
+          git diff --cached --quiet && echo "no change" && exit 0
+          git commit -m "Assemble full Tarabalam engine with te/en/hi/ta/kn"
+          git push
