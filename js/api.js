@@ -32,6 +32,7 @@ function kindFromTable(table) {
   if (table === 'dharma_sutras') return 'dharma';
   if (table === 'gruhya_sutras') return 'gruhya';
   if (table === 'articles') return 'articles';
+  if (table === 'vedic_mantras') return 'mantras';
   return table;
 }
 
