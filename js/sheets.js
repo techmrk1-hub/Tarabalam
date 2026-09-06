@@ -1,81 +1,38 @@
 (function () {
-  const FIELD_ALIASES = {
-    unique_id: ['unique_id', 'unique id', 'uniqueid', 'id', 'record id', 'record_id'],
-    text_type: ['text_type', 'text type', 'type', 'classification', 'sutra type'],
-    prashna: ['prashna', 'praśna', 'prasna', 'prashna number'],
-    patala: ['patala', 'paṭala', 'paatala', 'patala number'],
-    khanda: ['khanda', 'khāṇḍa', 'khaṇḍa', 'khanda number'],
-    section_number: ['section_number', 'section number', 'section', 'khandika', 'khaṇḍikā'],
-    sutra_number: ['sutra_number', 'sūtra number', 'sutra number', 'sutra no', 'sūtra no', 'sutra #'],
-    display_name: ['display_name', 'display name', 'dropdown display name', 'title', 'name'],
-    sanskrit_devanagari: ['sanskrit_devanagari', 'sanskrit devanagari', 'sanskrit (devanagari)', 'devanagari', 'sanskrit', 'sanskrit text', 'mula', 'mūla'],
-    sanskrit_transliteration: [
-      'sanskrit_transliteration', 'sanskrit transliteration', 'sanskrit transliteration sutra',
-      'sanskrit / transliteration sūtra', 'sanskrit / transliteration sutra', 'transliteration',
-      'sutra', 'sūtra', 'iast', 'roman'
-    ],
-    telugu_script: ['telugu_script', 'telugu script', 'telugu'],
-    english_translation: ['english_translation', 'english translation', 'translation'],
-    word_meaning: ['word_meaning', 'word meaning', 'word-by-word', 'word by word', 'padartha', 'padārtha'],
-    simple_meaning: ['simple_meaning', 'simple meaning', 'layered meaning', 'layered meanings', 'meaning'],
-    commentary: [
-      'commentary', 'commentary explanation', 'commentary / explanation',
-      'bhashya', 'bhāṣya', 'explanation', 'explanations'
-    ],
-    prayoga: ['prayoga', 'context'],
-    notes: ['notes', 'note', 'additional context'],
-    cross_references: ['cross_references', 'cross references', 'references', 'reference'],
-    source: ['source'],
-    source_page: ['source_page', 'source page', 'page'],
-    source_url: ['source_url', 'source url', 'url'],
-    topic_tags: ['topic_tags', 'topic tags', 'tags'],
-    verification_status: ['verification_status', 'verification status', 'verified', 'status'],
-    publish: ['publish', 'published', 'public'],
-    last_updated: ['last_updated', 'last updated', 'updated', 'updated at'],
-    audio_url: ['audio_url', 'audio url', 'audio'],
-    slug: ['slug'],
-    article_id: ['article_id', 'article id'],
-    title: ['title'],
-    language: ['language'],
-    author_id: ['author_id', 'author id', 'author'],
-    category_id: ['category_id', 'category id', 'category'],
-    summary: ['summary'],
-    content: ['content'],
-    featured_image_url: ['featured_image_url', 'featured image url', 'featured image', 'image url'],
-    source_references: ['source_references', 'source references', 'button text'],
-    featured: ['featured'],
-    published_date: ['published_date', 'published date']
-  };
+  const SYSTEM_RULES = [
+    { role: 'id', patterns: ['unique id', 'uniqueid', 'sutra id', 'sutra_id', 'record id', 'record_id', 'id'] },
+    { role: 'article_id', patterns: ['article id', 'article_id'] },
+    { role: 'slug', patterns: ['slug'] },
+    { role: 'sort', patterns: ['sort order', 'sort_order', 'sort'] },
+    { role: 'type', patterns: ['text type', 'text_type', 'classification', 'sutra type'] },
+    { role: 'status', patterns: ['verification status', 'verification_status', 'verified', 'status'] },
+    { role: 'publish', patterns: ['publish', 'published', 'visibility', 'public'] },
+    { role: 'internal', patterns: ['internal notes', 'internal_notes', 'internal note'] },
+    { role: 'updated', patterns: ['last updated', 'last_updated', 'updated at', 'updated'] },
+    { role: 'category', patterns: ['category id', 'category_id', 'category'] },
+    { role: 'author', patterns: ['author id', 'author_id', 'author'] },
+    { role: 'featured', patterns: ['featured'] },
+    { role: 'language', patterns: ['language'] },
+    { role: 'published_date', patterns: ['published date', 'published_date'] },
+    { role: 'display_name', patterns: ['dropdown display name', 'display name', 'display_name'] },
+    { role: 'prashna', patterns: ['prashna', 'prasna', 'prashna number'] },
+    { role: 'patala', patterns: ['patala', 'paatala', 'patala number'] },
+    { role: 'khanda', patterns: ['khanda', 'khanda number'] },
+    { role: 'section', patterns: ['section number', 'section_number', 'section', 'khandika'] },
+    { role: 'sutra_number', patterns: ['sutra number', 'sutra_number', 'sutra no', 'sutra #'] }
+  ];
 
-  const KIND_FIELDS = {
-    dharma: [
-      'unique_id', 'text_type', 'prashna', 'patala', 'khanda', 'sutra_number', 'display_name',
-      'sanskrit_devanagari', 'sanskrit_transliteration', 'telugu_script', 'english_translation',
-      'word_meaning', 'simple_meaning', 'commentary', 'prayoga', 'cross_references',
-      'source', 'source_page', 'source_url', 'topic_tags', 'verification_status', 'publish',
-      'last_updated', 'audio_url', 'slug'
-    ],
-    gruhya: [
-      'unique_id', 'text_type', 'prashna', 'patala', 'section_number', 'sutra_number', 'display_name',
-      'sanskrit_devanagari', 'sanskrit_transliteration', 'telugu_script', 'english_translation',
-      'word_meaning', 'simple_meaning', 'commentary', 'prayoga', 'notes', 'cross_references',
-      'source', 'source_page', 'source_url', 'topic_tags', 'verification_status', 'publish',
-      'last_updated', 'audio_url', 'slug'
-    ],
-    articles: [
-      'article_id', 'title', 'slug', 'language', 'author_id', 'category_id', 'summary', 'content',
-      'featured_image_url', 'source_references', 'topic_tags', 'verification_status', 'publish',
-      'featured', 'published_date', 'last_updated'
-    ]
-  };
+  const CONTENT_HINTS = [
+    { role: 'deva', patterns: ['sanskrit devanagari', 'sanskrit (devanagari)', 'devanagari', 'sanskrit text', 'mula'] },
+    { role: 'translit', patterns: ['sanskrit transliteration', 'sanskrit transliteration sutra', 'transliteration', 'iast', 'roman', 'sutra'] },
+    { role: 'telugu', patterns: ['telugu script', 'telugu'] },
+    { role: 'translation', patterns: ['english translation', 'translation'] },
+    { role: 'audio', patterns: ['audio url', 'audio_url', 'audio'] },
+    { role: 'image', patterns: ['featured image url', 'featured image', 'image url', 'image'] },
+    { role: 'url', patterns: ['source url', 'source_url', 'website url', 'url'] }
+  ];
 
-  const REQUIRED = {
-    dharma: ['prashna', 'patala', 'khanda', 'sutra_number'],
-    gruhya: ['patala', 'section_number', 'sutra_number'],
-    articles: []
-  };
-
-  const NUMERIC = new Set(['prashna', 'patala', 'khanda', 'section_number', 'sutra_number']);
+  const NUMERIC_ROLES = new Set(['prashna', 'patala', 'khanda', 'section', 'sutra_number', 'sort']);
 
   const status = {
     connection: 'idle',
@@ -85,7 +42,8 @@
     tabs: {},
     source: null,
     sheetName: null,
-    sheetId: null
+    sheetId: null,
+    diagnostics: {}
   };
 
   function sheetCfg() {
@@ -105,24 +63,8 @@
       .trim();
   }
 
-  function aliasMap() {
-    const map = new Map();
-    Object.entries(FIELD_ALIASES).forEach(([field, aliases]) => {
-      aliases.forEach((alias) => map.set(fold(alias), field));
-    });
-    return map;
-  }
-
-  const ALIASES = aliasMap();
-
-  function mapHeader(header, kind) {
-    const field = ALIASES.get(fold(header)) || null;
-    if (kind === 'gruhya' && field === 'khanda') return 'section_number';
-    return field;
-  }
-
   function blank(value) {
-    return value === null || value === undefined || String(value).trim() === '';
+    return value === null || value === undefined || String(value).trim() === '' || String(value).trim() === '#ERROR!';
   }
 
   function asBoolean(value) {
@@ -139,27 +81,100 @@
     if (blank(value)) return null;
     const s = String(value).trim();
     if (/^-?\d+$/.test(s)) return Number(s);
+    if (s.length <= 24) {
+      const matches = s.match(/-?\d+/g);
+      if (matches && matches.length === 1) return Number(matches[0]);
+    }
     return s;
   }
 
+  function extraSystemFolds() {
+    return new Set((sheetCfg().systemHeaders || []).map(fold).filter(Boolean));
+  }
+
+  function matchRule(folded, rules) {
+    for (const rule of rules) {
+      if (rule.patterns.some((pattern) => folded === pattern)) return rule.role;
+    }
+    return null;
+  }
+
+  function classifyHeader(header, kind) {
+    const heading = String(header || '').trim();
+    const folded = fold(heading);
+    if (!folded) return { heading, folded, role: 'blank', system: true, display: false };
+    if (extraSystemFolds().has(folded)) {
+      return { heading, folded, role: 'system', system: true, display: false };
+    }
+    let role = matchRule(folded, SYSTEM_RULES);
+    if (kind === 'gruhya' && role === 'khanda') role = 'section';
+    if (role === 'type' && kind === 'articles') role = 'type';
+    if (role) {
+      return { heading, folded, role, system: true, display: false };
+    }
+    const contentRole = matchRule(folded, CONTENT_HINTS) || 'content';
+    return { heading, folded, role: contentRole, system: false, display: true };
+  }
+
+  function layerFor(col) {
+    const folded = col.folded;
+    if (/\b(commentar|bhashya|bhasya|explanation|vyakhya)\b/.test(folded)) return 'deep';
+    if (folded === 'context' || folded.startsWith('context ') || /\b(prayoga|viniyoga)\b/.test(folded)) return 'context';
+    return 'basic';
+  }
+
+  function schemaFingerprint(headers) {
+    return headers.map((header) => String(header || '').trim()).join('\u001f');
+  }
+
+  function inspectSchema(headers, kind) {
+    const diagnostics = { blankHeadings: 0, duplicateHeadings: [], columns: [] };
+    const seen = new Map();
+    const columns = headers.map((header, index) => {
+      const col = { ...classifyHeader(header, kind), index };
+      col.layer = col.display ? layerFor(col) : null;
+      if (col.role === 'blank') {
+        diagnostics.blankHeadings += 1;
+        col.display = false;
+        col.system = true;
+      } else if (seen.has(col.folded)) {
+        diagnostics.duplicateHeadings.push(col.heading);
+        col.key = `${col.folded}#${index}`;
+      } else {
+        seen.set(col.folded, index);
+        col.key = col.folded;
+      }
+      return col;
+    });
+    diagnostics.columns = columns
+      .filter((col) => col.role !== 'blank')
+      .map((col) => ({ heading: col.heading, role: col.role, system: col.system, display: col.display }));
+    return { columns, diagnostics, fingerprint: schemaFingerprint(headers) };
+  }
+
+  function parseStableId(id) {
+    const value = String(id || '').trim();
+    const ds = value.match(/^DS-P(\d+)-Pa(\d+)-K(\d+)-S(-?\d+)$/i);
+    if (ds) return { prashna: Number(ds[1]), patala: Number(ds[2]), khanda: Number(ds[3]), sutra_number: Number(ds[4]) };
+    const gs = value.match(/^GS-Pa(\d+)-Sec(\d+)-S(-?\d+)$/i);
+    if (gs) return { patala: Number(gs[1]), section_number: Number(gs[2]), sutra_number: Number(gs[3]) };
+    return null;
+  }
+
   function composeId(kind, row) {
-    if (kind === 'dharma') {
+    if (kind === 'dharma' && row.prashna != null && row.patala != null && row.khanda != null && row.sutra_number != null) {
       return `DS-P${row.prashna}-Pa${row.patala}-K${row.khanda}-S${row.sutra_number}`;
     }
-    if (kind === 'gruhya') {
+    if (kind === 'gruhya' && row.patala != null && row.section_number != null && row.sutra_number != null) {
       return `GS-Pa${row.patala}-Sec${row.section_number}-S${row.sutra_number}`;
     }
     return row.article_id || '';
   }
 
   function defaultDisplay(kind, row) {
-    if (kind === 'dharma') {
-      return `Dharma Sūtra – Praśna ${row.prashna}, Paṭala ${row.patala}, Khāṇḍa ${row.khanda}, Sūtra ${row.sutra_number}`;
-    }
-    if (kind === 'gruhya') {
-      return `Gṛhya Sūtra – Paṭala ${row.patala}, Section ${row.section_number}, Sūtra ${row.sutra_number}`;
-    }
-    return row.title || row.article_id || '';
+    if (kind === 'dharma') return `Dharma Sūtra – Praśna ${row.prashna}, Paṭala ${row.patala}, Khāṇḍa ${row.khanda}, Sūtra ${row.sutra_number}`;
+    if (kind === 'gruhya') return `Gṛhya Sūtra – Paṭala ${row.patala}, Section ${row.section_number}, Sūtra ${row.sutra_number}`;
+    return row.title || row.article_id || row.unique_id || '';
   }
 
   function defaultSlug(kind, row) {
@@ -168,47 +183,123 @@
     return row.slug || '';
   }
 
-  function normalizeRow(kind, raw) {
-    const row = {};
-    KIND_FIELDS[kind].forEach((field) => {
-      const value = raw[field] ?? null;
-      row[field] = String(value || '').trim() === '#ERROR!' ? null : value;
+  function looksLikeUrl(value) {
+    return /^https?:\/\/\S+$/i.test(String(value || '').trim());
+  }
+
+  function invalidUrl(value) {
+    const s = String(value || '').trim();
+    if (!/^https?:\/\//i.test(s)) return false;
+    try { new URL(s); return false; } catch { return true; }
+  }
+
+  function rowFromCells(kind, columns, cells) {
+    const values = {};
+    const displayFields = [];
+    const row = {
+      unique_id: '',
+      article_id: '',
+      title: '',
+      prashna: null,
+      patala: null,
+      khanda: null,
+      section_number: null,
+      sutra_number: null,
+      display_name: '',
+      publish: false,
+      verification_status: '',
+      slug: '',
+      audio_url: '',
+      source_url: '',
+      sanskrit_transliteration: '',
+      telugu_script: '',
+      english_translation: '',
+      text_type: '',
+      featured: false,
+      language: '',
+      summary: '',
+      content: '',
+      featured_image_url: '',
+      source_references: ''
+    };
+
+    columns.forEach((col) => {
+      if (col.role === 'blank') return;
+      let value = cells[col.index];
+      if (value === undefined || value === null) value = '';
+      value = String(value);
+      if (value.trim() === '#ERROR!') value = '';
+      values[col.heading] = value;
+      values[col.key] = value;
+
+      if (NUMERIC_ROLES.has(col.role)) value = asNumber(value);
+
+      if (col.role === 'id' && blank(row.unique_id)) row.unique_id = String(value || '').trim();
+      if (col.role === 'article_id' && blank(row.article_id)) row.article_id = String(value || '').trim();
+      if (col.role === 'display_name' && blank(row.display_name)) row.display_name = String(value || '').trim();
+      if (col.role === 'prashna' && row.prashna == null) row.prashna = value;
+      if (col.role === 'patala' && row.patala == null) row.patala = value;
+      if (col.role === 'khanda' && row.khanda == null) row.khanda = value;
+      if (col.role === 'section' && row.section_number == null) row.section_number = value;
+      if (col.role === 'sutra_number' && row.sutra_number == null) row.sutra_number = value;
+      if (col.role === 'status' && blank(row.verification_status)) row.verification_status = String(value || '').trim();
+      if (col.role === 'publish') row.publish = asBoolean(value);
+      if (col.role === 'slug' && blank(row.slug)) row.slug = String(value || '').trim();
+      if (col.role === 'type' && blank(row.text_type)) row.text_type = String(value || '').trim();
+      if (col.role === 'audio' && blank(row.audio_url)) row.audio_url = String(value || '').trim();
+      if (col.role === 'url' && blank(row.source_url)) row.source_url = String(value || '').trim();
+      if (col.role === 'translit' && blank(row.sanskrit_transliteration)) row.sanskrit_transliteration = String(value || '');
+      if (col.role === 'telugu' && blank(row.telugu_script)) row.telugu_script = String(value || '');
+      if (col.role === 'translation' && blank(row.english_translation)) row.english_translation = String(value || '');
+      if (col.role === 'language' && blank(row.language)) row.language = String(value || '').trim();
+      if (col.role === 'featured') row.featured = asBoolean(value);
+      if (col.role === 'image' && blank(row.featured_image_url)) row.featured_image_url = String(value || '').trim();
+      if (col.folded === 'title' && blank(row.title)) row.title = String(value || '').trim();
+      if (col.folded === 'summary' && blank(row.summary)) row.summary = String(value || '').trim();
+      if (col.folded === 'content' && blank(row.content)) row.content = String(value || '').trim();
+      if (col.folded === 'source references' && blank(row.source_references)) row.source_references = String(value || '').trim();
+
+      if (col.display && !blank(value)) {
+        const renderRole = col.role === 'url' || looksLikeUrl(value) ? (col.role === 'audio' ? 'audio' : 'url') : col.role;
+        displayFields.push({
+          heading: col.heading,
+          value: String(cells[col.index] ?? '').trim() === '#ERROR!' ? '' : String(cells[col.index] ?? ''),
+          role: renderRole,
+          layer: col.layer,
+          index: col.index
+        });
+      }
     });
-    NUMERIC.forEach((field) => {
-      if (field in row) row[field] = asNumber(row[field]);
-    });
+
+    const parsed = parseStableId(row.unique_id);
+    if (parsed) {
+      Object.entries(parsed).forEach(([key, val]) => {
+        if (row[key] == null || row[key] === '') row[key] = val;
+      });
+    }
     if (blank(row.unique_id) && kind !== 'articles') row.unique_id = composeId(kind, row);
+    if (blank(row.article_id) && kind === 'articles') row.article_id = row.unique_id;
     if (blank(row.display_name)) row.display_name = defaultDisplay(kind, row);
     if (blank(row.slug)) row.slug = defaultSlug(kind, row);
     if (blank(row.text_type)) {
       row.text_type = kind === 'dharma' ? 'Dharma Sūtra' : kind === 'gruhya' ? 'Gruhya Sūtra' : row.language || '';
     }
-    if (typeof row.publish === 'string' || typeof row.publish === 'number') row.publish = asBoolean(row.publish);
-    if (typeof row.featured === 'string' || typeof row.featured === 'number') row.featured = asBoolean(row.featured);
-    if (!blank(row.verification_status) && asVerified(row.verification_status)) {
-      row.verification_status = 'Verified';
-    }
+    if (asVerified(row.verification_status)) row.verification_status = 'Verified';
+    row.values = values;
+    row.displayFields = displayFields.filter((field) => !blank(field.value));
+    row.searchText = [row.display_name, row.unique_id, ...row.displayFields.map((field) => field.value)].filter(Boolean).join(' ').toLowerCase();
     return row;
   }
 
-  function isPublic(row) {
-    const published = row.publish === true || asBoolean(row.publish);
-    const verified = String(row.verification_status || '') === 'Verified' || asVerified(row.verification_status);
-    return published && verified;
+  function objectsFromTable(headers, rows, kind) {
+    const schema = inspectSchema(headers, kind);
+    return rows.map((cells) => rowFromCells(kind, schema.columns, cells));
   }
 
-  function objectsFromTable(headers, rows, kind) {
-    const mapped = headers.map((header) => mapHeader(header, kind));
-    return rows.map((cells) => {
-      const raw = {};
-      mapped.forEach((field, i) => {
-        if (!field) return;
-        if (!blank(raw[field])) return;
-        const value = cells[i];
-        raw[field] = value === undefined || value === null ? '' : String(value);
-      });
-      return raw;
-    });
+  function isPublic(row) {
+    if (!row) return false;
+    if (row.publish !== true && !asBoolean(row.publish)) return false;
+    return row.verification_status === 'Verified' || asVerified(row.verification_status);
   }
 
   function parseCsv(text) {
@@ -261,18 +352,16 @@
   async function fetchText(url, label) {
     const response = await fetch(url, { cache: 'no-store' });
     const text = await response.text();
-    if (!response.ok) {
-      throw new Error(`${label} HTTP ${response.status} for ${url}`);
-    }
+    if (!response.ok) throw new Error(`${label} HTTP ${response.status} for ${url}`);
     if (looksLikeHtml(text)) {
-      throw new Error(`${label} returned a Google sign-in page. Share the Sheet as Anyone with the link → Viewer, or deploy the Apps Script web app.`);
+      throw new Error(`${label} returned a Google sign-in page. Share the Sheet as Anyone with the link → Viewer.`);
     }
     return text;
   }
 
   function cacheKey(kind) {
     const cfg = sheetCfg();
-    return `bramha.sheet.${cfg.id || cfg.webAppUrl || 'none'}.${kind}`;
+    return `bramha.sheet.v2.${cfg.id || cfg.webAppUrl || 'none'}.${kind}`;
   }
 
   function readCache(kind) {
@@ -282,6 +371,7 @@
       const parsed = JSON.parse(raw);
       const ttl = Number(sheetCfg().cacheTtlMs || 45000);
       if (!parsed?.at || Date.now() - parsed.at > ttl) return null;
+      if (!parsed.schema?.fingerprint || !Array.isArray(parsed.schema?.headers)) return null;
       return parsed;
     } catch {
       return null;
@@ -292,7 +382,7 @@
     try {
       sessionStorage.setItem(cacheKey(kind), JSON.stringify({ at: Date.now(), ...payload }));
     } catch {
-      /* private mode */
+      /* private mode or quota */
     }
   }
 
@@ -306,52 +396,85 @@
     }
   }
 
-  function missingRequired(kind, headers) {
-    const mapped = new Set(headers.map((header) => mapHeader(header, kind)).filter(Boolean));
-    return (REQUIRED[kind] || []).filter((field) => !mapped.has(field));
+  function analyzeRows(kind, rows) {
+    const ids = new Map();
+    let missingIds = 0;
+    let invalidUrls = 0;
+    const duplicateIds = [];
+    rows.forEach((row) => {
+      const id = row.unique_id || row.article_id;
+      if (!id) missingIds += 1;
+      else if (ids.has(id)) duplicateIds.push(id);
+      else ids.set(id, true);
+      (row.displayFields || []).forEach((field) => {
+        if (invalidUrl(field.value)) invalidUrls += 1;
+      });
+    });
+    return { missingIds, duplicateIds: [...new Set(duplicateIds)], invalidUrls };
   }
 
   function finalize(kind, rawRows, meta) {
-    const missing = missingRequired(kind, meta.headers || []);
-    if (missing.length) {
-      throw new Error(`Missing required column(s) on tab "${meta.tab}": ${missing.join(', ')}`);
-    }
-    const rows = rawRows
-      .map((raw) => normalizeRow(kind, raw))
-      .filter((row) => {
-        if (kind === 'articles') return !blank(row.article_id) || !blank(row.title);
-        return !blank(row.unique_id) && REQUIRED[kind].every((field) => !blank(row[field]));
-      });
+    const schema = inspectSchema(meta.headers || [], kind);
+    const built = (rawRows || []).map((entry) => {
+      if (entry && Array.isArray(entry) === false && entry.displayFields) return entry;
+      if (entry && !Array.isArray(entry) && entry.values) return entry;
+      return rowFromCells(kind, schema.columns, Array.isArray(entry) ? entry : schema.columns.map((col) => entry[col.heading] ?? entry[col.role] ?? ''));
+    });
+    const rows = built.filter((row) => {
+      if (kind === 'articles') return !blank(row.article_id) || !blank(row.title);
+      return !blank(row.unique_id);
+    });
+    const rowIssues = analyzeRows(kind, rows);
     const publicRows = rows.filter(isPublic);
+    const usedIndexes = new Set();
+    rows.forEach((row) => (row.displayFields || []).forEach((field) => usedIndexes.add(field.index)));
+    const emptyColumns = schema.columns
+      .filter((col) => col.display && !usedIndexes.has(col.index))
+      .map((col) => col.heading);
+    const diagnostics = {
+      ...schema.diagnostics,
+      ...rowIssues,
+      emptyColumns,
+      fingerprint: schema.fingerprint,
+      headerCount: (meta.headers || []).filter((header) => String(header || '').trim()).length,
+      displayHeadings: schema.columns.filter((col) => col.display && usedIndexes.has(col.index)).map((col) => col.heading)
+    };
     status.counts[kind] = publicRows.length;
-    status.tabs[kind] = { tab: meta.tab, loaded: rows.length, public: publicRows.length, endpoint: meta.endpoint };
+    status.tabs[kind] = {
+      tab: meta.tab,
+      loaded: rows.length,
+      public: publicRows.length,
+      endpoint: meta.endpoint,
+      headers: diagnostics.displayHeadings,
+      fingerprint: schema.fingerprint
+    };
+    status.diagnostics[kind] = diagnostics;
     status.connection = 'connected';
     status.lastSuccessAt = nowIso();
     status.lastError = null;
     status.source = meta.source;
     status.sheetName = sheetCfg().name || 'Bramha.org - Sutra Database';
     status.sheetId = sheetCfg().id || null;
-    return { rows: publicRows, allRows: rows, ...meta, syncedAt: status.lastSuccessAt };
+    return {
+      rows: publicRows,
+      allRows: rows,
+      schema: { headers: meta.headers || [], fingerprint: schema.fingerprint, columns: diagnostics.columns },
+      diagnostics,
+      ...meta,
+      syncedAt: status.lastSuccessAt
+    };
   }
 
   function fail(error, extra) {
     const err = error instanceof Error ? error : new Error(String(error));
     status.connection = 'error';
-    status.lastError = {
-      message: err.message,
-      at: nowIso(),
-      ...extra
-    };
+    status.lastError = { message: err.message, at: nowIso(), ...extra };
     console.error('[Bramha Sheet sync]', status.lastError);
     return err;
   }
 
   function wantLocalFeed() {
-    try {
-      return new URLSearchParams(location.search).has('localfeed');
-    } catch {
-      return false;
-    }
+    try { return new URLSearchParams(location.search).has('localfeed'); } catch { return false; }
   }
 
   function localFeedUrl() {
@@ -367,13 +490,13 @@
     const bust = `${url}${url.includes('?') ? '&' : '?'}_=${Date.now()}`;
     const text = await fetchText(bust, 'Apps Script web app');
     let json;
-    try { json = JSON.parse(text); }
-    catch { throw new Error(`Apps Script web app returned non-JSON from ${url}`); }
+    try { json = JSON.parse(text); } catch { throw new Error(`Apps Script web app returned non-JSON from ${url}`); }
     const pack = json.dharma || json.gruhya || json.articles ? json : json.data || json;
     const list = pack[kind] || pack[`${kind}_sutras`] || [];
     if (!Array.isArray(list)) throw new Error(`Apps Script JSON missing array for ${kind}`);
-    const headers = list[0] ? Object.keys(list[0]) : KIND_FIELDS[kind];
-    return finalize(kind, list, { source: 'apps-script', tab: kind, headers, endpoint: url });
+    const headers = pack.headers?.[kind] || (list[0] ? Object.keys(list[0]) : []);
+    const rows = list.map((item) => (Array.isArray(item) ? item : headers.map((header) => item[header] ?? '')));
+    return finalize(kind, objectsFromTable(headers, rows, kind), { source: 'apps-script', tab: kind, headers, endpoint: url });
   }
 
   async function loadTab(kind, tab) {
@@ -382,8 +505,7 @@
     try {
       const text = await fetchText(gviz, `gviz:${tab}`);
       const { headers, rows } = parseGviz(text);
-      const objects = objectsFromTable(headers, rows, kind);
-      return finalize(kind, objects, { source: 'gviz', tab, headers, endpoint: gviz });
+      return finalize(kind, objectsFromTable(headers, rows, kind), { source: 'gviz', tab, headers, endpoint: gviz });
     } catch (gvizError) {
       const csvUrl = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tab)}&headers=1&_=${Date.now()}`;
       try {
@@ -391,8 +513,7 @@
         const table = parseCsv(csv);
         if (!table.length) throw new Error(`CSV for tab "${tab}" was empty`);
         const [headers, ...rows] = table;
-        const objects = objectsFromTable(headers, rows, kind);
-        return finalize(kind, objects, { source: 'csv', tab, headers, endpoint: csvUrl });
+        return finalize(kind, objectsFromTable(headers, rows, kind), { source: 'csv', tab, headers, endpoint: csvUrl });
       } catch (csvError) {
         throw new Error(`Tab "${tab}" failed. gviz: ${gvizError.message} | csv: ${csvError.message}`);
       }
@@ -405,11 +526,7 @@
     const names = sheetCfg().tabs?.[kind] || [kind];
     const errors = [];
     for (const tab of names) {
-      try {
-        return await loadTab(kind, tab);
-      } catch (error) {
-        errors.push(`${tab}: ${error.message}`);
-      }
+      try { return await loadTab(kind, tab); } catch (error) { errors.push(`${tab}: ${error.message}`); }
     }
     throw new Error(`No readable ${kind} tab in spreadsheet ${id}. Tried ${names.join(', ')}. ${errors.join(' | ')}`);
   }
@@ -424,16 +541,24 @@
         status.connection = 'connected';
         status.source = `${cached.source} (cache)`;
         status.lastSuccessAt = cached.syncedAt || nowIso();
+        status.diagnostics[kind] = cached.diagnostics || {};
+        status.tabs[kind] = cached.tabsSnapshot || status.tabs[kind];
         return cached;
       }
     }
 
     try {
       const fromSheet = await loadFromSheet(kind);
-      if (fromSheet) { writeCache(kind, fromSheet); return fromSheet; }
+      if (fromSheet) {
+        writeCache(kind, { ...fromSheet, tabsSnapshot: status.tabs[kind] });
+        return fromSheet;
+      }
       const fromApp = await loadFromWebApp(kind);
-      if (fromApp) { writeCache(kind, fromApp); return fromApp; }
-      throw new Error('Google Sheet is not configured. Add the spreadsheet ID (Anyone with the link → Viewer) or an Apps Script web app URL in js/config.js.');
+      if (fromApp) {
+        writeCache(kind, { ...fromApp, tabsSnapshot: status.tabs[kind] });
+        return fromApp;
+      }
+      throw new Error('Google Sheet is not configured.');
     } catch (error) {
       throw fail(error, { kind, endpoint: sheetCfg().id || sheetCfg().webAppUrl || '(none)' });
     }
@@ -442,15 +567,23 @@
   window.BramhaSheets = {
     load,
     clearCache,
-    mapHeader,
-    normalizeRow,
+    fold,
+    classifyHeader,
+    inspectSchema,
+    objectsFromTable,
+    rowFromCells,
     isPublic,
     parseCsv,
     parseGviz,
-    objectsFromTable,
+    parseStableId,
     composeId,
-    status: () => ({ ...status, counts: { ...status.counts }, tabs: { ...status.tabs }, lastError: status.lastError ? { ...status.lastError } : null }),
-    FIELD_ALIASES,
-    KIND_FIELDS
+    schemaFingerprint,
+    status: () => ({
+      ...status,
+      counts: { ...status.counts },
+      tabs: { ...status.tabs },
+      diagnostics: { ...status.diagnostics },
+      lastError: status.lastError ? { ...status.lastError } : null
+    })
   };
 })();

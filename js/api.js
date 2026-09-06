@@ -65,6 +65,8 @@ window.loadCmsTable = async function(table, options = {}) {
     source: result.source,
     syncedAt: result.syncedAt,
     tab: result.tab,
+    schema: result.schema,
+    diagnostics: result.diagnostics,
     live: true
   };
 };

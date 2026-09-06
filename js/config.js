@@ -8,6 +8,8 @@ window.BRAMHA_CONFIG = {
     /* Optional Apps Script Web App URL that returns { dharma, gruhya, articles } */
     webAppUrl: '',
     cacheTtlMs: 45000,
+    /* Extra header names treated as system/metadata, not content sections */
+    systemHeaders: [],
     tabs: {
       dharma: ['Dharma Sutra', 'Dharma Sūtra', 'Dharma Sūtras', 'Dharma Sutras', 'dharma_sutras', 'Dharma'],
       gruhya: ['Gruhya Sutra', 'Gṛhya Sūtra', 'Grhya Sutra', 'Gṛhya Sūtras', 'Gruhya Sutras', 'gruhya_sutras', 'Gruhya', 'Gṛhya'],
