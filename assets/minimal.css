@@ -93,7 +93,11 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; letter-spacing: -0
   flex-shrink: 0;
 }
 .m-logo .m-brand-mark { line-height: 0; }
-.m-logo .m-brand-mark img { display: block; }
+.m-logo .m-brand-mark img { display: block; image-rendering: auto; }
+.m-brand-mark:has(img),
+.m-brand-lockup:has(img) {
+  background-image: none;
+}
 .m-logo > span:last-child { line-height: 1; }
 .m-menu {
   display: none;
@@ -165,6 +169,7 @@ h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; letter-spacing: -0
   object-fit: contain;
   object-position: center;
   display: block;
+  image-rendering: auto;
 }
 .m-footer-bottom {
   width: var(--shell);
@@ -580,6 +585,7 @@ select:focus { border-bottom-color: var(--ink); }
   object-fit: contain;
   object-position: center;
   display: block;
+  image-rendering: auto;
 }
 .m-about-contact { padding: 0 0 64px; }
 .m-about-contact h2 { margin: 0 0 12px; font-size: 22px; }
