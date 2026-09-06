@@ -18,7 +18,7 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="../assets/brand-mark.css?v=29">
   <link rel="stylesheet" href="../assets/brand-lockup.css?v=29">
-  <link rel="stylesheet" href="../assets/minimal.css?v=29">
+  <link rel="stylesheet" href="../assets/minimal.css?v=33">
   <script src="/js/brand.js"></script>
 </head>
 <body>
@@ -53,8 +53,45 @@
   <div class="m-footer-bottom">© 2026 Bramha.org</div>
 </footer>
 <script src="/js/site.js"></script>
-<script src="/js/config.js"></script>
-<script src="/js/api.js"></script>
-<script>const q=document.getElementById('q'),out=document.getElementById('results');async function run(){const term=q.value.trim();if(term.length<2){out.innerHTML='<div class="notice">Enter at least 2 characters.</div>';return;}const esc=term.replace(/[,\*()]/g,' ');const filter=`or=(display_name.ilike.*${encodeURIComponent(esc)}*,sanskrit_transliteration.ilike.*${encodeURIComponent(esc)}*,telugu_script.ilike.*${encodeURIComponent(esc)}*,english_translation.ilike.*${encodeURIComponent(esc)}*)`;out.innerHTML='<div class="card">Searching…</div>';try{const[d,g]=await Promise.all([sbFetch(`dharma_sutras?select=unique_id,display_name,english_translation,slug&publish=eq.true&verification_status=eq.Verified&${filter}&limit=25`),sbFetch(`gruhya_sutras?select=unique_id,display_name,english_translation,slug&publish=eq.true&verification_status=eq.Verified&${filter}&limit=25`)]);const rows=[...d.map(x=>({...x,type:'Dharma Sūtra',href:`../dharma-sutra/?id=${encodeURIComponent(x.unique_id)}`})),...g.map(x=>({...x,type:'Gṛhya Sūtra',href:`../gruhya-sutra/?id=${encodeURIComponent(x.unique_id)}`}))];if(!rows.length){out.innerHTML='<div class="card empty">No public verified matches found.</div>';return;}out.innerHTML=rows.map(r=>`<div class="result"><span class="badge">${escapeHtml(r.type)}</span><a href="${r.href}">${escapeHtml(r.display_name||r.unique_id)}</a><p>${escapeHtml((r.english_translation||'').slice(0,240))}</p></div>`).join('');}catch(e){out.innerHTML=`<div class="notice">${escapeHtml(e.message)}</div>`;}}document.getElementById('go').onclick=run;q.addEventListener('keydown',e=>{if(e.key==='Enter')run();});const params=new URLSearchParams(location.search);if(params.get('q')){q.value=params.get('q');run();}</script>
+<script src="/js/config.js?v=33"></script>
+<script src="/js/sheets.js?v=33"></script>
+<script src="/js/api.js?v=33"></script>
+<script>
+const q=document.getElementById('q'),out=document.getElementById('results');
+function hay(row){return [row.display_name,row.sanskrit_transliteration,row.telugu_script,row.english_translation,row.unique_id].filter(Boolean).join(' ').toLowerCase();}
+async function loadKind(kind,table,fallbackQuery){
+  try{
+    const loaded=await loadCmsTable(table);
+    return loaded.rows||[];
+  }catch(err){
+    console.warn('Search CMS',kind,err);
+    return sbFetch(fallbackQuery);
+  }
+}
+async function run(){
+  const term=q.value.trim();
+  if(term.length<2){out.innerHTML='<div class="notice">Enter at least 2 characters.</div>';return;}
+  const needle=term.toLowerCase();
+  const esc=term.replace(/[,\*()]/g,' ');
+  const filter=`or=(display_name.ilike.*${encodeURIComponent(esc)}*,sanskrit_transliteration.ilike.*${encodeURIComponent(esc)}*,telugu_script.ilike.*${encodeURIComponent(esc)}*,english_translation.ilike.*${encodeURIComponent(esc)}*)`;
+  out.innerHTML='<div class="card">Searching…</div>';
+  try{
+    const[d,g]=await Promise.all([
+      loadKind('dharma','dharma_sutras',`dharma_sutras?select=unique_id,display_name,english_translation,slug&publish=eq.true&verification_status=eq.Verified&${filter}&limit=25`),
+      loadKind('gruhya','gruhya_sutras',`gruhya_sutras?select=unique_id,display_name,english_translation,slug&publish=eq.true&verification_status=eq.Verified&${filter}&limit=25`)
+    ]);
+    const rows=[
+      ...d.filter(x=>hay(x).includes(needle)).slice(0,25).map(x=>({...x,type:'Dharma Sūtra',href:`../dharma-sutra/?id=${encodeURIComponent(x.unique_id)}`})),
+      ...g.filter(x=>hay(x).includes(needle)).slice(0,25).map(x=>({...x,type:'Gṛhya Sūtra',href:`../gruhya-sutra/?id=${encodeURIComponent(x.unique_id)}`}))
+    ];
+    if(!rows.length){out.innerHTML='<div class="card empty">No public verified matches found.</div>';return;}
+    out.innerHTML=rows.map(r=>`<div class="result"><span class="badge">${escapeHtml(r.type)}</span><a href="${r.href}">${escapeHtml(r.display_name||r.unique_id)}</a><p>${escapeHtml((r.english_translation||'').slice(0,240))}</p></div>`).join('');
+  }catch(e){out.innerHTML=`<div class="notice">${escapeHtml(e.message)}</div>`;}
+}
+document.getElementById('go').onclick=run;
+q.addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+const params=new URLSearchParams(location.search);
+if(params.get('q')){q.value=params.get('q');run();}
+</script>
 </body>
 </html>
