@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-09-06T13:42:31.594Z",
+  "counts": {
+    "urls": 108,
+    "dharma": 87,
+    "gruhya": 5,
+    "mantras": 0,
+    "articles": 0,
+    "commentary": 27,
+    "prayoga": 0
+  },
+  "sample": [
+    "/",
+    "/about.html",
+    "/dharma-sutra/",
+    "/gruhya-sutra/",
+    "/vedic-mantras/",
+    "/articles/",
+    "/tarabalam/",
+    "/bhashyam/",
+    "/prayoga/",
+    "/dharma-sutra/prasna-1/patala-1/khanda-1/",
+    "/dharma-sutra/prasna-1/patala-1/khanda-1/sutra-1/",
+    "/dharma-sutra/prasna-1/patala-1/khanda-1/sutra-2/"
+  ]
+}

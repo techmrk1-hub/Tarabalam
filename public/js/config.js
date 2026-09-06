@@ -13,7 +13,7 @@ window.BRAMHA_CONFIG = {
     tabs: {
       dharma: ['Dharma Sutra', 'Dharma Sūtra', 'Dharma Sūtras', 'Dharma Sutras', 'dharma_sutras', 'Dharma'],
       gruhya: ['Gruhya Sutra', 'Gṛhya Sūtra', 'Grhya Sutra', 'Gṛhya Sūtras', 'Gruhya Sutras', 'gruhya_sutras', 'Gruhya', 'Gṛhya'],
-      articles: ['Articles', 'SHARTICLES', 'Homepage Slides'],
+      articles: ['Articles', 'articles', 'Homepage Slides'],
       mantras: ['Vedic Mantras', 'Vedic Mantra', 'vedic_mantras', 'Mantras']
     }
   },

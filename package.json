@@ -8,7 +8,9 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 43147",
     "preview": "vite preview --host 127.0.0.1 --port 43147",
-    "build": "vite build"
+    "build": "vite build",
+    "generate:seo": "node scripts/generate-seo.mjs",
+    "test": "node scripts/test-sheet-map.mjs && node scripts/test-live-sheet.mjs && node scripts/test-seo.mjs"
   },
   "devDependencies": {
     "vite": "^7.1.5"
