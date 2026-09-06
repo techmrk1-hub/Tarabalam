@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 
 const root = dirname(fileURLToPath(import.meta.url));
 
-const CLASSIC_SCRIPTS = ['site.js', 'config.js', 'api.js', 'reader.js', 'home-slides.js'];
+const CLASSIC_SCRIPTS = ['site.js', 'config.js', 'sheets.js', 'api.js', 'reader.js', 'home-slides.js', 'brand.js', 'seo-routes.js', 'seo-boot.js'];
 
 const ROOT_ICONS = [
   'favicon.ico',
@@ -40,6 +40,16 @@ function copyBrandPack() {
     cpSync(source, resolve(root, 'public', name));
   }
   cpSync(resolve(root, 'site.webmanifest'), resolve(root, 'public/site.webmanifest'));
+  const partsSrc = resolve(root, 'assets/brand-parts');
+  const partsDest = resolve(root, 'public/assets/brand-parts');
+  mkdirSync(partsDest, { recursive: true });
+  try {
+    for (const name of readdirSync(partsSrc)) {
+      cpSync(resolve(partsSrc, name), resolve(partsDest, name));
+    }
+  } catch {
+    /* brand-parts are optional locally; GitHub Pages uses them when binaries 404 */
+  }
 }
 
 function classicRuntimePlugin() {
