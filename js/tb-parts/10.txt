@@ -1,0 +1,110 @@
+unction setHtml(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = value;
+    }
+
+    function switchLanguage(langCode) {
+        if (!languagesDataset[langCode]) langCode = 'en';
+        currentLang = langCode;
+
+        const strings = languagesDataset[langCode];
+        if (!strings) return;
+
+        const tool = document.getElementById('tarabalam-tool');
+        if (tool) tool.setAttribute('lang', langCode);
+        document.documentElement.setAttribute('lang', langCode);
+
+        document.querySelectorAll('.lang-container .lang-btn').forEach(btn => {
+            const active = btn.getAttribute('data-lang') === langCode;
+            btn.classList.toggle('active', active);
+            btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+
+        setText("ui-app-title", strings.appTitle);
+        setText("ui-milestone-tag", strings.milestoneTag);
+        setText("ui-engine-title", strings.engineTitle);
+        setText("ui-matrix-title", strings.matrixTitle);
+        setText("ui-label-birth", strings.labelBirth);
+        setText("ui-label-target", strings.labelTarget);
+        setHtml("ui-th-cross", strings.thCross);
+        const searchBox = document.getElementById("searchBox");
+        if (searchBox) searchBox.placeholder = strings.searchPlaceholder;
+        setText("ui-out-num", strings.outNum);
+        setText("ui-out-verdict", strings.outVerdict);
+        setText("ui-out-summary", strings.outSummary);
+        setText("ui-out-guidance", strings.outGuidance);
+        setText("ui-slider-title", strings.sliderTitle);
+        setText("tab-engine", strings.tabEngine);
+        setText("tab-grid", strings.tabGrid);
+        setText("tab-about", strings.tabAbout);
+        setHtml("ui-footer-note", `${strings.footerLabel} <a href="mailto:priest.mrk@gmail.com">priest.mrk@gmail.com</a>`);
+
+        repopulateDropdowns();
+        rebuildMatrixGrid();
+        computeEngine();
+    }
+
+    function repopulateDropdowns() {
+        const bSel = document.getElementById("birthStarSelect");
+        const tSel = document.getElementById("targetStarSelect");
+        
+        const prevB = bSel.value || "4";
+        const prevT = tSel.value || "5";
+
+        bSel.innerHTML = "";
+        tSel.innerHTML = "";
+
+        languagesDataset[currentLang].stars.forEach((starName, i) => {
+            bSel.options.add(new Option(`${i + 1}. ${starName}`, i + 1));
+            tSel.options.add(new Option(`${i + 1}. ${starName}`, i + 1));
+        });
+
+        bSel.value = prevB;
+        tSel.value = prevT;
+    }
+
+    function calcFormula(b, t) {
+        let d = (t - b) + 1;
+        if (d <= 0) d += 27;
+        let r = d % 9;
+        return r === 0 ? 9 : r;
+    }
+
+    function computeEngine() {
+        const bSel = document.getElementById("birthStarSelect");
+        const tSel = document.getElementById("targetStarSelect");
+        if (!bSel || !tSel || !bSel.value || !tSel.value) return;
+
+        const b = parseInt(bSel.value, 10);
+        const t = parseInt(tSel.value, 10);
+        if (!Number.isFinite(b) || !Number.isFinite(t)) return;
+
+        const num = calcFormula(b, t);
+        const localizedConfig = languagesDataset[currentLang].rules[num];
+        const verdicts = languagesDataset[currentLang].verdicts;
+        if (!localizedConfig || !verdicts) return;
+
+        let styleToken = "theme-jagratha";
+        let verdictText = verdicts.jagratha;
+
+        if (num === 9) { styleToken = "theme-atyanta"; verdictText = verdicts.atyanta; }
+        else if ([2, 4, 6, 8].includes(num)) { styleToken = "theme-anukulam"; verdictText = verdicts.anukulam; }
+        else if (num === 7) { styleToken = "theme-naidhana"; verdictText = verdicts.ananukulam; }
+        else if (num === 5) { styleToken = "theme-ananukulam"; }
+
+        const panel = document.getElementById("resultPanel");
+        panel.className = `result-panel ${styleToken} active`;
+
+        document.getElementById("outTaraName").textContent = localizedConfig.title;
+        document.getElementById("outTaraNumber").textContent = num;
+        document.getElementById("outVerdict").textContent = verdictText;
+        document.getElementById("outSummary").textContent = localizedConfig.summary;
+        document.getElementById("outGuidance").textContent = localizedConfig.guidance;
+
+        document.querySelectorAll("#matrixTable td").forEach(c => c.classList.remove("active-cell"));
+        const targetCell = document.querySelector(`td[data-b="${b}"][data-t="${t}"]`);
+        if (targetCell) targetCell.classList.add("active-cell");
+    }
+
+    function rebuildMatrixGrid() {
+        const header
