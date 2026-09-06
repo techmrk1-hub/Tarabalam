@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Sūtra CMS diagnostics | Bramha.org</title>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="stylesheet" href="../assets/brand-mark.css?v=29">
+  <link rel="stylesheet" href="../assets/brand-lockup.css?v=29">
+  <link rel="stylesheet" href="../assets/minimal.css?v=33">
+  <script src="/js/brand.js"></script>
+</head>
+<body>
+<header class="m-header">
+  <div class="m-bar">
+    <a class="m-logo" href="../" aria-label="Bramha.org home"><span class="m-brand-mark"><img src="/assets/brand/android-chrome-192x192.png" srcset="/assets/brand/android-chrome-192x192.png 192w, /assets/brand/android-chrome-512x512.png 512w" sizes="48px" alt="" width="192" height="192" decoding="async" data-brand="mark" onerror="window.brandPack&&window.brandPack(this)"></span><span>Bramha.org</span></a>
+  </div>
+</header>
+<div class="inner-title-block"><div class="inner"><div class="breadcrumb"><a href="../">Home</a> / Internal</div><h1>Sūtra CMS diagnostics</h1><p>Internal status for Bramha.org - Sutra Database. This page is not linked from the public navigation. Public readers show only rows marked <strong>Verified</strong> and <strong>Publish = YES</strong>.</p></div></div>
+<main class="inner-wrap">
+  <div id="statusCards" class="sync-grid"></div>
+  <p><button type="button" class="btn" id="refresh">Refresh now</button></p>
+</main>
+<script src="/js/site.js"></script>
+<script src="/js/config.js?v=33"></script>
+<script src="/js/sheets.js?v=33"></script>
+<script src="/js/api.js?v=33"></script>
+<script>
+const box=document.getElementById('statusCards');
+function card(title, body){return `<section class="sync-card"><h2>${title}</h2>${body}</section>`;}
+function kindLine(kind, label, result, st){
+  const tab=st.tabs?.[kind]||{};
+  const err=result?.error;
+  if(err) return `<li>${label}: <span class="sync-err">Error</span> — ${escapeHtml(err)}</li>`;
+  const publicCount=tab.public ?? result?.rows?.length ?? st.counts[kind] ?? 0;
+  const loaded=tab.loaded ?? '—';
+  const tabName=tab.tab || result?.tab || '';
+  return `<li>${label}: ${publicCount} public / ${loaded} loaded${tabName?` (tab “${escapeHtml(tabName)}”)`:''}</li>`;
+}
+async function run(){
+  box.innerHTML='<section class="sync-card"><p>Checking Google Sheet connection…</p></section>';
+  const started=new Date().toISOString();
+  const results={};
+  for (const kind of ['dharma','gruhya','articles']) {
+    try { results[kind]=await BramhaSheets.load(kind,{refresh:true}); }
+    catch(err){ results[kind]={error:err.message}; }
+  }
+  const st=BramhaSheets.status();
+  const cfg=window.BRAMHA_CONFIG.googleSheet||{};
+  const conn=st.connection==='connected'?'<span class="sync-ok">Connected</span>':'<span class="sync-err">Error</span>';
+  box.innerHTML=[
+    card('Google Sheet connection', `<p>${conn}</p><ul>
+      <li>Sheet name: ${escapeHtml(cfg.name||'')}</li>
+      <li>Spreadsheet ID: ${escapeHtml(cfg.id||'(not set)')}</li>
+      <li>Web app URL: ${escapeHtml(cfg.webAppUrl||'(not set)')}</li>
+      <li>Source: ${escapeHtml(st.source||'none')}</li>
+      <li>Checked: ${escapeHtml(started)}</li>
+    </ul>`),
+    card('Last successful synchronization', `<p>${escapeHtml(st.lastSuccessAt||'Never')}</p>`),
+    card('Sūtras loaded', `<ul>
+      ${kindLine('dharma','Dharma Sūtras',results.dharma,st)}
+      ${kindLine('gruhya','Gṛhya Sūtras',results.gruhya,st)}
+      ${kindLine('articles','Articles',results.articles,st)}
+    </ul><p>Loaded is every row on the tab. Public is Verified + Publish = YES, which is what the website shows.</p>`),
+    card('Last synchronization error', st.lastError
+      ? `<p class="sync-err">${escapeHtml(st.lastError.message)}</p><ul>
+          <li>Time: ${escapeHtml(st.lastError.at||'')}</li>
+          <li>Kind: ${escapeHtml(st.lastError.kind||'')}</li>
+          <li>Endpoint: ${escapeHtml(st.lastError.endpoint||'')}</li>
+        </ul>`
+      : '<p class="sync-ok">None</p>')
+  ].join('');
+}
+document.getElementById('refresh').onclick=run;
+run();
+</script>
+</body>
+</html>
