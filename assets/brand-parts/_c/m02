@@ -1,0 +1,46 @@
+ 246, 243, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.m-bar {
+  width: var(--shell);
+  margin: 0 auto;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+.m-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+.m-logo .m-brand-mark,
+.m-logo .m-brand-mark img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  object-position: center;
+  flex-shrink: 0;
+}
+.m-logo .m-brand-mark { line-height: 0; }
+.m-logo .m-brand-mark img { display: block; image-rendering: auto; }
+.m-brand-mark:has(img),
+.m-brand-lockup:has(img) {
+  background-image: none;
+}
+.m-logo > span:last-child { line-height: 1; }
+.m-menu {
+  display: none;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  padding: 10px 14px;
+  font-size: 15px;
+  font-weight: 500;
