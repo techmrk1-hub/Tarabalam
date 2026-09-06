@@ -4,6 +4,20 @@
   let fullRows = [];
   let currentIndex = -1;
   const $ = id => document.getElementById(id);
+  const routes = window.BramhaRoutes;
+
+  function kindFromSpec() {
+    if (spec.table === 'dharma_sutras') return 'dharma';
+    if (spec.table === 'gruhya_sutras') return 'gruhya';
+    if (spec.table === 'vedic_mantras') return 'mantras';
+    if (spec.table === 'articles') return 'articles';
+    return spec.table;
+  }
+
+  function prettyPath(row) {
+    if (!routes || !row) return location.pathname;
+    return routes.pathFor(kindFromSpec(), row);
+  }
 
   function bannerHost() {
     return document.querySelector('main.inner-wrap') || document.body;
@@ -57,6 +71,20 @@
     fullRows = [];
   }
 
+  function resolveIndex() {
+    const wanted = new URLSearchParams(location.search).get('id');
+    const parsed = routes?.parsePath(location.pathname) || null;
+    if (routes) {
+      const i = routes.findRow(kindFromSpec(), rows, parsed, wanted);
+      if (i >= 0) return i;
+    }
+    if (wanted) {
+      const i = rows.findIndex(r => r[spec.key] === wanted);
+      if (i >= 0) return i;
+    }
+    return 0;
+  }
+
   async function loadIndex(){
     $('readerState').textContent = 'Loading verified content…';
     try {
@@ -71,12 +99,18 @@
         document.querySelector('.controls').style.display='none';
         return;
       }
+      const parsed = routes?.parsePath(location.pathname);
+      if (parsed?.leaf) {
+        const i = resolveIndex();
+        if (i < 0) {
+          $('readerState').innerHTML = '<div class="notice">This Sūtra is not in the public verified library.</div>';
+          document.querySelector('.controls').style.display='none';
+          return;
+        }
+      }
       $('readerState').textContent = '';
       buildFilters();
-      const params = new URLSearchParams(location.search);
-      const wanted = params.get('id');
-      const i = wanted ? rows.findIndex(r => r[spec.key] === wanted) : 0;
-      openIndex(i >= 0 ? i : 0);
+      openIndex(resolveIndex(), { source: 'init' });
     } catch(e){
       $('readerState').innerHTML = `<div class="notice">Unable to load the reader: ${escapeHtml(e.message)}</div>`;
     }
@@ -92,17 +126,18 @@
   function buildFilters(){
     const f=spec.filters;
     fillSelect('f1',unique(f[0].field),f[0].label);
-    cascadeFrom(0);
     spec.filters.forEach((filter,i)=>$(filter.id)?.addEventListener('change',()=>cascadeFrom(i)));
+    cascadeFrom(0, { skipOpen: true });
   }
-  function cascadeFrom(level){
+  function cascadeFrom(level, options = {}){
     const f=spec.filters;
     for(let i=Math.max(1,level+1); i<f.length;i++){
       const pred = r => f.slice(0,i).every((ff)=> String(r[ff.field])===String($(ff.id).value));
       fillSelect(f[i].id,unique(f[i].field,pred),f[i].label);
     }
+    if (options.skipOpen) return;
     const target = rows.findIndex(r => f.every(ff => String(r[ff.field])===String($(ff.id).value)));
-    if(target>=0) openIndex(target);
+    if(target>=0) openIndex(target, { source: 'user' });
   }
   function syncFilters(row){
     spec.filters.forEach((f,i)=>{
@@ -148,6 +183,7 @@
       const img = document.createElement('img');
       img.src = value;
       img.alt = field.heading;
+      img.loading = 'lazy';
       return img;
     }
     if (field.role === 'url' || /^https?:\/\/\S+$/i.test(value)) {
@@ -161,9 +197,9 @@
     const list = structuredList(value);
     if (list) return list;
     const p = document.createElement('p');
-    if (field.role === 'deva') p.className = 'deva';
-    if (field.role === 'telugu') p.className = 'telugu';
-    if (field.role === 'translit') p.className = 'translit';
+    if (field.role === 'deva') { p.className = 'deva'; p.lang = 'sa'; }
+    if (field.role === 'telugu') { p.className = 'telugu'; p.lang = 'te'; }
+    if (field.role === 'translit') { p.className = 'translit'; p.lang = 'sa'; }
     p.textContent = field.value;
     return p;
   }
@@ -175,12 +211,13 @@
     const fields = Array.isArray(record.displayFields) && record.displayFields.length
       ? record.displayFields
       : snapshotFields(record);
+    const headingTag = document.body.dataset.seoLeaf ? 'h2' : 'h3';
     fields.forEach((field) => {
       if (!String(field.value || '').trim()) return;
       const section = document.createElement('div');
       section.className = 'section';
       section.dataset.layer = field.layer || 'basic';
-      const heading = document.createElement('h3');
+      const heading = document.createElement(headingTag);
       heading.textContent = field.heading;
       section.appendChild(heading);
       section.appendChild(fieldBody(field));
@@ -188,12 +225,57 @@
     });
   }
 
-  async function openIndex(index){
+  function syncUrl(row, source) {
+    if (!routes || !row) return;
+    const path = prettyPath(row);
+    const wanted = new URLSearchParams(location.search).get('id');
+    if (wanted) {
+      history.replaceState({ id: row[spec.key] }, '', path);
+      return;
+    }
+    if (source === 'pop') return;
+    if (source === 'init') {
+      const parsed = routes.parsePath(location.pathname);
+      if (parsed?.leaf && location.pathname !== path) history.replaceState({ id: row[spec.key] }, '', path);
+      return;
+    }
+    if (location.pathname !== path) history.pushState({ id: row[spec.key] }, '', path);
+  }
+
+  function syncNavLinks() {
+    const prev = $('prev');
+    const next = $('next');
+    if (prev) {
+      if (currentIndex > 0) {
+        prev.href = prettyPath(rows[currentIndex - 1]);
+        prev.hidden = false;
+        prev.removeAttribute('aria-disabled');
+      } else {
+        prev.href = '#';
+        prev.hidden = true;
+        prev.setAttribute('aria-disabled', 'true');
+      }
+    }
+    if (next) {
+      if (currentIndex >= 0 && currentIndex < rows.length - 1) {
+        next.href = prettyPath(rows[currentIndex + 1]);
+        next.hidden = false;
+        next.removeAttribute('aria-disabled');
+      } else {
+        next.href = '#';
+        next.hidden = true;
+        next.setAttribute('aria-disabled', 'true');
+      }
+    }
+  }
+
+  async function openIndex(index, options = {}){
     if(index<0 || index>=rows.length) return;
     currentIndex=index;
-    const row=rows[index]; syncFilters(row);
-    history.replaceState({},'',`${location.pathname}?id=${encodeURIComponent(row[spec.key])}`);
-    $('prev').disabled=index===0; $('next').disabled=index===rows.length-1;
+    const row=rows[index];
+    syncFilters(row);
+    syncUrl(row, options.source || 'user');
+    syncNavLinks();
     try {
       let record = fullRows.find(r => r[spec.key] === row[spec.key]);
       if (!record) {
@@ -206,12 +288,26 @@
 
   function render(r){
     $('reader').style.display='block';
-    $('readerTitle').textContent=r.display_name || r.title || r[spec.key];
+    const title = $('readerTitle');
+    if (title) title.textContent=r.display_name || r.title || r[spec.key];
     $('readerKicker').textContent=spec.kicker(r);
     renderFields(r);
   }
 
-  $('prev')?.addEventListener('click',()=>openIndex(currentIndex-1));
-  $('next')?.addEventListener('click',()=>openIndex(currentIndex+1));
+  function navClick(handler) {
+    return (event) => {
+      if (event.defaultPrevented) return;
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      handler();
+    };
+  }
+
+  $('prev')?.addEventListener('click', navClick(()=>openIndex(currentIndex-1, { source: 'user' })));
+  $('next')?.addEventListener('click', navClick(()=>openIndex(currentIndex+1, { source: 'user' })));
+  window.addEventListener('popstate', () => {
+    if (!rows.length) return;
+    openIndex(resolveIndex(), { source: 'pop' });
+  });
   loadIndex();
 })();
