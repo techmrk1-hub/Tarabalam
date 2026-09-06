@@ -1,0 +1,27 @@
+   display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    flex-direction: column;
+    align-items: stretch;
+    padding: 8px 16px 16px;
+    gap: 0;
+  }
+  .m-header.open .m-nav { display: flex; }
+  .m-nav a { padding: 12px 4px; border-bottom: 1px solid var(--line); }
+  .m-hero { padding-top: 20px; }
+  .m-slides {
+    height: calc(100svh - 81px);
+    min-height: calc(100svh - 81px);
+  }
+  .m-slides-copy { bottom: 72px; }
+  .m-slides-copy h1 { font-size: 34px; }
+  .m-slides-arrow { width: 36px; height: 36px; font-size: 24px; }
+  .m-slides-arrow.prev { left: 10px; }
+  .m-slides-arrow.next { right: 10px; }
+  .m-layers, .m-about-grid, .m-steps, .m-footer-grid, .controls { grid-template-columns: 1fr; }
+  .reader-header, .reader-main, .reader-nav { padding-left: 18px; padding-right: 18px; }
+}
