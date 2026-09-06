@@ -902,3 +902,26 @@ tr:hover td { background: #f3f2ee; }
   .m-layers, .m-about-grid, .m-steps, .m-footer-grid, .controls { grid-template-columns: 1fr; }
   .reader-header, .reader-main, .reader-nav { padding-left: 18px; padding-right: 18px; }
 }
+
+.cms-banner {
+  margin: 0 0 20px;
+  padding: 14px 16px;
+  border: 1px solid #c45c26;
+  background: #fff6ee;
+  color: #5a2d12;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.cms-banner.error { border-color: #a33; background: #fff1f1; color: #6a1b1b; }
+.cms-banner.warn { border-color: #c45c26; background: #fff6ee; }
+.cms-banner.ok { border-color: #3d6b3d; background: #f3f8f3; color: #234023; }
+.sync-grid { display: grid; gap: 16px; margin: 24px 0 40px; }
+.sync-card {
+  border: 1px solid var(--line);
+  padding: 18px 20px;
+}
+.sync-card h2 { margin: 0 0 8px; font-size: 20px; }
+.sync-card p, .sync-card li { margin: 0; color: var(--muted); font-size: 15px; }
+.sync-card ul { margin: 8px 0 0; padding-left: 18px; }
+.sync-ok { color: #2f6f2f; font-weight: 600; }
+.sync-err { color: #a33; font-weight: 600; }
