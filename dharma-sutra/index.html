@@ -18,7 +18,7 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="../assets/brand-mark.css?v=29">
   <link rel="stylesheet" href="../assets/brand-lockup.css?v=29">
-  <link rel="stylesheet" href="../assets/minimal.css?v=34">
+  <link rel="stylesheet" href="../assets/minimal.css?v=35">
   <script src="/js/brand.js"></script>
 </head>
 <body>
@@ -46,17 +46,7 @@
   <div id="readerState"></div>
   <article id="reader" class="reader" style="display:none">
     <header class="reader-header"><div id="readerKicker" class="kicker"></div><h2 id="readerTitle"></h2></header>
-    <div class="reader-grid"><div class="reader-main">
-      <div class="section" data-layer="basic"><h3>Sanskrit (Devanagari)</h3><p id="devanagari" class="deva"></p></div>
-      <div class="section" data-layer="basic"><h3>Sanskrit / Transliteration</h3><p id="translit" class="translit"></p></div>
-      <div class="section" data-layer="basic"><h3>Telugu</h3><p id="telugu" class="telugu"></p></div>
-      <div class="section" data-layer="basic"><h3>English translation</h3><p id="english"></p></div>
-      <div class="section" data-layer="basic"><h3>Word meaning</h3><p id="wordMeaning"></p></div>
-      <div class="section" data-layer="basic"><h3>Simple meaning</h3><p id="simpleMeaning"></p></div>
-      <div class="section" data-layer="deep"><h3>Commentary / explanation</h3><p id="commentary"></p></div>
-      <div class="section" data-layer="context"><h3>Prayoga</h3><p id="prayoga"></p></div>
-      <div class="section" data-layer="context"><h3>Cross references</h3><p id="crossRefs"></p></div>
-    </div></div>
+    <div class="reader-grid"><div class="reader-main" id="readerFields"></div></div>
     <div class="reader-nav"><button id="prev" class="btn secondary">Previous</button><button id="next" class="btn">Next</button></div>
   </article>
 </main>
@@ -70,11 +60,11 @@
   <div class="m-footer-bottom">© 2026 Bramha.org</div>
 </footer>
 <script src="/js/site.js"></script>
-<script src="/js/config.js?v=34"></script>
-<script src="/js/sheets.js?v=34"></script>
-<script src="/js/api.js?v=34"></script>
-<script>window.READER_SPEC={table:'dharma_sutras',key:'unique_id',indexFields:['unique_id','prashna','patala','khanda','sutra_number','display_name'],order:'prashna.asc,patala.asc,khanda.asc,sutra_number.asc',filters:[{id:'f1',field:'prashna',label:'Praśna'},{id:'f2',field:'patala',label:'Paṭala'},{id:'f3',field:'khanda',label:'Khāṇḍa'},{id:'f4',field:'sutra_number',label:'Sūtra'}],kicker:r=>`Praśna ${r.prashna} · Paṭala ${r.patala} · Khāṇḍa ${r.khanda} · Sūtra ${r.sutra_number}`,reference:r=>`Praśna ${r.prashna} · Paṭala ${r.patala} · Khāṇḍa ${r.khanda} · Sūtra ${r.sutra_number}`,fields:[{id:'devanagari',field:'sanskrit_devanagari'},{id:'translit',field:'sanskrit_transliteration'},{id:'telugu',field:'telugu_script'},{id:'english',field:'english_translation'},{id:'wordMeaning',field:'word_meaning'},{id:'simpleMeaning',field:'simple_meaning'},{id:'commentary',field:'commentary'},{id:'prayoga',field:'prayoga'},{id:'crossRefs',field:'cross_references'},{id:'source',field:'source'}]};</script>
-<script src="/js/reader.js?v=34"></script>
+<script src="/js/config.js?v=35"></script>
+<script src="/js/sheets.js?v=35"></script>
+<script src="/js/api.js?v=35"></script>
+<script>window.READER_SPEC={table:'dharma_sutras',key:'unique_id',indexFields:['unique_id','prashna','patala','khanda','sutra_number','display_name'],order:'prashna.asc,patala.asc,khanda.asc,sutra_number.asc',filters:[{id:'f1',field:'prashna',label:'Praśna'},{id:'f2',field:'patala',label:'Paṭala'},{id:'f3',field:'khanda',label:'Khāṇḍa'},{id:'f4',field:'sutra_number',label:'Sūtra'}],kicker:r=>`Praśna ${r.prashna} · Paṭala ${r.patala} · Khāṇḍa ${r.khanda} · Sūtra ${r.sutra_number}`};</script>
+<script src="/js/reader.js?v=35"></script>
 <script>(()=>{const bar=document.getElementById('readerViewbar'),reader=document.getElementById('reader');function setMode(mode){if(!reader)return;reader.classList.remove('reader-mode-student','reader-mode-commentary','reader-mode-context','reader-mode-all');reader.classList.add('reader-mode-'+mode);bar?.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));}bar?.addEventListener('click',e=>{const b=e.target.closest('button[data-mode]');if(b)setMode(b.dataset.mode)});setMode('student');})();</script>
 </body>
 </html>

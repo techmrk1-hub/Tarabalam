@@ -3,12 +3,7 @@
   let rows = [];
   let fullRows = [];
   let currentIndex = -1;
-  let liveSheet = false;
   const $ = id => document.getElementById(id);
-
-  function kind() {
-    return spec.table === 'gruhya_sutras' ? 'gruhya' : 'dharma';
-  }
 
   function bannerHost() {
     return document.querySelector('main.inner-wrap') || document.body;
@@ -31,16 +26,33 @@
     });
   }
 
+  function snapshotFields(record) {
+    const pairs = [
+      ['Sanskrit (Devanagari)', record.sanskrit_devanagari, 'deva', 'basic'],
+      ['Sanskrit / Transliteration', record.sanskrit_transliteration, 'translit', 'basic'],
+      ['Telugu', record.telugu_script, 'telugu', 'basic'],
+      ['English Translation', record.english_translation, 'translation', 'basic'],
+      ['Word Meaning', record.word_meaning, 'content', 'basic'],
+      ['Simple Meaning', record.simple_meaning, 'content', 'basic'],
+      ['Commentary / Explanation', record.commentary, 'content', 'deep'],
+      ['Prayoga', record.prayoga, 'content', 'context'],
+      ['Notes', record.notes, 'content', 'context'],
+      ['Cross References', record.cross_references, 'content', 'context'],
+      ['Source', record.source, 'content', 'context']
+    ];
+    return pairs
+      .filter(([, value]) => value !== null && value !== undefined && String(value).trim() !== '')
+      .map(([heading, value, role, layer]) => ({ heading, value, role, layer }));
+  }
+
   async function loadFromSheet() {
     const loaded = await loadCmsTable(spec.table, { order: spec.order });
-    liveSheet = true;
     fullRows = loaded.rows;
     rows = loaded.rows;
     showLiveOk();
   }
 
   async function loadSnapshot() {
-    liveSheet = false;
     rows = await sbFetch(`${spec.table}?select=${spec.indexFields.join(',')}&publish=eq.true&verification_status=eq.Verified&order=${spec.order}&limit=5000`);
     fullRows = [];
   }
@@ -71,26 +83,23 @@
   }
 
   function unique(field, predicate=()=>true){
-    return [...new Set(rows.filter(predicate).map(r => r[field]).filter(v => v!==null && v!==undefined))].sort((a,b)=>Number(a)-Number(b));
+    return [...new Set(rows.filter(predicate).map(r => r[field]).filter(v => v!==null && v!==undefined && String(v).trim()!==''))].sort((a,b)=>Number(a)-Number(b));
   }
   function fillSelect(id, values, label){
-    const el=$(id); el.innerHTML='';
+    const el=$(id); if(!el) return; el.innerHTML='';
     values.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=`${label} ${v}`; el.appendChild(o); });
   }
   function buildFilters(){
     const f=spec.filters;
     fillSelect('f1',unique(f[0].field),f[0].label);
     cascadeFrom(0);
-    ['f1','f2','f3','f4'].forEach((id,i)=>$(id)?.addEventListener('change',()=>cascadeFrom(i)));
+    spec.filters.forEach((filter,i)=>$(filter.id)?.addEventListener('change',()=>cascadeFrom(i)));
   }
   function cascadeFrom(level){
     const f=spec.filters;
-    const selected = [];
-    for(let i=0;i<f.length;i++) selected[i]=$(f[i].id)?.value;
     for(let i=Math.max(1,level+1); i<f.length;i++){
-      const pred = r => f.slice(0,i).every((ff,j)=> String(r[ff.field])===String($(ff.id).value));
-      const vals=unique(f[i].field,pred);
-      fillSelect(f[i].id,vals,f[i].label);
+      const pred = r => f.slice(0,i).every((ff)=> String(r[ff.field])===String($(ff.id).value));
+      fillSelect(f[i].id,unique(f[i].field,pred),f[i].label);
     }
     const target = rows.findIndex(r => f.every(ff => String(r[ff.field])===String($(ff.id).value)));
     if(target>=0) openIndex(target);
@@ -102,10 +111,83 @@
       else {
         const pred = r => spec.filters.slice(0,i).every(ff => String(r[ff.field])===String(row[ff.field]));
         fillSelect(f.id, unique(f.field,pred), f.label);
-        f.id && ($(f.id).value=row[f.field]);
+        el.value=row[f.field];
       }
     });
   }
+
+  function structuredList(value) {
+    const trimmed = String(value || '').trim();
+    if (!trimmed.startsWith('[')) return null;
+    try {
+      const parsed = JSON.parse(trimmed);
+      if (!Array.isArray(parsed) || !parsed.length) return null;
+      if (!parsed.every((item) => ['string', 'number'].includes(typeof item))) return null;
+      const ul = document.createElement('ul');
+      parsed.forEach((item) => {
+        const li = document.createElement('li');
+        li.textContent = String(item);
+        ul.appendChild(li);
+      });
+      return ul;
+    } catch {
+      return null;
+    }
+  }
+
+  function fieldBody(field) {
+    const value = String(field.value || '').trim();
+    if (field.role === 'audio' || /\.(mp3|m4a|wav|ogg)(\?|$)/i.test(value)) {
+      const audio = document.createElement('audio');
+      audio.controls = true;
+      audio.src = value;
+      audio.preload = 'none';
+      return audio;
+    }
+    if (field.role === 'image' || /\.(png|jpe?g|webp|gif|svg)(\?|$)/i.test(value)) {
+      const img = document.createElement('img');
+      img.src = value;
+      img.alt = field.heading;
+      return img;
+    }
+    if (field.role === 'url' || /^https?:\/\/\S+$/i.test(value)) {
+      const a = document.createElement('a');
+      a.href = value;
+      a.textContent = value;
+      a.rel = 'noopener noreferrer';
+      a.target = '_blank';
+      return a;
+    }
+    const list = structuredList(value);
+    if (list) return list;
+    const p = document.createElement('p');
+    if (field.role === 'deva') p.className = 'deva';
+    if (field.role === 'telugu') p.className = 'telugu';
+    if (field.role === 'translit') p.className = 'translit';
+    p.textContent = field.value;
+    return p;
+  }
+
+  function renderFields(record) {
+    const host = $('readerFields');
+    if (!host) return;
+    host.innerHTML = '';
+    const fields = Array.isArray(record.displayFields) && record.displayFields.length
+      ? record.displayFields
+      : snapshotFields(record);
+    fields.forEach((field) => {
+      if (!String(field.value || '').trim()) return;
+      const section = document.createElement('div');
+      section.className = 'section';
+      section.dataset.layer = field.layer || 'basic';
+      const heading = document.createElement('h3');
+      heading.textContent = field.heading;
+      section.appendChild(heading);
+      section.appendChild(fieldBody(field));
+      host.appendChild(section);
+    });
+  }
+
   async function openIndex(index){
     if(index<0 || index>=rows.length) return;
     currentIndex=index;
@@ -121,37 +203,14 @@
       render(record);
     } catch(e){ $('readerState').innerHTML=`<div class="notice">Unable to load this record: ${escapeHtml(e.message)}</div>`; }
   }
+
   function render(r){
     $('reader').style.display='block';
     $('readerTitle').textContent=r.display_name || r.title || r[spec.key];
     $('readerKicker').textContent=spec.kicker(r);
-    spec.fields.forEach(x=>textOrHide($(x.id),r[x.field]));
-    const src=$('sourceLink');
-    if(src){ if(r.source_url){ src.href=r.source_url; src.style.display='inline'; } else src.style.display='none'; }
-
-    const sourceReference=$('sourceReference');
-    if(sourceReference){
-      sourceReference.textContent = spec.reference ? spec.reference(r) : $('readerKicker').textContent;
-    }
-
-    const sourcePage=$('sourcePage');
-    const sourcePageRow=$('sourcePageRow');
-    if(sourcePage && sourcePageRow){
-      if(r.source_page){ sourcePage.textContent=r.source_page; sourcePageRow.style.display='grid'; }
-      else sourcePageRow.style.display='none';
-    }
-
-    const verifiedStatus=$('verifiedStatus');
-    if(verifiedStatus){
-      verifiedStatus.textContent = r.verification_status === 'Verified' ? '✓ Verified' : (r.verification_status || 'Unverified');
-      verifiedStatus.classList.toggle('verified-badge', r.verification_status === 'Verified');
-    }
-
-    const recordId=$('recordId');
-    if(recordId) recordId.textContent=r[spec.key] || '';
-    void kind;
-    void liveSheet;
+    renderFields(r);
   }
+
   $('prev')?.addEventListener('click',()=>openIndex(currentIndex-1));
   $('next')?.addEventListener('click',()=>openIndex(currentIndex+1));
   loadIndex();
