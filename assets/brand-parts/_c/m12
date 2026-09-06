@@ -1,0 +1,28 @@
+ction h3 {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+.section p { margin: 0; white-space: pre-wrap; }
+.deva { font-size: 22px; line-height: 1.8; }
+.telugu { font-size: 21px; line-height: 1.8; }
+.translit { font-family: var(--serif); font-size: 19px; }
+.reader-nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 28px 24px;
+  border-top: 1px solid var(--line);
+}
+.reader-mode-student .section[data-layer="deep"],
+.reader-mode-student .section[data-layer="context"] { display: none !important; }
+.reader-mode-commentary .section[data-layer="basic"],
+.reader-mode-commentary .section[data-layer="context"] { display: none !important; }
+.reader-mode-context .section[data-layer="basic"],
+.reader-mode-context .section[data-layer="deep"] { display: none !important; }
+
+.search-box { display: flex; gap: 12px; margin-bottom: 24px; max-width: 640px; }
+.search-res
