@@ -18,7 +18,7 @@
   <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="../assets/brand-mark.css?v=29">
   <link rel="stylesheet" href="../assets/brand-lockup.css?v=29">
-  <link rel="stylesheet" href="../assets/minimal.css?v=29">
+  <link rel="stylesheet" href="../assets/minimal.css?v=33">
   <script src="/js/brand.js"></script>
 </head>
 <body>
@@ -53,8 +53,25 @@
   <div class="m-footer-bottom">© 2026 Bramha.org</div>
 </footer>
 <script src="/js/site.js"></script>
-<script src="/js/config.js"></script>
-<script src="/js/api.js"></script>
-<script>sbFetch('articles?select=article_id,title,summary,slug,language,published_date&publish=eq.true&verification_status=eq.Verified&order=published_date.desc&limit=100').then(rows=>{const s=document.getElementById('state'); if(!rows.length){s.innerHTML='<div class="card empty">No verified articles are public yet.</div>';return;} s.innerHTML=rows.map(r=>`<div class="result"><span class="badge">${escapeHtml(r.language||'Article')}</span><a href="#">${escapeHtml(r.title)}</a><p>${escapeHtml(r.summary||'')}</p></div>`).join('');}).catch(e=>document.getElementById('state').innerHTML=`<div class="notice">${escapeHtml(e.message)}</div>`);</script>
+<script src="/js/config.js?v=33"></script>
+<script src="/js/sheets.js?v=33"></script>
+<script src="/js/api.js?v=33"></script>
+<script>
+(async()=>{
+  const s=document.getElementById('state');
+  try{
+    let rows=[];
+    try{
+      const loaded=await loadCmsTable('articles',{order:'published_date.desc'});
+      rows=(loaded.rows||[]).filter(r=>String(r.language||'')!=='Homepage Slide');
+    }catch(err){
+      console.warn('Articles CMS',err);
+      rows=await sbFetch('articles?select=article_id,title,summary,slug,language,published_date&publish=eq.true&verification_status=eq.Verified&order=published_date.desc&limit=100');
+    }
+    if(!rows.length){s.innerHTML='<div class="card empty">No verified articles are public yet.</div>';return;}
+    s.innerHTML=rows.map(r=>`<div class="result"><span class="badge">${escapeHtml(r.language||'Article')}</span><a href="#">${escapeHtml(r.title)}</a><p>${escapeHtml(r.summary||'')}</p></div>`).join('');
+  }catch(e){s.innerHTML=`<div class="notice">${escapeHtml(e.message)}</div>`;}
+})();
+</script>
 </body>
 </html>
