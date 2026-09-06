@@ -6,12 +6,13 @@
     patala: ['patala', 'paṭala', 'paatala', 'patala number'],
     khanda: ['khanda', 'khāṇḍa', 'khaṇḍa', 'khanda number'],
     section_number: ['section_number', 'section number', 'section', 'khandika', 'khaṇḍikā'],
-    sutra_number: ['sutra_number', 'sūtra number', 'sutra number', 'sutra', 'sūtra', 'sutra no', 'sūtra no'],
+    sutra_number: ['sutra_number', 'sūtra number', 'sutra number', 'sutra no', 'sūtra no', 'sutra #'],
     display_name: ['display_name', 'display name', 'dropdown display name', 'title', 'name'],
     sanskrit_devanagari: ['sanskrit_devanagari', 'sanskrit devanagari', 'sanskrit (devanagari)', 'devanagari', 'sanskrit', 'sanskrit text', 'mula', 'mūla'],
     sanskrit_transliteration: [
       'sanskrit_transliteration', 'sanskrit transliteration', 'sanskrit transliteration sutra',
-      'sanskrit / transliteration sūtra', 'sanskrit / transliteration sutra', 'transliteration', 'iast', 'roman'
+      'sanskrit / transliteration sūtra', 'sanskrit / transliteration sutra', 'transliteration',
+      'sutra', 'sūtra', 'iast', 'roman'
     ],
     telugu_script: ['telugu_script', 'telugu script', 'telugu'],
     english_translation: ['english_translation', 'english translation', 'translation'],
@@ -136,8 +137,9 @@
 
   function asNumber(value) {
     if (blank(value)) return null;
-    const n = Number(String(value).replace(/[^\d.-]/g, ''));
-    return Number.isFinite(n) ? n : String(value).trim();
+    const s = String(value).trim();
+    if (/^-?\d+$/.test(s)) return Number(s);
+    return s;
   }
 
   function composeId(kind, row) {
@@ -201,6 +203,7 @@
       const raw = {};
       mapped.forEach((field, i) => {
         if (!field) return;
+        if (!blank(raw[field])) return;
         const value = cells[i];
         raw[field] = value === undefined || value === null ? '' : String(value);
       });
