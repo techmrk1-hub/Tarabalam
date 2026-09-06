@@ -1,0 +1,36 @@
+r: #d4c0b0;
+  --color-ananukulam-text: #6b4328;
+  --color-naidhana-bg: #f7f2f2;
+  --color-naidhana-border: #d0b8b8;
+  --color-naidhana-text: #6b3333;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+main { flex: 1; }
+a { color: inherit; }
+img { max-width: 100%; display: block; }
+button, input, select { font: inherit; color: inherit; }
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.02em; }
+.deva { font-family: var(--deva); }
+.telugu { font-family: var(--telugu); }
+.page-width, .m-shell, .inner, .inner-wrap { width: var(--shell); margin-left: auto; margin-right: auto; }
+
+/* Header */
+.m-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(247,
