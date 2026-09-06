@@ -1,0 +1,39 @@
+ackground: transparent;
+  color: var(--ink);
+  padding: 7px 12px;
+  border-radius: var(--radius);
+  font-size: 12px;
+  cursor: pointer;
+}
+.reader-viewbar button.active,
+.lang-btn.active,
+.btn {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+.btn.secondary { background: transparent; color: var(--ink); border-color: var(--line-strong); }
+.reader {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+.reader-header {
+  padding: 28px 28px 18px;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+}
+.reader-header .kicker,
+.kicker {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+.reader-header h2 { font-size: 28px; margin: 8px 0 0; color: var(--ink); }
+.reader-header:after { display: none !important; }
+.reader-main { padding: 8px 28px 12px; }
+.section { padding: 20px 0; border-bottom: 1px solid var(--line); }
+.section:last-child { border-bottom: 0; }
+.se

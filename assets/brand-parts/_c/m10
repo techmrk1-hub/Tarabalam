@@ -1,0 +1,53 @@
+4px;
+  background: transparent;
+  border: 0;
+  margin-bottom: 8px;
+}
+.controls label {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.controls select,
+.search-box input,
+.search-input,
+select {
+  width: 100%;
+  padding: 10px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  background: transparent;
+  border-radius: 0;
+  outline: none;
+}
+.controls select:focus,
+.search-box input:focus,
+.search-input:focus,
+select:focus { border-bottom-color: var(--ink); }
+.reader-viewbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 0 22px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+.reader-viewbar strong {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--muted);
+  margin-right: 8px;
+}
+.reader-viewbar button,
+.btn,
+.lang-btn {
+  border: 1px solid var(--line-strong);
+  b
