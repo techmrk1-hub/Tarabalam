@@ -1,0 +1,123 @@
+Row = document.getElementById("matrixHeader");
+        const bodyContainer = document.getElementById("matrixBody");
+
+        while (headerRow.cells.length > 1) headerRow.deleteCell(1);
+        bodyContainer.innerHTML = "";
+
+        const currentLangData = languagesDataset[currentLang];
+
+        currentLangData.stars.forEach(s => {
+            let th = document.createElement("th");
+            th.textContent = s;
+            headerRow.appendChild(th);
+        });
+
+        currentLangData.stars.forEach((targetStar, ti) => {
+            let tr = document.createElement("tr");
+            let leadCell = document.createElement("td");
+            leadCell.textContent = targetStar;
+            tr.appendChild(leadCell);
+
+            currentLangData.stars.forEach((birthStar, bi) => {
+                let cell = document.createElement("td");
+                let n = calcFormula(bi + 1, ti + 1);
+                
+                cell.textContent = currentLangData.rules[n].title.split(" ")[0];
+                cell.setAttribute("data-b", bi + 1);
+                cell.setAttribute("data-t", ti + 1);
+
+                if (n === 9) cell.className = "grid-atyanta";
+                else if ([2, 4, 6, 8].includes(n)) cell.className = "grid-anukulam";
+                else if (n === 7) cell.className = "grid-naidhana";
+
+                cell.onclick = function() {
+                    document.getElementById("birthStarSelect").value = bi + 1;
+                    document.getElementById("targetStarSelect").value = ti + 1;
+                    switchTab('engine');
+                };
+
+                tr.appendChild(cell);
+            });
+            bodyContainer.appendChild(tr);
+        });
+    }
+
+    function filterGridMatrix() {
+        const searchInputText = document.getElementById("searchBox").value.toLowerCase();
+        const matrixRows = document.querySelectorAll("#matrixBody tr");
+
+        matrixRows.forEach(rowItem => {
+            const rowHeaderLabel = rowItem.cells[0].textContent.toLowerCase();
+            rowItem.style.display = rowHeaderLabel.includes(searchInputText) ? "" : "none";
+        });
+    }
+
+    // Slider controls runtime functions
+    function moveSlide(direction) {
+        slideIndex += direction;
+        if (slideIndex >= totalSlides) slideIndex = 0;
+        if (slideIndex < 0) slideIndex = totalSlides - 1;
+        updateSliderPosition();
+    }
+
+    function jumpToSlide(index) {
+        slideIndex = index;
+        updateSliderPosition();
+    }
+
+    // Handles absolute position transformation
+    function updateSliderPosition() {
+        const offset = -slideIndex * 100;
+        document.getElementById('sliderStrip').style.transform = `translateX(${offset / totalSlides}%)`;
+        
+        const dots = document.querySelectorAll('#sliderIndicators .dot');
+        dots.forEach(d => d.classList.remove('active'));
+        if(dots[slideIndex]) dots[slideIndex].classList.add('active');
+    }
+
+    // Handles fallback when an image completely fails to resolve natively
+    function handleImageError(imageElement) {
+        imageElement.style.display = 'none';
+        const parentSlide = imageElement.closest('.slide-item');
+        if (parentSlide) {
+            const fallbackNode = parentSlide.querySelector('.slide-fallback-bg');
+            if (fallbackNode) {
+                fallbackNode.style.opacity = '1';
+                fallbackNode.style.color = '#e2e8f0';
+                fallbackNode.style.fontSize = '32px';
+                fallbackNode.style.background = '#34495e';
+            }
+        }
+    }
+
+    function bindLanguageButtons() {
+        document.querySelectorAll('.lang-container .lang-btn').forEach((btn) => {
+            const code = btn.getAttribute('data-lang');
+            if (!code) return;
+            btn.addEventListener('click', (event) => {
+                event.preventDefault();
+                switchLanguage(code);
+            });
+        });
+    }
+
+    function initTarabalam() {
+        bindLanguageButtons();
+        const start = document.querySelector('.lang-container .lang-btn.active')?.getAttribute('data-lang') || 'en';
+        switchLanguage(start);
+        updateSliderPosition();
+    }
+
+    window.switchLanguage = switchLanguage;
+    window.switchTab = switchTab;
+    window.computeEngine = computeEngine;
+    window.filterGridMatrix = filterGridMatrix;
+    window.moveSlide = moveSlide;
+    window.jumpToSlide = jumpToSlide;
+    window.handleImageError = handleImageError;
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTarabalam);
+    } else {
+        initTarabalam();
+    }
