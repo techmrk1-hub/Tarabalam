@@ -70,7 +70,6 @@
     if (!raw) return '';
     if (raw.startsWith('/')) return `${location.origin}${raw}`;
 
-    // Accept Google Drive share links when the file is shared as "Anyone with the link".
     const fileMatch = raw.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
     const idMatch = raw.match(/[?&]id=([^&]+)/i);
     const id = fileMatch?.[1] || idMatch?.[1];
@@ -166,8 +165,18 @@
   async function load() {
     let cms = [];
     try {
-      if (typeof window.sbFetch !== 'function') throw new Error('Supabase API helper unavailable');
-      const rows = await window.sbFetch('articles?select=article_id,title,slug,summary,content,featured_image_url,source_references,topic_tags&language=eq.Homepage%20Slide&featured=eq.true&publish=eq.true&verification_status=eq.Verified&order=article_id.asc&limit=20');
+      let rows = [];
+      if (typeof window.loadCmsTable === 'function') {
+        try {
+          const loaded = await window.loadCmsTable('articles', { order: 'article_id.asc' });
+          rows = (loaded.rows || []).filter(r => String(r.language || '') === 'Homepage Slide' && (r.featured === true || r.featured === 'YES'));
+        } catch (sheetErr) {
+          console.warn('Homepage slides: Google Sheet CMS failed.', sheetErr);
+        }
+      }
+      if (!rows.length && typeof window.sbFetch === 'function') {
+        rows = await window.sbFetch('articles?select=article_id,title,slug,summary,content,featured_image_url,source_references,topic_tags&language=eq.Homepage%20Slide&featured=eq.true&publish=eq.true&verification_status=eq.Verified&order=article_id.asc&limit=20');
+      }
       if (Array.isArray(rows) && rows.length) cms = rows.map(parseSlide).filter(s => s.imageUrl);
     } catch (err) {
       console.warn('Homepage slides: using built-in fallback.', err);
