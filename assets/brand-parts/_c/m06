@@ -1,0 +1,47 @@
+ides-link:hover { border-bottom-color: #f7f6f3; }
+.m-slides-arrow {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(247, 246, 243, 0.35);
+  background: rgba(20, 19, 17, 0.28);
+  color: #f7f6f3;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+}
+.m-slides-arrow:hover { background: rgba(20, 19, 17, 0.5); }
+.m-slides-arrow.prev { left: 20px; }
+.m-slides-arrow.next { right: 20px; }
+.m-slides-dots {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+.m-slides-dots button {
+  width: 18px;
+  height: 2px;
+  padding: 0;
+  border: 0;
+  background: rgba(247, 246, 243, 0.35);
+  cursor: pointer;
+}
+.m-slides-dots button.active { background: #f7f6f3; }
+
+.m-hero {
+  padding: 28px 0 12px;
+  text-align: left;
+}
+.m-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted)
