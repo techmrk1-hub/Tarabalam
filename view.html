@@ -3,21 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Articles & Research | Bramha.org</title>
+<title>Article | Bramha.org</title>
 <link rel="stylesheet" href="../assets/bramha.css?v=14.1">
 <style>
-  .article-list-wrap{max-width:1100px;margin:0 auto;padding:28px 18px 64px}
-  .article-intro{max-width:760px;margin:0 0 26px;color:#6d5b4f;line-height:1.7}
-  .article-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-  .article-card{display:block;background:#fff;border:1px solid #eadfd2;border-radius:10px;padding:22px;text-decoration:none;color:inherit;box-shadow:0 4px 18px rgba(75,55,41,.05);transition:.18s ease}
-  .article-card:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(75,55,41,.09);border-color:#e0c8b1}
-  .article-card h2{font-family:Georgia,'Times New Roman',serif;font-size:22px;line-height:1.28;margin:8px 0 10px;color:#4b3729;font-weight:500}
-  .article-card p{margin:0;color:#665649;line-height:1.65;font-size:14px}
-  .article-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#8c745f}
-  .article-tag{background:#f7f2ec;border-radius:999px;padding:5px 9px}
-  .article-empty,.article-error{background:#fff;border:1px solid #eadfd2;border-radius:8px;padding:22px;color:#665649}
-  .article-error{border-color:#e5b9b1;color:#8c3e33}
-  @media(max-width:760px){.article-grid{grid-template-columns:1fr}.article-card h2{font-size:19px}}
+  .doc-article-wrap{max-width:1220px;margin:0 auto;padding:24px 18px 60px}
+  .doc-head{max-width:900px;margin:0 auto 20px;text-align:center}
+  .doc-head .back{display:inline-block;margin-bottom:14px;color:#e26114;text-decoration:none;font-size:13px;font-weight:600}
+  .doc-head h1{font-family:Georgia,'Times New Roman',serif;color:#4b3729;font-size:34px;line-height:1.2;font-weight:500;margin:0 0 10px}
+  .doc-head p{color:#6d5b4f;line-height:1.65;margin:0 auto;max-width:760px}
+  .doc-meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#8c745f}
+  .doc-shell{max-width:1120px;margin:0 auto;background:#f2ece5;border:1px solid #dfd2c4;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(75,55,41,.08)}
+  .doc-frame{display:block;width:100%;height:86vh;min-height:720px;border:0;background:#fff}
+  .doc-loading,.doc-error{max-width:900px;margin:40px auto;background:#fff;border:1px solid #eadfd2;border-radius:9px;padding:24px;color:#665649;text-align:center}
+  .doc-error{border-color:#e5b9b1;color:#8c3e33}
+  .doc-actions{display:flex;justify-content:center;margin:16px 0 0}
+  .doc-actions a{font-size:12px;color:#e26114;text-decoration:none;font-weight:600}
+  @media(max-width:760px){.doc-head h1{font-size:26px}.doc-article-wrap{padding-left:8px;padding-right:8px}.doc-frame{height:82vh;min-height:620px}.doc-shell{border-radius:5px}}
 </style>
 </head>
 <body>
@@ -33,12 +34,7 @@
 </nav></div></header>
 <div class="v12-spectrum" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
 
-<div class="inner-title-block"><div class="inner"><div class="breadcrumb"><a href="../">Home</a> / Articles</div><h1>Articles & Research</h1><p>Source-grounded articles presented directly from their approved Google Docs.</p></div></div>
-
-<main class="article-list-wrap">
-  <p class="article-intro">Open an article to read the same Google Doc formatting — including headings, fonts, sizes, Sanskrit or Telugu text, tables, images and spacing.</p>
-  <div id="articleState" class="article-grid"><div class="article-empty">Loading articles…</div></div>
-</main>
+<main class="doc-article-wrap" id="articleRoot"><div class="doc-loading">Loading article…</div></main>
 
 <footer class="v12-footer" id="footer">
 <div class="v12-connect"><h2>Connect with Bramha.org</h2><a href="mailto:contact@bramha.org" aria-label="Email">✉</a><a href="../search/" aria-label="Search">⌕</a><a href="../articles/" aria-label="Articles">▤</a></div>
@@ -46,7 +42,7 @@
 <div class="v12-footer-brand"><img src="../assets/visuals/bramha-logo-trim.png" alt="Bramha.org logo"><p>A source-grounded digital platform for Śāstra, Vedic resources and traditional tools.</p></div>
 <div><h3>Śāstra</h3><a href="../dharma-sutra/">Dharma Sūtra</a><a href="../gruhya-sutra/">Gṛhya Sūtra</a><a href="../search/">Search Library</a></div>
 <div><h3>Vedic Resources</h3><a href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles</a></div>
-<div><h3>Traditional Tools</h3><a href="../tarabalam/">Tarabalam</a><span>More tools after review</span></div>
+<div><h3>Traditional Tools</h3><a href="../tarabalam/">Tarabalam</a></div>
 <div><h3>About</h3><a href="../about.html">Mission &amp; Vision</a><a href="mailto:contact@bramha.org">Contact</a></div>
 </div><div class="v12-footer-bottom">© 2026 Bramha.org · Vedic Wisdom for Modern Life</div></footer>
 <script src="../assets/site.js"></script>
@@ -54,24 +50,37 @@
 (function(){
   const SHEET_ID='19A34Uz6JhvgXZXKpcbz69q6QUgFRuSjyEbnIltMx7X8';
   const QUERY="select A,B,C,D,F,G,I,K,N,O,Q where L='Verified' and M='YES' and D<>'Homepage Slide' and Q is not null";
-  const state=document.getElementById('articleState');
+  const root=document.getElementById('articleRoot');
+  const slug=new URLSearchParams(location.search).get('slug')||'';
   const esc=s=>String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
   const val=c=>c ? (c.f ?? c.v ?? '') : '';
-  window.bramhaArticleFeed=function(resp){
+  const previewUrl=url=>{
+    const s=String(url||'').trim();
+    let m=s.match(/docs\.google\.com\/document\/d\/([a-zA-Z0-9_-]+)/);
+    if(m) return `https://docs.google.com/document/d/${m[1]}/preview`;
+    if(/docs\.google\.com\/document\/d\/e\//.test(s)) return s.includes('?')?s+'&embedded=true':s+'?embedded=true';
+    return s;
+  };
+  window.bramhaArticleView=function(resp){
     try{
       if(!resp || resp.status==='error' || !resp.table) throw new Error('Article feed unavailable');
       const articles=(resp.table.rows||[]).map(r=>{
         const c=r.c||[];
         return {id:val(c[0]),title:val(c[1]),slug:val(c[2]),language:val(c[3]),category:val(c[4]),summary:val(c[5]),image:val(c[6]),tags:val(c[7]),featured:val(c[8]),date:val(c[9]),doc:val(c[10])};
-      }).filter(a=>a.title && a.slug && a.doc);
-      if(!articles.length){state.innerHTML='<div class="article-empty">No published articles yet.</div>';return;}
-      state.innerHTML=articles.map(a=>`<a class="article-card" href="view.html?slug=${encodeURIComponent(a.slug)}"><div class="article-meta">${a.language?`<span class="article-tag">${esc(a.language)}</span>`:''}${a.category?`<span>${esc(a.category)}</span>`:''}${a.date?`<span>· ${esc(a.date)}</span>`:''}</div><h2>${esc(a.title)}</h2><p>${esc(a.summary||'Open article')}</p></a>`).join('');
-    }catch(e){state.innerHTML='<div class="article-error">Articles could not be loaded. Please check the Articles database sharing/access.</div>';}
+      });
+      const a=articles.find(x=>x.slug===slug);
+      if(!a){root.innerHTML='<div class="doc-error">Article not found or not published.</div>';return;}
+      const p=previewUrl(a.doc);
+      if(!p){root.innerHTML='<div class="doc-error">This article does not have a Google Doc link.</div>';return;}
+      document.title=`${a.title} | Bramha.org`;
+      root.innerHTML=`<div class="doc-head"><a class="back" href="./">← All Articles</a><h1>${esc(a.title)}</h1>${a.summary?`<p>${esc(a.summary)}</p>`:''}<div class="doc-meta">${a.language?`<span>${esc(a.language)}</span>`:''}${a.category?`<span>· ${esc(a.category)}</span>`:''}${a.date?`<span>· ${esc(a.date)}</span>`:''}</div></div><div class="doc-shell"><iframe class="doc-frame" title="${esc(a.title)}" src="${esc(p)}" loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe></div><div class="doc-actions"><a href="${esc(a.doc)}" target="_blank" rel="noopener">Open original Google Doc ↗</a></div>`;
+    }catch(e){root.innerHTML='<div class="doc-error">Article could not be loaded. Check the Google Doc link and sharing settings.</div>';}
   };
+  if(!slug){root.innerHTML='<div class="doc-error">No article was selected.</div>';return;}
   const script=document.createElement('script');
-  const tqx='out:json;responseHandler:bramhaArticleFeed';
+  const tqx='out:json;responseHandler:bramhaArticleView';
   script.src=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=Articles&tqx=${encodeURIComponent(tqx)}&tq=${encodeURIComponent(QUERY)}`;
-  script.onerror=()=>{state.innerHTML='<div class="article-error">Articles could not be loaded.</div>';};
+  script.onerror=()=>{root.innerHTML='<div class="doc-error">Article could not be loaded.</div>';};
   document.head.appendChild(script);
 })();
 </script>
