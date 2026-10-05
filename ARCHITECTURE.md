@@ -15,7 +15,9 @@ Shared chrome is `assets/chrome.mjs`, mounted by `assets/shell.js`. Visual rules
 | `assets/api.js` | `loadCmsTable` and `sbFetch` |
 | `assets/seo-routes.js` | Permanent paths for sūtras, mantras, articles and topics |
 | `assets/reader.js` | Śāstra reader, layers, commentaries, passage navigation |
-| `assets/search-page.js` | Unified search over verified rows |
+| `assets/languages.mjs` | Content Language and Script controls |
+| `assets/content-protect.mjs` | Telugu hash, scripture masks, publication rules |
+| `assets/search-page.js` | Unified search over verified rows and reviewed translations |
 | `assets/articles.js` | Article list and Google Doc shell |
 | `assets/topics.js` | Topic aggregation |
 | `assets/study.js` | Optional bookmarks, notes and reading history |
@@ -51,11 +53,13 @@ The spreadsheet id is in `assets/config.js`. Tabs are Dharma Sutra, Gruhya Sutra
 
 ## Search
 
-Search loads the public rows and matches the stored text. Each result names the field that matched. Commentary search also queries verified `commentaries` rows when that table is reachable. Search does not ask a model to write a scriptural answer. `/search/` is `noindex,follow`.
+Search loads the public rows and matches the stored text, including Verified and published translations whose source hash still matches the Telugu master. Needs Review drafts are not searched. Each result names the field that matched. A translation result names its language. Commentary search also queries verified `commentaries` rows when that table is reachable. Search does not ask a model to write a scriptural answer. `/search/` is `noindex,follow`.
+
+Content language and script are separate. `docs/MULTILINGUAL-CONTENT.md` describes the Telugu master, Google Translation LLM, Aksharamukha, and the review desk at `/internal/translations.html`.
 
 ## Reader
 
-Dharma navigation is Praśna, Paṭala, Khāṇḍa, Sūtra. Gṛhya navigation is Paṭala, Khaṇḍa, Sūtra. Choosing a passage updates the permanent URL. Opening that URL selects the same row. If the Sheet and Supabase are both unavailable, a generated leaf page keeps the published HTML.
+Dharma navigation is Praśna, Paṭala, Khāṇḍa, Sūtra. Gṛhya navigation is Paṭala, Khāṇḍa, Sūtra. Choosing a passage updates the permanent URL. Opening that URL selects the same row. If the Sheet and Supabase are both unavailable, a generated leaf page keeps the published HTML.
 
 ## Articles
 
