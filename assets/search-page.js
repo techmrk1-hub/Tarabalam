@@ -10,7 +10,7 @@
     const text = String(source).replace(/\s+/g, ' ').trim();
     const at = text.toLowerCase().indexOf(needle);
     const start = at < 0 ? 0 : Math.max(0, at - 80);
-    const excerpt = (start > 0 ? '…' : '') + text.slice(start, start + 240) + (text.length > start + 240 ? '…' : '');
+    const excerpt = (start > 0 ? '\u2026' : '') + text.slice(start, start + 240) + (text.length > start + 240 ? '\u2026' : '');
     return { heading: hit?.heading || 'Match', excerpt };
   }
 
@@ -49,7 +49,7 @@
     const url = new URL(location.href);
     url.searchParams.set('q', term);
     history.replaceState(null, '', url);
-    out.innerHTML = '<p class="notice">Searching verified records…</p>';
+    out.innerHTML = '<p class="notice">Searching verified records\u2026</p>';
     try {
       const [dharma, gruhya, mantras, articles] = await Promise.all([
         rowsFor('dharma_sutras'),
@@ -62,8 +62,8 @@
         return;
       }
       const packs = [
-        { kind: 'dharma', label: 'Dharma Sūtra', rows: dharma || [] },
-        { kind: 'gruhya', label: 'Gṛhya Sūtra', rows: gruhya || [] },
+        { kind: 'dharma', label: 'Dharma S\u016btra', rows: dharma || [] },
+        { kind: 'gruhya', label: 'G\u1e5bhya S\u016btra', rows: gruhya || [] },
         { kind: 'mantras', label: 'Vedic mantra', rows: mantras || [] },
         { kind: 'articles', label: 'Article', rows: (articles || []).filter((row) => String(row.language || '') !== 'Homepage Slide') }
       ];
@@ -102,6 +102,36 @@
           });
         });
       } catch { /* commentary table may not be present */ }
+      try {
+        const protect = await import('/assets/content-protect.mjs');
+        const translated = await window.sbFetch('content_translations?select=entity_type,entity_id,language,fields,source_hash,review_status,publish&publish=eq.true&review_status=eq.Verified&limit=1000');
+        const byId = new Map();
+        packs.forEach((pack) => {
+          pack.rows.forEach((row) => {
+            const entityId = row.unique_id || row.article_id || row.mantra_id;
+            const entityType = pack.kind === 'dharma' ? 'dharma_sutra' : pack.kind === 'gruhya' ? 'gruhya_sutra' : pack.kind === 'mantras' ? 'vedic_mantra' : 'article';
+            byId.set(`${entityType}:${entityId}`, {
+              entityId,
+              sourceHash: null,
+              fields: protect.explanatoryFields(row),
+              href: window.BramhaRoutes.pathFor(pack.kind, row),
+              title: row.display_name || row.title || entityId,
+              where: locationLabel(pack.kind, row),
+              type: pack.label
+            });
+          });
+        });
+        await Promise.all([...byId.values()].map(async (record) => {
+          record.sourceHash = await protect.sourceHash(record.fields);
+        }));
+        (translated || []).forEach((item) => {
+          const record = byId.get(`${item.entity_type}:${item.entity_id}`);
+          const hit = protect.publicSearchHit(item, record, needle);
+          if (hit) matches.push(hit);
+        });
+      } catch (error) {
+        console.warn(error);
+      }
       if (window.BramhaTopics) {
         try {
           const topics = await window.BramhaTopics.list();
@@ -129,7 +159,7 @@
       out.innerHTML = `<p class="lede">${matches.length} verified match${matches.length === 1 ? '' : 'es'}.</p>` + matches.slice(0, 60).map((item) => `<article class="result">
         <div class="badge">${window.escapeHtml(item.type)}</div>
         <h2><a href="${window.escapeHtml(item.href)}">${window.escapeHtml(item.title)}</a></h2>
-        <p class="where">${window.escapeHtml([item.where, item.language, item.source].filter(Boolean).join(' · '))}</p>
+        <p class="where">${window.escapeHtml([item.where, item.language ? `Language: ${item.language}` : '', item.source ? `Source: ${item.source}` : '', item.translation ? `Translation: ${item.translation}` : ''].filter(Boolean).join(' \u00b7 '))}</p>
         <p><strong>${window.escapeHtml(item.heading)}.</strong> ${window.escapeHtml(item.excerpt)}</p>
         <p><a href="${window.escapeHtml(item.href)}">Open result</a></p>
       </article>`).join('');
