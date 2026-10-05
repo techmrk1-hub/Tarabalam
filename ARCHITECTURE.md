@@ -59,7 +59,7 @@ Content language and script are separate. `docs/MULTILINGUAL-CONTENT.md` describ
 
 ## Reader
 
-Dharma navigation is Praśna, Paṭala, Khāṇḍa, Sūtra. Gṛhya navigation is Paṭala, Khāṇḍa, Sūtra. Choosing a passage updates the permanent URL. Opening that URL selects the same row. If the Sheet and Supabase are both unavailable, a generated leaf page keeps the published HTML.
+Dharma navigation is Praśna, Paṭala, Khāṇḍa, Sūtra. Gṛhya navigation is Paṭala, Khaṇḍa, Sūtra. Choosing a passage updates the permanent URL. Opening that URL selects the same row. If the Sheet and Supabase are both unavailable, a generated leaf page keeps the published HTML.
 
 ## Articles
 
