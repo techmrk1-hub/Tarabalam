@@ -63,7 +63,7 @@ export function browsePage({ title, description, canonical, nav, crumb, heading,
 <body data-nav="${esc(nav)}">
 <div id="site-header">${headerHtml(nav)}</div>
 <main id="content" class="page">
-  <nav class="crumb" aria-label="Breadcrumb">${crumb.map((part, index) => part.href ? `<a href="${esc(part.href)}">${esc(part.name)}</a>` : `<span aria-current="page">${esc(part.name)}</span>`).join('<span aria-hidden="true"> › </span>')}</nav>
+  <nav class="crumb" aria-label="Breadcrumb">${crumb.map((part, index) => part.href ? `<a href="${esc(part.href)}">${esc(part.name)}</a>` : `<span aria-current="page">${esc(part.name)}</span>`).join('<span aria-hidden="true"> \u203a </span>')}</nav>
   <h1>${esc(heading)}</h1>
   <p>${esc(intro)}</p>
   <nav class="seo-index" aria-label="${esc(label)}"><h2>Contents</h2>${list}</nav>
@@ -98,18 +98,18 @@ export function sutraPage({ kind, row, prev, next, specScript }) {
   const crumb = kind === 'dharma'
     ? [
       { name: 'Home', href: '/' },
-      { name: 'Dharma Sūtra', href: '/dharma-sutra/' },
-      { name: `Praśna ${row.prashna}`, href: `/dharma-sutra/prasna-${row.prashna}/` },
-      { name: `Paṭala ${row.patala}`, href: `/dharma-sutra/prasna-${row.prashna}/patala-${row.patala}/` },
-      { name: `Khāṇḍa ${row.khanda}`, href: `/dharma-sutra/prasna-${row.prashna}/patala-${row.patala}/khanda-${row.khanda}/` },
-      { name: `Sūtra ${row.sutra_number}` }
+      { name: 'Dharma S\u016btra', href: '/dharma-sutra/' },
+      { name: `Pra\u015bna ${row.prashna}`, href: `/dharma-sutra/prasna-${row.prashna}/` },
+      { name: `Pa\u1e6dala ${row.patala}`, href: `/dharma-sutra/prasna-${row.prashna}/patala-${row.patala}/` },
+      { name: `Kh\u0101\u1e47\u1e0da ${row.khanda}`, href: `/dharma-sutra/prasna-${row.prashna}/patala-${row.patala}/khanda-${row.khanda}/` },
+      { name: `S\u016btra ${row.sutra_number}` }
     ]
     : [
       { name: 'Home', href: '/' },
-      { name: 'Gṛhya Sūtra', href: '/gruhya-sutra/' },
-      { name: `Paṭala ${row.patala}`, href: `/gruhya-sutra/patala-${row.patala}/` },
-      { name: `Khāṇḍa ${row.section_number}`, href: `/gruhya-sutra/patala-${row.patala}/khanda-${row.section_number}/` },
-      { name: `Sūtra ${row.sutra_number}` }
+      { name: 'G\u1e5bhya S\u016btra', href: '/gruhya-sutra/' },
+      { name: `Pa\u1e6dala ${row.patala}`, href: `/gruhya-sutra/patala-${row.patala}/` },
+      { name: `Kh\u0101\u1e47\u1e0da ${row.section_number}`, href: `/gruhya-sutra/patala-${row.patala}/khanda-${row.section_number}/` },
+      { name: `S\u016btra ${row.sutra_number}` }
     ];
   const articleLd = {
     '@context': 'https://schema.org',
@@ -129,7 +129,7 @@ export function sutraPage({ kind, row, prev, next, specScript }) {
 <body data-nav="${nav}" data-seo-leaf="1">
 <div id="site-header">${headerHtml(nav)}</div>
 <main id="content" class="page">
-  <nav class="crumb" aria-label="Breadcrumb">${crumb.map((part) => part.href ? `<a href="${esc(part.href)}">${esc(part.name)}</a>` : `<span id="crumbCurrent" aria-current="page">${esc(part.name)}</span>`).join('<span aria-hidden="true"> › </span>')}</nav>
+  <nav class="crumb" aria-label="Breadcrumb">${crumb.map((part) => part.href ? `<a href="${esc(part.href)}">${esc(part.name)}</a>` : `<span id="crumbCurrent" aria-current="page">${esc(part.name)}</span>`).join('<span aria-hidden="true"> \u203a </span>')}</nav>
   <h1 id="pageHeading">${esc(routes.pageTitle(kind, row))}</h1>
   <p>Verified ${esc(routes.workTitle(kind))} text with the fields present in the source record.</p>
   <div class="mode-bar" id="readerViewbar"><span class="kicker">Reader</span>
@@ -139,13 +139,13 @@ export function sutraPage({ kind, row, prev, next, specScript }) {
     <button type="button" data-mode="all" aria-pressed="false">All Layers</button>
   </div>
   <div class="controls">${kind === 'dharma'
-    ? `<div><label for="f1">Praśna</label><select id="f1"></select></div><div><label for="f2">Paṭala</label><select id="f2"></select></div><div><label for="f3">Khāṇḍa</label><select id="f3"></select></div><div><label for="f4">Sūtra</label><select id="f4"></select></div>`
-    : `<div><label for="f1">Paṭala</label><select id="f1"></select></div><div><label for="f2">Khaṇḍa</label><select id="f2"></select></div><div><label for="f3">Sūtra</label><select id="f3"></select></div>`}</div>
+    ? `<div><label for="f1">Pra\u015bna</label><select id="f1"></select></div><div><label for="f2">Pa\u1e6dala</label><select id="f2"></select></div><div><label for="f3">Kh\u0101\u1e47\u1e0da</label><select id="f3"></select></div><div><label for="f4">S\u016btra</label><select id="f4"></select></div>`
+    : `<div><label for="f1">Pa\u1e6dala</label><select id="f1"></select></div><div><label for="f2">Kha\u1e47\u1e0da</label><select id="f2"></select></div><div><label for="f3">S\u016btra</label><select id="f3"></select></div>`}</div>
   <div id="readerState"></div>
   <article id="reader" class="reader">
     <header class="reader-header"><div id="readerKicker" class="kicker">${esc(kind === 'dharma'
-      ? `Praśna ${row.prashna} · Paṭala ${row.patala} · Khāṇḍa ${row.khanda} · Sūtra ${row.sutra_number}`
-      : `Paṭala ${row.patala} · Khāṇḍa ${row.section_number} · Sūtra ${row.sutra_number}`)}</div>
+      ? `Pra\u015bna ${row.prashna} \u00b7 Pa\u1e6dala ${row.patala} \u00b7 Kh\u0101\u1e47\u1e0da ${row.khanda} \u00b7 S\u016btra ${row.sutra_number}`
+      : `Pa\u1e6dala ${row.patala} \u00b7 Kh\u0101\u1e47\u1e0da ${row.section_number} \u00b7 S\u016btra ${row.sutra_number}`)}</div>
       <p id="readerTitle" class="reader-title-text">${esc(row.display_name || '')}</p>
       <p id="verifyNote" class="verify-note">Verified</p>
     </header>
@@ -190,13 +190,19 @@ export function articlePage(row) {
 <body data-nav="articles">
 <div id="site-header">${headerHtml('articles')}</div>
 <main id="content" class="page">
-  <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">›</span> <a href="/articles/">Articles &amp; Research</a> <span aria-hidden="true">›</span> <span aria-current="page">${esc(row.title)}</span></nav>
-  <p class="kicker">${esc([row.language, row.category].filter(Boolean).join(' · ') || 'Article')}</p>
+  <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">\u203a</span> <a href="/articles/">Articles &amp; Research</a> <span aria-hidden="true">\u203a</span> <span aria-current="page">${esc(row.title)}</span></nav>
+  <p class="kicker">${esc([row.language, row.category].filter(Boolean).join(' \u00b7 ') || 'Article')}</p>
   <h1 id="pageHeading">${esc(row.title)}</h1>
   ${row.summary ? `<p class="lede">${esc(row.summary)}</p>` : ''}
+  <div id="contentLanguageMount"></div>
   <div id="articleBody">${body}</div>
 </main>
 <div id="site-footer">${footerHtml()}</div>
+<script src="/assets/config.js"></script>
+<script src="/assets/seo-routes.js"></script>
+<script src="/assets/sheets.js"></script>
+<script src="/assets/api.js"></script>
+<script src="/assets/articles.js"></script>
 <script type="module" src="/assets/shell.js"></script>
 </body>
 </html>
