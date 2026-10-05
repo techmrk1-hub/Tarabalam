@@ -1,96 +1,58 @@
-import { cpSync, mkdirSync, readdirSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { createReadStream, existsSync, statSync } from 'node:fs';
+import { dirname, extname, join, normalize, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 
 const root = dirname(fileURLToPath(import.meta.url));
+const types = {
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.mjs': 'text/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.html': 'text/html; charset=utf-8',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.svg': 'image/svg+xml',
+  '.xml': 'application/xml; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8',
+  '.ico': 'image/x-icon',
+  '.webmanifest': 'application/manifest+json; charset=utf-8'
+};
 
-const CLASSIC_SCRIPTS = ['site.js', 'config.js', 'sheets.js', 'api.js', 'reader.js', 'home-slides.js', 'brand.js', 'seo-routes.js', 'seo-boot.js'];
-
-const ROOT_ICONS = [
-  'favicon.ico',
-  'favicon-16x16.png',
-  'favicon-32x32.png',
-  'apple-touch-icon.png',
-  'android-chrome-192x192.png',
-  'android-chrome-512x512.png',
-];
-
-function copyClassicRuntime() {
-  const destDir = resolve(root, 'public/js');
-  mkdirSync(destDir, { recursive: true });
-  for (const file of CLASSIC_SCRIPTS) {
-    cpSync(resolve(root, 'assets', file), resolve(destDir, file));
-  }
-  cpSync(resolve(root, 'js', 'tarabalam-engine.js'), resolve(destDir, 'tarabalam-engine.js'));
-}
-
-function copyBrandPack() {
-  const srcDir = resolve(root, 'assets/brand');
-  const destDir = resolve(root, 'public/assets/brand');
-  mkdirSync(destDir, { recursive: true });
-  for (const name of readdirSync(srcDir)) {
-    if (name.startsWith('lockup-') || name.startsWith('mark-')) continue;
-    cpSync(resolve(srcDir, name), resolve(destDir, name));
-  }
-  for (const name of ROOT_ICONS) {
-    const fromBrand = resolve(srcDir, name);
-    const fromRoot = resolve(root, name);
-    const source = name === 'favicon.ico' ? fromRoot : fromBrand;
-    cpSync(source, resolve(root, 'public', name));
-  }
-  cpSync(resolve(root, 'site.webmanifest'), resolve(root, 'public/site.webmanifest'));
-  const partsSrc = resolve(root, 'assets/brand-parts');
-  const partsDest = resolve(root, 'public/assets/brand-parts');
-  mkdirSync(partsDest, { recursive: true });
-  try {
-    for (const name of readdirSync(partsSrc)) {
-      cpSync(resolve(partsSrc, name), resolve(partsDest, name));
-    }
-  } catch {
-    /* brand-parts are optional locally; GitHub Pages uses them when binaries 404 */
-  }
-}
-
-function classicRuntimePlugin() {
+function staticRoot() {
   return {
-    name: 'copy-classic-runtime',
-    buildStart() {
-      copyClassicRuntime();
-      copyBrandPack();
-    },
-    configureServer() {
-      copyClassicRuntime();
-      copyBrandPack();
-    },
+    name: 'bramha-static-root',
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        try {
+          const url = decodeURIComponent((req.url || '/').split('?')[0]);
+          const rel = url.endsWith('/') ? `${url}index.html` : url;
+          const file = normalize(join(root, rel));
+          if (!file.startsWith(root) || !existsSync(file) || !statSync(file).isFile()) {
+            if (url.startsWith('/@') || url.startsWith('/node_modules') || url.startsWith('/__vite')) return next();
+            const ext = extname(url);
+            if (ext && ext !== '.html') return next();
+            res.statusCode = 404;
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+            createReadStream(join(root, '404.html')).pipe(res);
+            return;
+          }
+          res.setHeader('Content-Type', types[extname(file)] || 'application/octet-stream');
+          createReadStream(file).pipe(res);
+        } catch {
+          next();
+        }
+      });
+    }
   };
 }
 
 export default defineConfig({
   appType: 'mpa',
-  plugins: [classicRuntimePlugin()],
-  server: {
-    host: '127.0.0.1',
-    port: 43147,
-    strictPort: true,
-  },
-  preview: {
-    host: '127.0.0.1',
-    port: 43147,
-    strictPort: true,
-  },
-  build: {
-    rollupOptions: {
-      input: {
-        main: resolve(root, 'index.html'),
-        about: resolve(root, 'about.html'),
-        tarabalam: resolve(root, 'tarabalam/index.html'),
-        search: resolve(root, 'search/index.html'),
-        dharma: resolve(root, 'dharma-sutra/index.html'),
-        gruhya: resolve(root, 'gruhya-sutra/index.html'),
-        mantras: resolve(root, 'vedic-mantras/index.html'),
-        articles: resolve(root, 'articles/index.html'),
-      },
-    },
-  },
+  publicDir: false,
+  plugins: [staticRoot()],
+  server: { host: '0.0.0.0', port: 43147, strictPort: true },
+  preview: { host: '0.0.0.0', port: 43147, strictPort: true }
 });

@@ -1,15 +1,16 @@
 {
   "name": "bramha-org",
   "private": true,
-  "description": "Bramha.org digital Śāstra library and Tarabalam traditional timing tool",
+  "description": "Bramha.org digital Śāstra knowledge library",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
-    "dev": "vite --host 127.0.0.1 --port 43147",
-    "preview": "vite preview --host 127.0.0.1 --port 43147",
-    "build": "vite build",
+    "dev": "vite --host 0.0.0.0 --port 43147",
+    "preview": "vite preview --host 0.0.0.0 --port 43147",
+    "build": "node scripts/generate-seo.mjs",
     "generate:seo": "node scripts/generate-seo.mjs",
+    "pretest": "node scripts/generate-seo.mjs",
     "test": "node scripts/test-sheet-map.mjs && node scripts/test-live-sheet.mjs && node scripts/test-seo.mjs"
   },
   "devDependencies": {

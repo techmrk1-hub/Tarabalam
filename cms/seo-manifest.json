@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-09-06T13:42:31.594Z",
+  "generatedAt": "2026-10-05T02:45:26.761Z",
   "counts": {
-    "urls": 108,
+    "urls": 204,
     "dharma": 87,
     "gruhya": 5,
     "mantras": 0,
-    "articles": 0,
+    "articles": 1,
     "commentary": 27,
     "prayoga": 0
   },
@@ -19,7 +19,6 @@
     "/tarabalam/",
     "/bhashyam/",
     "/prayoga/",
-    "/dharma-sutra/prasna-1/patala-1/khanda-1/",
     "/dharma-sutra/prasna-1/patala-1/khanda-1/sutra-1/",
     "/dharma-sutra/prasna-1/patala-1/khanda-1/sutra-2/"
   ]

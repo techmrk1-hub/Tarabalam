@@ -23,6 +23,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dharma-sutra gruhya-sutra vedic-mantras articles bhashyam prayoga sitemap.xml robots.txt public/sitemap.xml public/robots.txt 404.html cms/seo-manifest.json
+          git add dharma-sutra gruhya-sutra vedic-mantras articles bhashyam prayoga sitemap.xml robots.txt 404.html cms/seo-manifest.json
           git diff --cached --quiet || git commit -m "Regenerate public SEO pages from the live Sheet"
           git push
