@@ -1,79 +1,121 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Articles & Research | Bramha.org</title>
-<link rel="stylesheet" href="../assets/bramha.css?v=14.1">
-<style>
-  .article-list-wrap{max-width:1100px;margin:0 auto;padding:28px 18px 64px}
-  .article-intro{max-width:760px;margin:0 0 26px;color:#6d5b4f;line-height:1.7}
-  .article-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-  .article-card{display:block;background:#fff;border:1px solid #eadfd2;border-radius:10px;padding:22px;text-decoration:none;color:inherit;box-shadow:0 4px 18px rgba(75,55,41,.05);transition:.18s ease}
-  .article-card:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(75,55,41,.09);border-color:#e0c8b1}
-  .article-card h2{font-family:Georgia,'Times New Roman',serif;font-size:22px;line-height:1.28;margin:8px 0 10px;color:#4b3729;font-weight:500}
-  .article-card p{margin:0;color:#665649;line-height:1.65;font-size:14px}
-  .article-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#8c745f}
-  .article-tag{background:#f7f2ec;border-radius:999px;padding:5px 9px}
-  .article-empty,.article-error{background:#fff;border:1px solid #eadfd2;border-radius:8px;padding:22px;color:#665649}
-  .article-error{border-color:#e5b9b1;color:#8c3e33}
-  @media(max-width:760px){.article-grid{grid-template-columns:1fr}.article-card h2{font-size:19px}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Bramha.org | Digital Śāstra Knowledge Library</title>
+  <meta name="description" content="A source-grounded digital library for Śāstra texts, Vedic knowledge, meanings, commentaries, Prayoga, cross-references and research.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://bramha.org/">
+  <meta property="og:site_name" content="Bramha.org">
+  <meta property="og:title" content="Bramha.org | Digital Śāstra Knowledge Library">
+  <meta property="og:description" content="Read, compare, and understand traditional knowledge in one library.">
+  <meta property="og:url" content="https://bramha.org/">
+  <meta property="og:image" content="https://bramha.org/favicon.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#4a1520">
+  <link rel="stylesheet" href="/assets/library.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"Bramha.org","url":"https://bramha.org/"},{"@type":"WebSite","name":"Bramha.org","url":"https://bramha.org/","potentialAction":{"@type":"SearchAction","target":"https://bramha.org/search/?q={query}","query-input":"required name=query"}}]}</script>
 </head>
-<body>
-<div class="v12-topbar"><span>Bramha.org — Vedic wisdom, Śāstra and traditional knowledge.</span><a href="../dharma-sutra/">Explore Śāstra</a></div>
-<header class="v12-header" id="v12Header"><div class="v12-header-inner">
-<a class="v12-brand" href="../" aria-label="Bramha.org home"><img src="../assets/visuals/bramha-logo-trim.png" alt="Bramha.org — Vedic Wisdom for Modern Life"></a>
-<button class="v12-mobile" type="button" aria-label="Menu" onclick="document.getElementById('v12Header').classList.toggle('open')">☰</button>
-<nav class="v12-nav" aria-label="Main navigation">
-<div class="shastra"><a href="../dharma-sutra/">Śāstra</a><div class="v12-menu"><a href="../dharma-sutra/">Āpastamba Dharma Sūtra</a><a href="../gruhya-sutra/">Āpastamba Gṛhya Sūtra</a></div></div>
-<div class="vedic"><a href="../vedic-mantras/">Vedic Resources</a><div class="v12-menu"><a href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles &amp; Research</a></div></div>
-<div class="tools"><a href="../tarabalam/">Traditional Tools</a><div class="v12-menu"><a href="../tarabalam/">Tarabalam</a></div></div>
-<a href="../articles/">Articles</a><a href="../about.html">About</a><a href="#footer">Contact</a><a href="../search/" aria-label="Search">⌕</a>
-</nav></div></header>
-<div class="v12-spectrum" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<body data-nav="home">
+<div id="site-header"></div>
+<main id="content">
+  <section class="page hero">
+    <p class="eyebrow">Bramha.org · Digital Śāstra Knowledge Library</p>
+    <h1>Read. Compare. Understand.</h1>
+    <p class="support">One Place for Traditional Knowledge.</p>
+    <p class="lede">A source-grounded digital library for Śāstra texts, Vedic knowledge, meanings, commentaries, Prayoga, cross-references and research.</p>
+    <div class="hero-actions">
+      <a class="btn" href="/search/">Search the Library</a>
+      <a class="btn secondary" href="dharma-sutra/">Browse Śāstra</a>
+    </div>
+    <form id="librarySearch" class="library-search" action="/search/" method="get" role="search">
+      <label for="q">Search the library</label>
+      <div class="row">
+        <input id="q" name="q" type="search" placeholder="Search a sūtra, mantra, topic, or article" autocomplete="off">
+        <button class="btn" type="submit">Search</button>
+      </div>
+      <div class="query-row" aria-label="Example queries">
+        <button type="button" data-query="upakarma during ashaucha">upakarma during ashaucha</button>
+        <button type="button" data-query="father death sutaka">father death sutaka</button>
+        <button type="button" data-query="gruhapravesha tithi">gruhapravesha tithi</button>
+        <button type="button" data-query="devatarpanam rishi tarpanam">devatarpanam rishi tarpanam</button>
+        <button type="button" data-query="sandhyavandanam">sandhyavandanam</button>
+      </div>
+    </form>
+  </section>
 
-<div class="inner-title-block"><div class="inner"><div class="breadcrumb"><a href="../">Home</a> / Articles</div><h1>Articles & Research</h1><p>Source-grounded articles presented directly from their approved Google Docs.</p></div></div>
+  <section class="page">
+    <div class="section-head">
+      <h2>Browse the library</h2>
+      <p>Four collections. Each one opens only verified, published records.</p>
+    </div>
+    <div class="collection-list">
+      <a class="collection-card" href="dharma-sutra/">
+        <div class="kicker">Śāstra</div>
+        <h3>Āpastamba Dharma Sūtra</h3>
+        <p>Praśna, Paṭala, Khāṇḍa and Sūtra, with text, meaning and commentary when the source record has them.</p>
+      </a>
+      <a class="collection-card" href="gruhya-sutra/">
+        <div class="kicker">Śāstra</div>
+        <h3>Āpastamba Gṛhya Sūtra</h3>
+        <p>Domestic ritual sūtras, read with the same layered record and permanent addresses.</p>
+      </a>
+      <a class="collection-card" href="vedic-mantras/">
+        <div class="kicker">Veda</div>
+        <h3>Vedic Texts &amp; Mantras</h3>
+        <p>Mantra text, meaning and Prayoga or Viniyoga as each verified record is published.</p>
+      </a>
+      <a class="collection-card" href="articles/">
+        <div class="kicker">Research</div>
+        <h3>Articles &amp; Research</h3>
+        <p>Source-grounded articles opened from their Google Docs, inside a Bramha.org page.</p>
+      </a>
+    </div>
+  </section>
 
-<main class="article-list-wrap">
-  <p class="article-intro">Open an article to read the same Google Doc formatting — including headings, fonts, sizes, Sanskrit or Telugu text, tables, images and spacing.</p>
-  <div id="articleState" class="article-grid"><div class="article-empty">Loading articles…</div></div>
+  <section class="page">
+    <div class="section-head">
+      <h2>Knowledge layers</h2>
+      <p>One passage can hold several layers. A layer appears only when that field exists in the verified record.</p>
+    </div>
+    <ol class="layers">
+      <li><strong>Original text</strong><span>Devanagari, Telugu script, and IAST or transliteration.</span></li>
+      <li><strong>Padaccheda</strong><span>Word division, when the source record includes it.</span></li>
+      <li><strong>Word meaning</strong><span>Word-by-word meaning in the language supplied by the record.</span></li>
+      <li><strong>Translation</strong><span>English translation and Telugu meaning, kept distinct.</span></li>
+      <li><strong>Simple explanation</strong><span>A plain restatement, separate from commentary.</span></li>
+      <li><strong>Commentary</strong><span>Bhāṣya, vṛtti, ṭīkā, or another commentary only when a verified record exists.</span></li>
+      <li><strong>Prayoga</strong><span>Context of use, without turning the library into a manual of invention.</span></li>
+      <li><strong>Cross references</strong><span>Related passages and notes, including variants when recorded.</span></li>
+      <li><strong>Source</strong><span>Edition, page, and verification status.</span></li>
+    </ol>
+  </section>
+
+  <section class="page">
+    <div class="section-head">
+      <h2>Browse by topic</h2>
+      <p>Topics gather verified passages, articles and notes. They are not written by hand a second time.</p>
+    </div>
+    <div id="homeTopics" class="topic-list"></div>
+  </section>
+
+  <section class="page" id="featured">
+    <div class="section-head"><h2>From the library</h2></div>
+    <div id="featuredSlides" class="card-list"></div>
+    <p class="verify-note">Further indexes: <a href="bhashyam/">commentaries</a> · <a href="prayoga/">Prayoga</a> · <a href="topics/">topics</a> · <a href="tarabalam/">Tarabalam</a></p>
+  </section>
 </main>
-
-<footer class="v12-footer" id="footer">
-<div class="v12-connect"><h2>Connect with Bramha.org</h2><a href="mailto:contact@bramha.org" aria-label="Email">✉</a><a href="../search/" aria-label="Search">⌕</a><a href="../articles/" aria-label="Articles">▤</a></div>
-<div class="v12-footer-grid">
-<div class="v12-footer-brand"><img src="../assets/visuals/bramha-logo-trim.png" alt="Bramha.org logo"><p>A source-grounded digital platform for Śāstra, Vedic resources and traditional tools.</p></div>
-<div><h3>Śāstra</h3><a href="../dharma-sutra/">Dharma Sūtra</a><a href="../gruhya-sutra/">Gṛhya Sūtra</a><a href="../search/">Search Library</a></div>
-<div><h3>Vedic Resources</h3><a href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles</a></div>
-<div><h3>Traditional Tools</h3><a href="../tarabalam/">Tarabalam</a><span>More tools after review</span></div>
-<div><h3>About</h3><a href="../about.html">Mission &amp; Vision</a><a href="mailto:contact@bramha.org">Contact</a></div>
-</div><div class="v12-footer-bottom">© 2026 Bramha.org · Vedic Wisdom for Modern Life</div></footer>
-<script src="../assets/site.js"></script>
-<script>
-(function(){
-  const SHEET_ID='19A34Uz6JhvgXZXKpcbz69q6QUgFRuSjyEbnIltMx7X8';
-  const QUERY="select A,B,C,D,F,G,I,K,N,O,Q where L='Verified' and M='YES' and D<>'Homepage Slide' and Q is not null";
-  const state=document.getElementById('articleState');
-  const esc=s=>String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
-  const val=c=>c ? (c.f ?? c.v ?? '') : '';
-  window.bramhaArticleFeed=function(resp){
-    try{
-      if(!resp || resp.status==='error' || !resp.table) throw new Error('Article feed unavailable');
-      const articles=(resp.table.rows||[]).map(r=>{
-        const c=r.c||[];
-        return {id:val(c[0]),title:val(c[1]),slug:val(c[2]),language:val(c[3]),category:val(c[4]),summary:val(c[5]),image:val(c[6]),tags:val(c[7]),featured:val(c[8]),date:val(c[9]),doc:val(c[10])};
-      }).filter(a=>a.title && a.slug && a.doc);
-      if(!articles.length){state.innerHTML='<div class="article-empty">No published articles yet.</div>';return;}
-      state.innerHTML=articles.map(a=>`<a class="article-card" href="view.html?slug=${encodeURIComponent(a.slug)}"><div class="article-meta">${a.language?`<span class="article-tag">${esc(a.language)}</span>`:''}${a.category?`<span>${esc(a.category)}</span>`:''}${a.date?`<span>· ${esc(a.date)}</span>`:''}</div><h2>${esc(a.title)}</h2><p>${esc(a.summary||'Open article')}</p></a>`).join('');
-    }catch(e){state.innerHTML='<div class="article-error">Articles could not be loaded. Please check the Articles database sharing/access.</div>';}
-  };
-  const script=document.createElement('script');
-  const tqx='out:json;responseHandler:bramhaArticleFeed';
-  script.src=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=Articles&tqx=${encodeURIComponent(tqx)}&tq=${encodeURIComponent(QUERY)}`;
-  script.onerror=()=>{state.innerHTML='<div class="article-error">Articles could not be loaded.</div>';};
-  document.head.appendChild(script);
-})();
-</script>
+<div id="site-footer"></div>
+<script src="/assets/config.js"></script>
+<script src="/assets/seo-routes.js"></script>
+<script src="/assets/seo-boot.js"></script>
+<script src="/assets/sheets.js"></script>
+<script src="/assets/api.js"></script>
+<script src="/assets/topics.js"></script>
+<script src="/assets/home.js"></script>
+<script type="module" src="/assets/shell.js"></script>
 </body>
 </html>
