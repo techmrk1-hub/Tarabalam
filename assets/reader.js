@@ -1,12 +1,14 @@
-(function(){
+(function () {
   const spec = window.READER_SPEC;
+  if (!spec) return;
   let rows = [];
-  let fullRows = [];
   let currentIndex = -1;
-  const $ = id => document.getElementById(id);
+  let mode = 'text';
+  let commentaries = [];
+  const $ = (id) => document.getElementById(id);
   const routes = window.BramhaRoutes;
 
-  function kindFromSpec() {
+  function kind() {
     if (spec.table === 'dharma_sutras') return 'dharma';
     if (spec.table === 'gruhya_sutras') return 'gruhya';
     if (spec.table === 'vedic_mantras') return 'mantras';
@@ -14,300 +16,421 @@
     return spec.table;
   }
 
-  function prettyPath(row) {
-    if (!routes || !row) return location.pathname;
-    return routes.pathFor(kindFromSpec(), row);
+  function entityType() {
+    if (kind() === 'dharma') return 'dharma_sutra';
+    if (kind() === 'gruhya') return 'gruhya_sutra';
+    if (kind() === 'mantras') return 'vedic_mantra';
+    return 'article';
   }
 
-  function bannerHost() {
-    return document.querySelector('main.inner-wrap') || document.body;
+  function banner(html, tone) {
+    window.showCmsBanner?.(document.querySelector('main') || document.body, { html, tone: tone || 'warn' });
   }
 
-  function showLiveOk() {
-    const bar = document.getElementById('cmsBanner');
-    if (bar) bar.remove();
-  }
-
-  function showSheetFailure(error) {
-    const sync = window.BramhaSheets?.status?.() || {};
-    const detail = sync.lastError || {};
-    window.showCmsBanner(bannerHost(), {
-      tone: 'error',
-      html: `<strong>Google Sheet CMS is not connected.</strong> ${escapeHtml(error.message)} ` +
-        `This page is showing the last Supabase snapshot, not a live Sheet update. ` +
-        `Endpoint: ${escapeHtml(detail.endpoint || '(none)')}. ` +
-        `Time: ${escapeHtml(detail.at || new Date().toISOString())}.`
-    });
-  }
-
-  function snapshotFields(record) {
-    const pairs = [
-      ['Sanskrit (Devanagari)', record.sanskrit_devanagari, 'deva', 'basic'],
-      ['Sanskrit / Transliteration', record.sanskrit_transliteration, 'translit', 'basic'],
-      ['Telugu', record.telugu_script, 'telugu', 'basic'],
-      ['English Translation', record.english_translation, 'translation', 'basic'],
-      ['Word Meaning', record.word_meaning, 'content', 'basic'],
-      ['Simple Meaning', record.simple_meaning, 'content', 'basic'],
-      ['Commentary / Explanation', record.commentary, 'content', 'deep'],
-      ['Prayoga', record.prayoga, 'content', 'context'],
-      ['Notes', record.notes, 'content', 'context'],
-      ['Cross References', record.cross_references, 'content', 'context'],
-      ['Source', record.source, 'content', 'context']
-    ];
-    return pairs
-      .filter(([, value]) => value !== null && value !== undefined && String(value).trim() !== '')
-      .map(([heading, value, role, layer]) => ({ heading, value, role, layer }));
-  }
-
-  async function loadFromSheet() {
-    const loaded = await loadCmsTable(spec.table, { order: spec.order });
-    fullRows = loaded.rows;
-    rows = loaded.rows;
-    showLiveOk();
-  }
-
-  async function loadSnapshot() {
-    rows = await sbFetch(`${spec.table}?select=${spec.indexFields.join(',')}&publish=eq.true&verification_status=eq.Verified&order=${spec.order}&limit=5000`);
-    fullRows = [];
-  }
-
-  function resolveIndex() {
-    const wanted = new URLSearchParams(location.search).get('id');
-    const parsed = routes?.parsePath(location.pathname) || null;
-    if (routes) {
-      const i = routes.findRow(kindFromSpec(), rows, parsed, wanted);
-      if (i >= 0) return i;
-    }
-    if (wanted) {
-      const i = rows.findIndex(r => r[spec.key] === wanted);
-      if (i >= 0) return i;
-    }
-    return 0;
-  }
-
-  async function loadIndex(){
-    $('readerState').textContent = 'Loading verified content…';
-    try {
-      try {
-        await loadFromSheet();
-      } catch (sheetError) {
-        showSheetFailure(sheetError);
-        await loadSnapshot();
-      }
-      if (!rows.length) {
-        $('readerState').innerHTML = '<div class="empty">No verified Sūtras are public yet. Content will appear automatically after a row is marked <strong>Verified</strong> and <strong>Publish = YES</strong> in Bramha.org - Sutra Database.</div>';
-        document.querySelector('.controls').style.display='none';
-        return;
-      }
-      const parsed = routes?.parsePath(location.pathname);
-      if (parsed?.leaf) {
-        const i = resolveIndex();
-        if (i < 0) {
-          $('readerState').innerHTML = '<div class="notice">This Sūtra is not in the public verified library.</div>';
-          document.querySelector('.controls').style.display='none';
-          return;
-        }
-      }
-      $('readerState').textContent = '';
-      buildFilters();
-      openIndex(resolveIndex(), { source: 'init' });
-    } catch(e){
-      $('readerState').innerHTML = `<div class="notice">Unable to load the reader: ${escapeHtml(e.message)}</div>`;
-    }
-  }
-
-  function unique(field, predicate=()=>true){
-    return [...new Set(rows.filter(predicate).map(r => r[field]).filter(v => v!==null && v!==undefined && String(v).trim()!==''))].sort((a,b)=>Number(a)-Number(b));
-  }
-  function fillSelect(id, values, label){
-    const el=$(id); if(!el) return; el.innerHTML='';
-    values.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=`${label} ${v}`; el.appendChild(o); });
-  }
-  function buildFilters(){
-    const f=spec.filters;
-    fillSelect('f1',unique(f[0].field),f[0].label);
-    spec.filters.forEach((filter,i)=>$(filter.id)?.addEventListener('change',()=>cascadeFrom(i)));
-    cascadeFrom(0, { skipOpen: true });
-  }
-  function cascadeFrom(level, options = {}){
-    const f=spec.filters;
-    for(let i=Math.max(1,level+1); i<f.length;i++){
-      const pred = r => f.slice(0,i).every((ff)=> String(r[ff.field])===String($(ff.id).value));
-      fillSelect(f[i].id,unique(f[i].field,pred),f[i].label);
-    }
-    if (options.skipOpen) return;
-    const target = rows.findIndex(r => f.every(ff => String(r[ff.field])===String($(ff.id).value)));
-    if(target>=0) openIndex(target, { source: 'user' });
-  }
-  function syncFilters(row){
-    spec.filters.forEach((f,i)=>{
-      const el=$(f.id); if(!el) return;
-      if(i===0){ el.value=row[f.field]; }
-      else {
-        const pred = r => spec.filters.slice(0,i).every(ff => String(r[ff.field])===String(row[ff.field]));
-        fillSelect(f.id, unique(f.field,pred), f.label);
-        el.value=row[f.field];
-      }
-    });
-  }
-
-  function structuredList(value) {
-    const trimmed = String(value || '').trim();
-    if (!trimmed.startsWith('[')) return null;
-    try {
-      const parsed = JSON.parse(trimmed);
-      if (!Array.isArray(parsed) || !parsed.length) return null;
-      if (!parsed.every((item) => ['string', 'number'].includes(typeof item))) return null;
-      const ul = document.createElement('ul');
-      parsed.forEach((item) => {
-        const li = document.createElement('li');
-        li.textContent = String(item);
-        ul.appendChild(li);
-      });
-      return ul;
-    } catch {
-      return null;
-    }
-  }
-
-  function fieldBody(field) {
+  function fieldNodes(field) {
     const value = String(field.value || '').trim();
+    const block = document.createElement('div');
+    block.className = 'section';
+    block.dataset.layer = field.layer || 'basic';
+    const heading = document.createElement('h2');
+    heading.textContent = field.heading;
+    block.appendChild(heading);
     if (field.role === 'audio' || /\.(mp3|m4a|wav|ogg)(\?|$)/i.test(value)) {
       const audio = document.createElement('audio');
       audio.controls = true;
-      audio.src = value;
       audio.preload = 'none';
-      return audio;
+      audio.src = value;
+      block.appendChild(audio);
+      return block;
     }
     if (field.role === 'image' || /\.(png|jpe?g|webp|gif|svg)(\?|$)/i.test(value)) {
       const img = document.createElement('img');
       img.src = value;
       img.alt = field.heading;
       img.loading = 'lazy';
-      return img;
+      block.appendChild(img);
+      return block;
     }
-    if (field.role === 'url' || /^https?:\/\/\S+$/i.test(value)) {
+    if ((field.role === 'url' || /^https?:\/\/\S+$/i.test(value)) && value.length < 500) {
       const a = document.createElement('a');
       a.href = value;
       a.textContent = value;
       a.rel = 'noopener noreferrer';
       a.target = '_blank';
-      return a;
+      block.appendChild(a);
+      return block;
     }
-    const list = structuredList(value);
-    if (list) return list;
     const p = document.createElement('p');
-    if (field.role === 'deva') { p.className = 'deva'; p.lang = 'sa'; }
-    if (field.role === 'telugu') { p.className = 'telugu'; p.lang = 'te'; }
-    if (field.role === 'translit') { p.className = 'translit'; p.lang = 'sa'; }
+    const role = field.role || '';
+    const folded = String(field.heading || '').toLowerCase();
+    if (role === 'deva') { p.className = 'deva'; p.lang = 'sa'; }
+    else if (role === 'telugu') { p.className = 'telugu'; p.lang = 'te'; }
+    else if (role === 'telugu_meaning') { p.className = 'telugu'; p.lang = 'te'; }
+    else if (role === 'translit') { p.className = 'translit'; p.lang = 'sa-Latn'; }
+    else if (role === 'padaccheda' || /padaccheda|padapatha/.test(folded)) p.className = 'padaccheda';
     p.textContent = field.value;
-    return p;
+    block.appendChild(p);
+    return block;
   }
 
-  function renderFields(record) {
-    const host = $('readerFields');
-    if (!host) return;
+  function sourceCommentaries(record) {
+    const fields = Array.isArray(record.displayFields) ? record.displayFields : [];
+    return fields.filter((field) => field.layer === 'deep' && String(field.value || '').trim()).map((field, index) => ({
+      commentary_id: `source:${record.unique_id || record.mantra_id || index}:${field.heading}`,
+      commentary_type: 'Source record',
+      title: field.heading,
+      author: '',
+      tradition: '',
+      language: '',
+      text: field.value,
+      source_title: record.source || record.values?.Source || '',
+      source_page: record.source_page || '',
+      source_url: record.source_url || '',
+      verification_status: 'Verified',
+      publish: true,
+      sort_order: index
+    }));
+  }
+
+  async function extraCommentaries(record) {
+    const id = record.unique_id || record.mantra_id || record.article_id;
+    if (!id || typeof window.sbFetch !== 'function') return [];
+    try {
+      const data = await window.sbFetch(
+        `commentaries?select=commentary_id,entity_type,entity_id,commentary_type,title,author,tradition,language,text,source_title,source_page,source_url,verification_status,publish,sort_order&entity_type=eq.${encodeURIComponent(entityType())}&entity_id=eq.${encodeURIComponent(id)}&publish=eq.true&verification_status=eq.Verified&order=sort_order.asc`
+      );
+      return Array.isArray(data) ? data.filter((row) => row && String(row.text || '').trim()) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function renderCommentaries() {
+    const host = $('commentaryList');
+    const panel = $('commentaryPanel');
+    const compare = $('compareToggle');
+    if (!host || !panel) return;
+    const show = mode === 'commentary' || mode === 'all';
+    panel.hidden = !show;
+    if (!show) return;
     host.innerHTML = '';
-    const fields = Array.isArray(record.displayFields) && record.displayFields.length
-      ? record.displayFields
-      : snapshotFields(record);
-    const headingTag = document.body.dataset.seoLeaf ? 'h2' : 'h3';
-    fields.forEach((field) => {
-      if (!String(field.value || '').trim()) return;
-      const section = document.createElement('div');
-      section.className = 'section';
-      section.dataset.layer = field.layer || 'basic';
-      const heading = document.createElement(headingTag);
-      heading.textContent = field.heading;
-      section.appendChild(heading);
-      section.appendChild(fieldBody(field));
-      host.appendChild(section);
+    if (!commentaries.length) {
+      host.innerHTML = '<p class="empty">No verified commentary is currently available for this passage.</p>';
+      if (compare) compare.hidden = true;
+      return;
+    }
+    if (compare) compare.hidden = commentaries.length < 2;
+    const tabs = $('commentaryTabs');
+    if (tabs) {
+      tabs.innerHTML = '';
+      tabs.hidden = window.innerWidth > 800 || !host.classList.contains('is-compare');
+    }
+    commentaries.forEach((item, index) => {
+      const article = document.createElement('article');
+      article.className = 'commentary';
+      article.dataset.index = String(index);
+      const type = document.createElement('div');
+      type.className = 'kicker';
+      type.textContent = item.commentary_type || 'Commentary';
+      const title = document.createElement('h3');
+      title.textContent = item.title || item.commentary_type || 'Commentary';
+      article.append(type, title);
+      const bits = [item.author, item.tradition, item.language].filter(Boolean);
+      if (bits.length) {
+        const meta = document.createElement('p');
+        meta.className = 'meta';
+        meta.textContent = bits.join(' · ');
+        article.appendChild(meta);
+      }
+      const body = document.createElement('p');
+      body.textContent = item.text;
+      if (/[\u0C00-\u0C7F]/.test(item.text) && !/[\u0900-\u097F]/.test(item.text)) { body.className = 'telugu'; body.lang = 'te'; }
+      else if (/[\u0900-\u097F]/.test(item.text)) { body.className = 'deva'; body.lang = 'sa'; }
+      article.appendChild(body);
+      const sourceBits = [item.source_title, item.source_page].filter(Boolean);
+      if (sourceBits.length || item.source_url) {
+        const source = document.createElement('p');
+        source.className = 'meta';
+        source.textContent = sourceBits.join(', ');
+        if (item.source_url) {
+          source.append(sourceBits.length ? ' · ' : '');
+          const a = document.createElement('a');
+          a.href = item.source_url;
+          a.textContent = 'Source link';
+          a.rel = 'noopener noreferrer';
+          a.target = '_blank';
+          source.appendChild(a);
+        }
+        article.appendChild(source);
+      }
+      host.appendChild(article);
+    });
+    if (window.innerWidth <= 800 && host.classList.contains('is-compare')) showMobileTabs();
+  }
+
+  function showMobileTabs() {
+    const tabs = $('commentaryTabs');
+    const host = $('commentaryList');
+    if (!tabs || !host) return;
+    tabs.hidden = false;
+    tabs.innerHTML = '';
+    commentaries.forEach((item, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = item.title || `Commentary ${index + 1}`;
+      button.setAttribute('aria-pressed', index === 0 ? 'true' : 'false');
+      button.addEventListener('click', () => {
+        tabs.querySelectorAll('button').forEach((node) => node.setAttribute('aria-pressed', 'false'));
+        button.setAttribute('aria-pressed', 'true');
+        host.querySelectorAll('.commentary').forEach((node) => {
+          node.hidden = node.dataset.index !== String(index);
+        });
+      });
+      tabs.appendChild(button);
+    });
+    host.querySelectorAll('.commentary').forEach((node, index) => { node.hidden = index !== 0; });
+  }
+
+  function applyMode() {
+    document.querySelectorAll('#readerFields .section').forEach((section) => {
+      const layer = section.dataset.layer || 'basic';
+      const visible = mode === 'all'
+        || (mode === 'text' && layer === 'basic')
+        || (mode === 'prayoga' && layer === 'context');
+      section.hidden = !visible;
+    });
+    const fields = $('readerFields');
+    const visibleCount = fields ? [...fields.querySelectorAll('.section')].filter((node) => !node.hidden).length : 0;
+    const gap = $('layerEmpty');
+    if (gap) {
+      if (!visibleCount && mode !== 'commentary') {
+        gap.hidden = false;
+        gap.textContent = mode === 'prayoga'
+          ? 'No verified Prayoga or context is currently available for this passage.'
+          : 'No verified text is currently available for this passage.';
+      } else gap.hidden = true;
+    }
+    document.querySelectorAll('#readerViewbar button').forEach((button) => {
+      button.setAttribute('aria-pressed', button.dataset.mode === mode ? 'true' : 'false');
+    });
+    renderCommentaries();
+  }
+
+  function setMode(next) {
+    mode = next;
+    try { sessionStorage.setItem('bramha.reader.mode', next); } catch { /* ignore */ }
+    applyMode();
+  }
+
+  function render(record) {
+    const reader = $('reader');
+    if (reader) reader.hidden = false;
+    const title = $('readerTitle');
+    const label = record.display_name || record.title || record.unique_id || '';
+    if (title) title.textContent = label;
+    const kicker = $('readerKicker');
+    if (kicker) kicker.textContent = spec.kicker(record);
+    const heading = $('pageHeading');
+    if (heading && document.body.dataset.seoLeaf === '1' && routes) heading.textContent = routes.pageTitle(kind(), record);
+    const verify = $('verifyNote');
+    if (verify) {
+      const source = record.source || record.values?.Source || record.values?.['Source'] || '';
+      verify.textContent = source ? `Verified · ${source}` : 'Verified';
+    }
+    const host = $('readerFields');
+    if (host && !record._keepStatic) {
+      host.innerHTML = '';
+      const fields = (record.displayFields || []).filter((field) => field.layer !== 'deep' && String(field.value || '').trim());
+      fields.forEach((field) => host.appendChild(fieldNodes(field)));
+    }
+    const crumb = $('crumbCurrent');
+    if (crumb && routes) crumb.textContent = kind() === 'dharma' || kind() === 'gruhya' ? `Sūtra ${record.sutra_number}` : (record.title || label);
+    if (routes && document.body.dataset.seoLeaf !== '1') {
+      document.title = `${routes.pageTitle(kind(), record)} | Bramha.org`;
+    }
+    applyMode();
+    document.dispatchEvent(new CustomEvent('bramha:passage', {
+      detail: {
+        contentType: entityType(),
+        contentId: record.unique_id || record.mantra_id || record.article_id || '',
+        title: label,
+        path: routes ? routes.pathFor(kind(), record) : location.pathname
+      }
+    }));
+  }
+
+  function syncFilters(row) {
+    const filters = spec.filters || [];
+    filters.forEach((filter, index) => {
+      const select = $(filter.id);
+      if (!select) return;
+      const pred = (candidate) => filters.slice(0, index).every((prev) => String(candidate[prev.field]) === String(row[prev.field]));
+      fillSelect(filter.id, unique(filter.field, index === 0 ? () => true : pred), filter.label);
+      select.value = row[filter.field];
     });
   }
 
-  function syncUrl(row, source) {
-    if (!routes || !row) return;
-    const path = prettyPath(row);
-    const wanted = new URLSearchParams(location.search).get('id');
-    if (wanted) {
-      history.replaceState({ id: row[spec.key] }, '', path);
-      return;
-    }
-    if (source === 'pop') return;
-    if (source === 'init') {
-      const parsed = routes.parsePath(location.pathname);
-      if (parsed?.leaf && location.pathname !== path) history.replaceState({ id: row[spec.key] }, '', path);
-      return;
-    }
-    if (location.pathname !== path) history.pushState({ id: row[spec.key] }, '', path);
+  function unique(field, predicate) {
+    return [...new Set(rows.filter(predicate).map((row) => row[field]).filter((value) => value !== null && value !== undefined && String(value).trim() !== ''))]
+      .sort((a, b) => Number(a) - Number(b) || String(a).localeCompare(String(b)));
   }
 
-  function syncNavLinks() {
+  function fillSelect(id, values, label) {
+    const el = $(id);
+    if (!el) return;
+    el.innerHTML = '';
+    values.forEach((value) => {
+      const option = document.createElement('option');
+      option.value = value;
+      option.textContent = `${label} ${value}`;
+      el.appendChild(option);
+    });
+  }
+
+  function cascadeFrom(level) {
+    const filters = spec.filters || [];
+    for (let i = Math.max(1, level + 1); i < filters.length; i += 1) {
+      const pred = (row) => filters.slice(0, i).every((filter) => String(row[filter.field]) === String($(filter.id).value));
+      fillSelect(filters[i].id, unique(filters[i].field, pred), filters[i].label);
+    }
+    const target = rows.findIndex((row) => filters.every((filter) => String(row[filter.field]) === String($(filter.id).value)));
+    if (target >= 0) openIndex(target, 'user');
+  }
+
+  function pathFor(row) {
+    return routes ? routes.pathFor(kind(), row) : location.pathname;
+  }
+
+  function syncNav() {
     const prev = $('prev');
     const next = $('next');
     if (prev) {
-      if (currentIndex > 0) {
-        prev.href = prettyPath(rows[currentIndex - 1]);
-        prev.hidden = false;
-        prev.removeAttribute('aria-disabled');
-      } else {
-        prev.href = '#';
-        prev.hidden = true;
-        prev.setAttribute('aria-disabled', 'true');
-      }
+      const ok = currentIndex > 0;
+      prev.hidden = !ok;
+      if (ok) prev.href = pathFor(rows[currentIndex - 1]);
     }
     if (next) {
-      if (currentIndex >= 0 && currentIndex < rows.length - 1) {
-        next.href = prettyPath(rows[currentIndex + 1]);
-        next.hidden = false;
-        next.removeAttribute('aria-disabled');
-      } else {
-        next.href = '#';
-        next.hidden = true;
-        next.setAttribute('aria-disabled', 'true');
-      }
+      const ok = currentIndex >= 0 && currentIndex < rows.length - 1;
+      next.hidden = !ok;
+      if (ok) next.href = pathFor(rows[currentIndex + 1]);
     }
   }
 
-  async function openIndex(index, options = {}){
-    if(index<0 || index>=rows.length) return;
-    currentIndex=index;
-    const row=rows[index];
+  function resolveIndex() {
+    const wanted = new URLSearchParams(location.search).get('id');
+    const parsed = routes?.parsePath(location.pathname) || null;
+    if (routes) {
+      const index = routes.findRow(kind(), rows, parsed, wanted);
+      if (index >= 0) return index;
+    }
+    if (wanted) {
+      const index = rows.findIndex((row) => row[spec.key] === wanted);
+      if (index >= 0) return index;
+    }
+    return rows.length ? 0 : -1;
+  }
+
+  async function openIndex(index, source) {
+    if (index < 0 || index >= rows.length) return;
+    currentIndex = index;
+    const row = rows[index];
     syncFilters(row);
-    syncUrl(row, options.source || 'user');
-    syncNavLinks();
+    syncNav();
+    const path = pathFor(row);
+    if (source === 'user' && location.pathname !== path) history.pushState({ id: row[spec.key] }, '', path);
+    if (source === 'init' && new URLSearchParams(location.search).get('id')) history.replaceState({ id: row[spec.key] }, '', path);
+    commentaries = sourceCommentaries(row);
+    render(row);
+    const extra = await extraCommentaries(row);
+    if (currentIndex === index && extra.length) {
+      commentaries = commentaries.concat(extra);
+      renderCommentaries();
+    }
+  }
+
+  function keepStatic(message) {
+    const state = $('readerState');
+    if (state) state.innerHTML = `<div class="notice">${message}</div>`;
+    const reader = $('reader');
+    if (reader) reader.hidden = false;
+    mode = 'all';
+    document.querySelectorAll('#readerFields .section').forEach((section) => { section.hidden = false; });
+    const panel = $('commentaryPanel');
+    if (panel) panel.hidden = false;
+    const gap = $('layerEmpty');
+    if (gap) gap.hidden = true;
+    document.querySelectorAll('#readerViewbar button').forEach((button) => {
+      button.setAttribute('aria-pressed', button.dataset.mode === 'all' ? 'true' : 'false');
+    });
+  }
+
+  async function loadIndex() {
+    const state = $('readerState');
+    if (state) state.textContent = 'Loading verified content…';
     try {
-      let record = fullRows.find(r => r[spec.key] === row[spec.key]);
-      if (!record) {
-        const data=await sbFetch(`${spec.table}?select=*&${spec.key}=eq.${encodeURIComponent(row[spec.key])}&limit=1`);
-        record = data[0];
+      let loaded;
+      try {
+        loaded = await window.loadCmsTable(spec.table, { order: spec.order });
+      } catch (sheetError) {
+        banner(`<strong>Unable to reach the Google Sheet.</strong> ${window.escapeHtml?.(sheetError.message) || ''} Showing the Supabase snapshot when one is available.`, 'error');
+        const data = await window.sbFetch(`${spec.table}?select=*&publish=eq.true&verification_status=eq.Verified&order=${spec.order}&limit=5000`);
+        loaded = { rows: data };
       }
-      render(record);
-    } catch(e){ $('readerState').innerHTML=`<div class="notice">Unable to load this record: ${escapeHtml(e.message)}</div>`; }
+      rows = loaded.rows || [];
+      if (!rows.length) {
+        if (document.body.dataset.seoLeaf === '1' && $('readerFields')?.childElementCount) {
+          keepStatic('Live library refresh is unavailable. This page is showing the published text.');
+          return;
+        }
+        if (state) state.innerHTML = '<div class="empty">No verified content is currently available.</div>';
+        const controls = document.querySelector('.controls');
+        if (controls) controls.hidden = true;
+        return;
+      }
+      const parsed = routes?.parsePath(location.pathname);
+      if (parsed?.leaf && resolveIndex() < 0) {
+        if (state) state.innerHTML = '<div class="empty">This passage is not in the public verified library.</div>';
+        return;
+      }
+      if (state) state.textContent = '';
+      (spec.filters || []).forEach((filter, index) => {
+        $(filter.id)?.addEventListener('change', () => cascadeFrom(index));
+      });
+      try {
+        const saved = sessionStorage.getItem('bramha.reader.mode');
+        if (saved) mode = saved;
+      } catch { /* ignore */ }
+      await openIndex(resolveIndex(), 'init');
+    } catch (error) {
+      if (document.body.dataset.seoLeaf === '1' && $('readerFields')?.childElementCount) {
+        keepStatic('Unable to load the library. Please try again. The published text on this page is still shown below.');
+        return;
+      }
+      if (state) state.innerHTML = `<div class="error">Unable to load the library. Please try again.</div>`;
+      console.error(error);
+    }
   }
 
-  function render(r){
-    $('reader').style.display='block';
-    const title = $('readerTitle');
-    if (title) title.textContent=r.display_name || r.title || r[spec.key];
-    $('readerKicker').textContent=spec.kicker(r);
-    renderFields(r);
-  }
-
-  function navClick(handler) {
+  $('readerViewbar')?.addEventListener('click', (event) => {
+    const button = event.target.closest('button[data-mode]');
+    if (button) setMode(button.dataset.mode);
+  });
+  $('compareToggle')?.addEventListener('click', () => {
+    const host = $('commentaryList');
+    if (!host) return;
+    host.classList.toggle('is-compare');
+    $('compareToggle').setAttribute('aria-pressed', host.classList.contains('is-compare') ? 'true' : 'false');
+    renderCommentaries();
+  });
+  function navClick(step) {
     return (event) => {
-      if (event.defaultPrevented) return;
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       event.preventDefault();
-      handler();
+      openIndex(currentIndex + step, 'user');
     };
   }
-
-  $('prev')?.addEventListener('click', navClick(()=>openIndex(currentIndex-1, { source: 'user' })));
-  $('next')?.addEventListener('click', navClick(()=>openIndex(currentIndex+1, { source: 'user' })));
-  window.addEventListener('popstate', () => {
-    if (!rows.length) return;
-    openIndex(resolveIndex(), { source: 'pop' });
-  });
+  $('prev')?.addEventListener('click', navClick(-1));
+  $('next')?.addEventListener('click', navClick(1));
+  window.addEventListener('popstate', () => { if (rows.length) openIndex(resolveIndex(), 'pop'); });
   loadIndex();
 })();
