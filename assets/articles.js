@@ -60,18 +60,54 @@
       document.title = `${row.title} | Bramha.org`;
       const embed = docEmbed(row.google_doc_url || row.values?.['Google Doc URL'] || '');
       const meta = [row.language, row.category, row.author, row.published_date].filter(Boolean).join(' · ');
-      const summary = row.summary ? `<p class="lede">${window.escapeHtml(row.summary)}</p>` : '';
+      if (row.summary) {
+        const lede = document.createElement('p');
+        lede.className = 'lede';
+        lede.textContent = row.summary;
+        host.before(lede);
+      }
+      if (meta) {
+        const kicker = document.createElement('p');
+        kicker.className = 'kicker';
+        kicker.textContent = meta;
+        host.before(kicker);
+      }
+      let mount = document.getElementById('contentLanguageMount');
+      if (!mount) {
+        mount = document.createElement('div');
+        mount.id = 'contentLanguageMount';
+        host.before(mount);
+      }
       const frame = embed
         ? `<iframe class="doc-frame" title="${window.escapeHtml(row.title)}" src="${window.escapeHtml(embed)}" loading="lazy"></iframe>`
         : (row.content
           ? `<article class="reader"><p>${window.escapeHtml(row.content)}</p></article>`
           : '<p class="empty">Article document is unavailable.</p>');
-      host.innerHTML = `${meta ? `<p class="kicker">${window.escapeHtml(meta)}</p>` : ''}${summary}${frame}`;
+      host.innerHTML = frame;
+      const languages = await import('/assets/languages.mjs');
+      await languages.applyArticle(row);
     } catch (error) {
       console.error(error);
       host.innerHTML = '<p class="error">Unable to load the library. Please try again.</p>';
     }
   }
 
-  window.BramhaArticles = { renderList, renderDoc, docEmbed };
+  async function mountLeaf() {
+    const host = document.getElementById('articleBody');
+    if (!host || !window.BramhaRoutes) return;
+    const slug = window.BramhaRoutes.parsePath(location.pathname)?.slug;
+    if (!slug) return;
+    try {
+      const rows = await publicArticles();
+      const row = rows.find((item) => window.BramhaRoutes.articlePath(item) === `/articles/${slug}/`);
+      if (!row) return;
+      const languages = await import('/assets/languages.mjs');
+      await languages.applyArticle(row);
+    } catch (error) {
+      console.warn(error);
+    }
+  }
+
+  window.BramhaArticles = { renderList, renderDoc, docEmbed, mountLeaf };
+  if (document.getElementById('articleBody') && !document.getElementById('articleList')) mountLeaf();
 })();
