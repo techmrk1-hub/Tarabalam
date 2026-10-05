@@ -64,7 +64,7 @@ const leaf = readFileSync(resolve(root, 'dharma-sutra/prasna-1/patala-1/khanda-1
 assert.match(leaf, /<title>.*1\.1\.1\.1/);
 assert.match(leaf, /<meta name="description"/);
 assert.match(leaf, /rel="canonical" href="https:\/\/bramha.org\/dharma-sutra\/prasna-1\/patala-1\/khanda-1\/sutra-1\/"/);
-assert.match(leaf, /<h1>Āpastamba Dharma Sūtra 1\.1\.1\.1<\/h1>/);
+assert.match(leaf, /<h1[^>]*>Āpastamba Dharma Sūtra 1\.1\.1\.1<\/h1>/);
 assert.match(leaf, /athātas-sāmayācārikān/);
 assert.match(leaf, /BreadcrumbList/);
 assert.match(leaf, /<a href="\/dharma-sutra\/prasna-1\/patala-1\/khanda-1\/sutra-2\/"/);
