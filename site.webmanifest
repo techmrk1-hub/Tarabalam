@@ -1,21 +1,21 @@
 {
   "name": "Bramha.org",
   "short_name": "Bramha",
-  "description": "Illuminating the Intellect through Vedic Wisdom",
+  "description": "Digital Śāstra Knowledge Library",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f7f6f3",
-  "theme_color": "#1c1c1a",
+  "background_color": "#f6f1e7",
+  "theme_color": "#4a1520",
   "icons": [
     {
-      "src": "/android-chrome-192x192.png",
-      "sizes": "192x192",
+      "src": "/favicon.png",
+      "sizes": "256x256",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/android-chrome-512x512.png",
-      "sizes": "512x512",
+      "src": "/favicon.png",
+      "sizes": "256x256",
       "type": "image/png",
       "purpose": "any"
     }

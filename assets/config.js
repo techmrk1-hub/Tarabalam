@@ -17,6 +17,8 @@ window.BRAMHA_CONFIG = {
       mantras: ['Vedic Mantras', 'Vedic Mantra', 'vedic_mantras', 'Mantras']
     }
   },
+  /* Set this when the separate Tarabalam application has a public address. */
+  tarabalamAppUrl: '',
   seo: {
     siteOrigin: 'https://bramha.org',
     /* Paste the Google Search Console verification token only. Leave blank until you have one. */
