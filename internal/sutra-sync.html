@@ -5,83 +5,54 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>Sūtra CMS diagnostics | Bramha.org</title>
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="stylesheet" href="../assets/brand-mark.css?v=29">
-  <link rel="stylesheet" href="../assets/brand-lockup.css?v=29">
-  <link rel="stylesheet" href="../assets/minimal.css?v=35">
-  <script src="/js/brand.js"></script>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/assets/library.css">
 </head>
-<body>
-<header class="m-header">
-  <div class="m-bar">
-    <a class="m-logo" href="../" aria-label="Bramha.org home"><span class="m-brand-mark"><img src="/assets/brand/android-chrome-192x192.png" srcset="/assets/brand/android-chrome-192x192.png 192w, /assets/brand/android-chrome-512x512.png 512w" sizes="48px" alt="" width="192" height="192" decoding="async" data-brand="mark" onerror="window.brandPack&&window.brandPack(this)"></span><span>Bramha.org</span></a>
-  </div>
-</header>
-<div class="inner-title-block"><div class="inner"><div class="breadcrumb"><a href="../">Home</a> / Internal</div><h1>Sūtra CMS diagnostics</h1><p>Internal status for Bramha.org - Sutra Database. Header row 1 is the live schema. Public readers show only rows marked <strong>Verified</strong> and <strong>Publish = YES</strong>.</p></div></div>
-<main class="inner-wrap">
-  <div id="statusCards" class="sync-grid"></div>
+<body data-nav="about">
+<div id="site-header"></div>
+<main id="content" class="page">
+  <h1>Sūtra CMS diagnostics</h1>
+  <p>Internal status for Bramha.org - Sutra Database. Public readers show only rows marked <strong>Verified</strong> and <strong>Publish = YES</strong>.</p>
   <p><button type="button" class="btn" id="refresh">Refresh now</button></p>
+  <div id="statusCards" class="sync-grid"></div>
 </main>
-<script src="/js/site.js"></script>
-<script src="/js/config.js?v=35"></script>
-<script src="/js/sheets.js?v=35"></script>
-<script src="/js/api.js?v=35"></script>
+<div id="site-footer"></div>
+<script src="/assets/config.js"></script>
+<script src="/assets/sheets.js"></script>
+<script src="/assets/api.js"></script>
 <script>
-const box=document.getElementById('statusCards');
-function card(title, body){return `<section class="sync-card"><h2>${title}</h2>${body}</section>`;}
-function issues(diag){
-  if(!diag) return '<p>No schema report.</p>';
-  const items=[];
-  if(diag.blankHeadings) items.push(`${diag.blankHeadings} blank heading(s)`);
-  if(diag.duplicateHeadings?.length) items.push(`Duplicate headings: ${diag.duplicateHeadings.map(escapeHtml).join(', ')}`);
-  if(diag.missingIds) items.push(`${diag.missingIds} row(s) missing Unique ID`);
-  if(diag.duplicateIds?.length) items.push(`Duplicate IDs: ${diag.duplicateIds.map(escapeHtml).join(', ')}`);
-  if(diag.invalidUrls) items.push(`${diag.invalidUrls} invalid URL(s)`);
-  if(diag.emptyColumns?.length) items.push(`Empty columns (hidden until they have a value): ${diag.emptyColumns.map(escapeHtml).join(', ')}`);
-  if(!items.length) return '<p class="sync-ok">No schema or identity problems detected.</p>';
-  return `<ul>${items.map(item=>`<li class="sync-err">${item}</li>`).join('')}</ul>`;
+const box = document.getElementById('statusCards');
+function card(title, body) { return `<section class="paper-card"><h2>${title}</h2>${body}</section>`; }
+function issues(diag) {
+  if (!diag) return '<p>No schema report.</p>';
+  const items = [];
+  if (diag.blankHeadings) items.push(`${diag.blankHeadings} blank heading(s)`);
+  if (diag.duplicateHeadings?.length) items.push(`Duplicate headings: ${diag.duplicateHeadings.map(escapeHtml).join(', ')}`);
+  if (diag.missingIds) items.push(`${diag.missingIds} row(s) missing an id`);
+  if (diag.duplicateIds?.length) items.push(`Duplicate IDs: ${diag.duplicateIds.map(escapeHtml).join(', ')}`);
+  if (diag.invalidUrls) items.push(`${diag.invalidUrls} invalid URL(s)`);
+  if (!items.length) return '<p class="sync-ok">No schema or identity problems detected.</p>';
+  return `<ul>${items.map((item) => `<li class="sync-err">${item}</li>`).join('')}</ul>`;
 }
-function headings(result){
-  const list=result?.diagnostics?.displayHeadings || result?.schema?.columns?.filter(c=>c.display).map(c=>c.heading) || [];
-  if(!list.length) return '<p>No display columns yet.</p>';
-  return `<p>${list.map(escapeHtml).join(' · ')}</p>`;
-}
-async function run(){
-  box.innerHTML='<section class="sync-card"><p>Checking Google Sheet connection and schema…</p></section>';
-  const started=new Date().toISOString();
-  const results={};
-  for (const kind of ['dharma','gruhya','articles']) {
-    try { results[kind]=await BramhaSheets.load(kind,{refresh:true}); }
-    catch(err){ results[kind]={error:err.message}; }
+async function run() {
+  box.innerHTML = '<p class="notice">Checking the Google Sheet…</p>';
+  const results = {};
+  for (const kind of ['dharma', 'gruhya', 'articles', 'mantras']) {
+    try { results[kind] = await BramhaSheets.load(kind, { refresh: true }); }
+    catch (error) { results[kind] = { error: error.message }; }
   }
-  const st=BramhaSheets.status();
-  const cfg=window.BRAMHA_CONFIG.googleSheet||{};
-  const conn=st.connection==='connected'?'<span class="sync-ok">Connected</span>':'<span class="sync-err">Error</span>';
-  const d=results.dharma||{};
-  const g=results.gruhya||{};
-  box.innerHTML=[
-    card('Google Sheet connection', `<p>${conn}</p><ul>
-      <li>Sheet name: ${escapeHtml(cfg.name||'')}</li>
-      <li>Spreadsheet ID: ${escapeHtml(cfg.id||'(not set)')}</li>
-      <li>Source: ${escapeHtml(st.source||'none')}</li>
-      <li>Checked: ${escapeHtml(started)}</li>
-    </ul>`),
-    card('Last successful synchronization', `<p>${escapeHtml(st.lastSuccessAt||'Never')}</p>`),
-    card('Sūtras loaded', `<ul>
-      <li>Dharma Sūtras: ${st.counts.dharma||0} public / ${d.allRows?.length ?? st.tabs.dharma?.loaded ?? '—'} loaded</li>
-      <li>Gṛhya Sūtras: ${st.counts.gruhya||0} public / ${g.allRows?.length ?? st.tabs.gruhya?.loaded ?? '—'} loaded</li>
-      <li>Articles: ${st.counts.articles||0}</li>
-    </ul>`),
-    card('Live Dharma headings', headings(d)),
-    card('Live Gṛhya headings', headings(g)),
-    card('Validation', issues(d.diagnostics)+issues(g.diagnostics)),
-    card('Last synchronization error', st.lastError
-      ? `<p class="sync-err">${escapeHtml(st.lastError.message)}</p>`
-      : '<p class="sync-ok">None</p>')
+  const st = BramhaSheets.status();
+  const cfg = window.BRAMHA_CONFIG.googleSheet || {};
+  box.innerHTML = [
+    card('Connection', `<p>${st.connection === 'connected' ? '<span class="sync-ok">Connected</span>' : '<span class="sync-err">Error</span>'}</p><ul><li>Sheet: ${escapeHtml(cfg.name || '')}</li><li>Source: ${escapeHtml(st.source || 'none')}</li><li>Checked: ${escapeHtml(st.lastSuccessAt || '')}</li></ul>`),
+    card('Public rows', `<ul><li>Dharma: ${st.counts.dharma || 0}</li><li>Gṛhya: ${st.counts.gruhya || 0}</li><li>Articles: ${st.counts.articles || 0}</li><li>Mantras: ${st.counts.mantras || 0}</li></ul>`),
+    card('Validation', issues(results.dharma?.diagnostics) + issues(results.gruhya?.diagnostics)),
+    card('Last error', st.lastError ? `<p class="sync-err">${escapeHtml(st.lastError.message)}</p>` : '<p class="sync-ok">None</p>')
   ].join('');
 }
-document.getElementById('refresh').onclick=run;
+document.getElementById('refresh').onclick = run;
 run();
 </script>
+<script type="module" src="/assets/shell.js"></script>
 </body>
 </html>

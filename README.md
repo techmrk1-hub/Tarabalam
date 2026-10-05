@@ -1,66 +1,120 @@
 # Bramha.org
 
-Static site from [techmrk1-hub/Tarabalam](https://github.com/techmrk1-hub/Tarabalam): the **Bramha.org** digital Śāstra knowledge library plus the **Tarabalam** traditional timing dashboard. Tarabalam calculation logic is unchanged.
+Bramha.org is a digital Śāstra knowledge library. It preserves, organizes, searches and reads traditional texts. It is not a school, a course catalogue, or an enrolment site.
 
-The live site is [https://bramha.org/](https://bramha.org/).
+The public site shows a record only when **verification status is Verified** and **Publish is YES**. Missing commentary stays missing. The library does not invent sūtras, mantras, or bhāṣya.
 
-Branding comes from the uploaded 18-file Bramha.org logo pack in `assets/brand/`. Pages reuse those files through shared header, footer, and About markup. When a pack binary is not on GitHub Pages yet, `js/brand.js` reassembles the original pack files from `assets/brand-parts/`.
+Live reading comes from the Google Sheet **Bramha.org - Sutra Database**. Supabase holds structured application data and a snapshot used when the Sheet cannot be reached. Tarabalam is a separate application. This repository only links to it.
 
-| Location | Asset |
+## Main pages
+
+| Page | Address |
 | --- | --- |
-| Header emblem | `/assets/brand/android-chrome-192x192.png` (512px for 3× displays) |
-| Footer lockup (cream background) | `/assets/brand/bramha-logo-full.webp` (srcset 320 / 480 / 1160) |
-| About lockup | `/assets/brand/bramha-logo-full-transparent.png` |
-| Favicon / Apple / PWA | `/favicon.ico`, `/favicon-16x16.png`, `/favicon-32x32.png`, `/apple-touch-icon.png`, `/android-chrome-192x192.png`, `/android-chrome-512x512.png` |
-| Social preview | `https://bramha.org/android-chrome-512x512.png` |
+| Home | `/` |
+| Āpastamba Dharma Sūtra | `/dharma-sutra/` |
+| Āpastamba Gṛhya Sūtra | `/gruhya-sutra/` |
+| Vedic texts | `/vedic-mantras/` |
+| Articles | `/articles/` and `/articles/<slug>/` |
+| Older article links | `/view.html?slug=<slug>` and `/articles/?slug=<slug>` |
+| Topics | `/topics/` |
+| Search | `/search/` |
+| Tarabalam entrance | `/tarabalam/` |
+| About | `/about.html` |
+| Personal study | `/account/` |
+| Sheet diagnostics | `/internal/sutra-sync.html` |
 
-Runtime scripts are served from `/js/`. The homepage hero reads approved slide rows from the Articles table (language `Homepage Slide`, Featured + Verified + Publish). If fewer than two CMS slides are public, built-in fallback slides are shown.
+A Dharma passage keeps a permanent address such as `/dharma-sutra/prasna-1/patala-1/khanda-1/sutra-1/`. A Gṛhya passage keeps `/gruhya-sutra/patala-1/khanda-1/sutra-1/`.
 
-## Pages
+## Folder structure
 
-- **Home** — `index.html`
-- **Tarabalam** — `tarabalam/`
-- **Śāstra readers** — `dharma-sutra/`, `gruhya-sutra/`
-- **Permanent Sūtra URLs** — `/dharma-sutra/prasna-1/patala-1/khanda-1/sutra-1/`, `/gruhya-sutra/patala-1/khanda-1/sutra-1/`
-- **Vedic mantras, articles, search** — `vedic-mantras/`, `articles/`, `search/`
-- **About** — `about.html`
+Runtime JavaScript and CSS live only in `assets/`. Generated sūtra and article pages live beside the hand-written indexes. GitHub Pages serves this repository root. There is no second copy under `js/` or `public/`.
 
-The existing dropdown readers stay in place. Selecting a Sūtra updates the browser to the permanent URL. Opening that URL loads the same record and prerenders the public text for search engines.
-
-Regenerate crawlable pages from the live public Sheet:
-
-```bash
-npm run generate:seo
+```
+assets/            shared chrome, reader, search, Sheet mapper, styles
+articles/          article index and /articles/<slug>/
+cms/               Sheet notes and the generated SEO manifest
+dharma-sutra/      permanent Dharma pages
+gruhya-sutra/      permanent Gṛhya pages
+vedic-mantras/     mantra index
+search/            unified search
+topics/            topic index and /topics/<slug>/
+tarabalam/         launcher only; no calculation engine
+bhashyam/          index of passages that already include commentary
+prayoga/           index of passages that already include Prayoga
+account/           optional personal study
+internal/          Sheet diagnostics, omitted from the sitemap
+scripts/           SEO generator and tests
+supabase/          SQL migrations
 ```
 
-Only **Verified + Publish = YES** rows are written. Search stays `noindex,follow`. After publishing new rows, run the generator again or use the GitHub Action `.github/workflows/generate-seo.yml`.
+The production site is [https://bramha.org/](https://bramha.org/). The root `CNAME` file is `bramha.org`. Renaming the Git repository does not change that domain.
 
-Set Google Search Console verification or GA4 later in `assets/config.js` → `seo.googleSiteVerification` / `seo.ga4MeasurementId`. Do not invent tokens.
+This repository is the Bramha.org library. Tarabalam is an external Traditional Tool. Set `tarabalamAppUrl` in `assets/config.js` when that application has its own public address. Do not copy its calculation engine here.
 
-Sūtra and article data is managed in the Google Sheet **Bramha.org - Sutra Database**. Row 1 is the live field list: readers render those headings and values in Sheet order. Only rows marked **Verified** and **Publish = YES** are public. The browser cache is 45 seconds and includes the header row, so renamed or added columns are not kept forever. If the Sheet is unreachable, the page shows a visible error and a dated Supabase snapshot.
+## Technology
 
-See `cms/README.md` for the connection path and `/internal/sutra-sync.html` for diagnostics.
+- Static HTML, CSS and JavaScript, suitable for GitHub Pages
+- Vite as the local static server
+- Google Sheets as the editorial source
+- Supabase Postgres for structured data, optional sign-in, bookmarks, notes and reading history
+- A Node generator for crawlable pages
 
 ## Run locally
+
+Requires Node.js 20+.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Then open [http://127.0.0.1:43147](http://127.0.0.1:43147). The Tarabalam tool is at `/tarabalam/`.
+Open [http://127.0.0.1:43147](http://127.0.0.1:43147).
 
-Requires Node.js 20+.
+```bash
+npm test
+npm run build
+```
 
-## GitHub Pages (no Vercel)
+`npm test` regenerates the public pages from the live Sheet, then checks the sheet map, the live rows, and the SEO files. `npm run build` only regenerates those pages. Production is the repository root. There is no application server to deploy.
 
-1. Open [Tarabalam Settings → Pages](https://github.com/techmrk1-hub/Tarabalam/settings/pages)
-2. Set **Source** to **Deploy from a branch**
-3. Branch **main**, folder **/ (root)**
-4. Save
+## How content is published
 
-Custom domain `bramha.org` is already in the root `CNAME` file.
+1. Edit the Google Sheet. Row 1 of each tab is the schema.
+2. Mark a row **Verified** and **Publish = YES** when it is ready.
+3. The site reads the public Sheet in the browser. Unpublished rows are dropped before display.
+4. Run `npm run generate:seo` (or the GitHub Action `.github/workflows/generate-seo.yml`) so permanent HTML pages contain the verified text for search engines.
 
-## Repository
+The Sheet must stay shared as **Anyone with the link → Viewer**. The browser cache is 45 seconds. `?refresh=1` bypasses it.
 
-https://github.com/techmrk1-hub/Tarabalam
+### Articles
+
+Write the article in Google Docs. Paste the document URL into the Articles tab, with title, slug, language, summary and the same Verified + Publish rule. The site opens that document inside `/articles/<slug>/`, keeping the document’s own formatting. Homepage slides are rows whose language is `Homepage Slide`; they are not articles.
+
+### Verification
+
+Public queries, the reader, search, topic lists and the page generator all require both conditions:
+
+- `verification_status = Verified`
+- `publish = true` in Supabase, or `YES` in the Sheet
+
+## Google Sheets and Supabase
+
+Sheet and Supabase settings live in `assets/config.js`. Only the publishable Supabase key belongs there. Do not put a service-role key, database password, or sync secret in this repository.
+
+`assets/sheets.js` is the schema mapper. `assets/api.js` loads a public table from the Sheet and falls back to Supabase. Optional personal study uses Supabase Auth. Notes and bookmarks are readable only by their owner.
+
+New tables for multiple commentaries and topics are in `supabase/migrations/`. They start empty. Do not insert composed Śāstra text to make a page look full.
+
+Set `tarabalamAppUrl` in `assets/config.js` when the separate Tarabalam application has a public address.
+
+## Deploy
+
+GitHub Pages, from the `main` branch, folder `/` (root). The root `CNAME` file is `bramha.org`.
+
+Search pages stay `noindex,follow`. The sitemap lists permanent public URLs and omits search and internal tools.
+
+## Further reading
+
+- [ARCHITECTURE.md](ARCHITECTURE.md) — data flow and page structure
+- [CONTRIBUTING.md](CONTRIBUTING.md) — review rules
+- [cms/README.md](cms/README.md) — Sheet columns
