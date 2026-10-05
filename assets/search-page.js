@@ -10,7 +10,7 @@
     const text = String(source).replace(/\s+/g, ' ').trim();
     const at = text.toLowerCase().indexOf(needle);
     const start = at < 0 ? 0 : Math.max(0, at - 80);
-    const excerpt = (start > 0 ? '\u2026' : '') + text.slice(start, start + 240) + (text.length > start + 240 ? '\u2026' : '');
+    const excerpt = (start > 0 ? '…' : '') + text.slice(start, start + 240) + (text.length > start + 240 ? '…' : '');
     return { heading: hit?.heading || 'Match', excerpt };
   }
 
@@ -49,7 +49,7 @@
     const url = new URL(location.href);
     url.searchParams.set('q', term);
     history.replaceState(null, '', url);
-    out.innerHTML = '<p class="notice">Searching verified records\u2026</p>';
+    out.innerHTML = '<p class="notice">Searching verified records…</p>';
     try {
       const [dharma, gruhya, mantras, articles] = await Promise.all([
         rowsFor('dharma_sutras'),
@@ -159,7 +159,7 @@
       out.innerHTML = `<p class="lede">${matches.length} verified match${matches.length === 1 ? '' : 'es'}.</p>` + matches.slice(0, 60).map((item) => `<article class="result">
         <div class="badge">${window.escapeHtml(item.type)}</div>
         <h2><a href="${window.escapeHtml(item.href)}">${window.escapeHtml(item.title)}</a></h2>
-        <p class="where">${window.escapeHtml([item.where, item.language ? `Language: ${item.language}` : '', item.source ? `Source: ${item.source}` : '', item.translation ? `Translation: ${item.translation}` : ''].filter(Boolean).join(' \u00b7 '))}</p>
+        <p class="where">${window.escapeHtml([item.where, item.language ? `Language: ${item.language}` : '', item.source ? `Source: ${item.source}` : '', item.translation ? `Translation: ${item.translation}` : ''].filter(Boolean).join(' · '))}</p>
         <p><strong>${window.escapeHtml(item.heading)}.</strong> ${window.escapeHtml(item.excerpt)}</p>
         <p><a href="${window.escapeHtml(item.href)}">Open result</a></p>
       </article>`).join('');

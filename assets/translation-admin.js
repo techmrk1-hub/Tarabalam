@@ -101,9 +101,9 @@
       const row = statusFor(language.code);
       const card = document.createElement('article');
       card.className = 'paper-card';
-      const label = row ? `${row.review_status}${row.publish ? ' \u00b7 Published' : ''}` : 'Not Generated';
+      const label = row ? `${row.review_status}${row.publish ? ' · Published' : ''}` : 'Not Generated';
       const stale = row && row.source_hash && row.source_hash !== state.hash;
-      card.innerHTML = `<h2>${language.name}</h2><p class=\"kicker\">${label}${stale ? ' \u00b7 Source changed' : ''}</p>`;
+      card.innerHTML = `<h2>${language.name}</h2><p class="kicker">${label}${stale ? ' · Source changed' : ''}</p>`;
       const actions = document.createElement('div');
       actions.className = 'study-bar';
       const add = (text, decision) => {
@@ -162,7 +162,7 @@
     try {
       if (decision === 'preview') {
         const row = statusFor(language);
-        const node = document.querySelector(`[data-preview=\"${language}\"]`);
+        const node = document.querySelector(`[data-preview="${language}"]`);
         if (node && row) {
           node.hidden = false;
           node.textContent = Object.entries(row.fields || {}).map(([key, value]) => `${key}\n${value}`).join('\n\n');
