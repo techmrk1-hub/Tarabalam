@@ -69,8 +69,22 @@
     else if (role === 'translit') { p.className = 'translit'; p.lang = 'sa-Latn'; }
     else if (role === 'padaccheda' || /padaccheda|padapatha/.test(folded)) p.className = 'padaccheda';
     p.textContent = field.value;
+    p.dataset.original = field.value;
+    block.dataset.heading = field.heading || '';
+    block.dataset.role = role;
+    const sourceScript = role === 'deva' || role === 'telugu' || role === 'translit' || role === 'padaccheda' || p.classList.contains('padaccheda');
+    if (sourceScript) block.dataset.scriptSource = '1';
+    else if (!/^(source|source page|source url|source references)$/i.test(field.heading || '')) block.dataset.explain = '1';
     block.appendChild(p);
     return block;
+  }
+
+  function enhancePassage(record) {
+    const id = record.unique_id || record.mantra_id || record.article_id || '';
+    import('/assets/languages.mjs').then((lang) => lang.applyReader(record, {
+      entityType: entityType(),
+      entityId: id
+    })).catch((error) => console.warn(error));
   }
 
   function sourceCommentaries(record) {
@@ -249,6 +263,7 @@
       document.title = `${routes.pageTitle(kind(), record)} | Bramha.org`;
     }
     applyMode();
+    enhancePassage(record);
     document.dispatchEvent(new CustomEvent('bramha:passage', {
       detail: {
         contentType: entityType(),
@@ -345,6 +360,7 @@
     if (currentIndex === index && extra.length) {
       commentaries = commentaries.concat(extra);
       renderCommentaries();
+      enhancePassage(row);
     }
   }
 
