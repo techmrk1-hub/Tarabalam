@@ -3,6 +3,8 @@
     { role: 'id', patterns: ['unique id', 'uniqueid', 'sutra id', 'sutra_id', 'record id', 'record_id', 'mantra id', 'mantra_id', 'id'] },
     { role: 'article_id', patterns: ['article id', 'article_id'] },
     { role: 'slug', patterns: ['slug'] },
+    { role: 'doc', patterns: ['google doc url', 'google_doc_url', 'doc url', 'google doc'] },
+    { role: 'tags', patterns: ['topic tags', 'topic_tags', 'tags'] },
     { role: 'sort', patterns: ['sort order', 'sort_order', 'sort'] },
     { role: 'type', patterns: ['text type', 'text_type', 'classification', 'sutra type'] },
     { role: 'status', patterns: ['verification status', 'verification_status', 'verified', 'status'] },
@@ -25,6 +27,10 @@
   const CONTENT_HINTS = [
     { role: 'deva', patterns: ['sanskrit devanagari', 'sanskrit (devanagari)', 'devanagari', 'sanskrit text', 'mula'] },
     { role: 'translit', patterns: ['sanskrit transliteration', 'sanskrit transliteration sutra', 'transliteration', 'iast', 'roman', 'sutra'] },
+    { role: 'padaccheda', patterns: ['padaccheda', 'pada ccheda', 'padapatha', 'pada patha'] },
+    { role: 'word', patterns: ['word meaning', 'word by word meaning', 'word-by-word meaning'] },
+    { role: 'simple', patterns: ['simple meaning', 'simple explanation'] },
+    { role: 'telugu_meaning', patterns: ['telugu meaning', 'telugu translation'] },
     { role: 'telugu', patterns: ['telugu script', 'telugu'] },
     { role: 'translation', patterns: ['english translation', 'translation'] },
     { role: 'audio', patterns: ['audio url', 'audio_url', 'audio'] },
@@ -118,8 +124,8 @@
 
   function layerFor(col) {
     const folded = col.folded;
-    if (/\b(commentar|bhashya|bhasya|explanation|vyakhya)\b/.test(folded)) return 'deep';
-    if (folded === 'context' || folded.startsWith('context ') || /\b(prayoga|viniyoga)\b/.test(folded)) return 'context';
+    if (/\b(commentary|bhashya|bhasyam|bhasya|tika|vyakhya|vivarana|vrtti)\b/.test(folded)) return 'deep';
+    if (/\b(prayoga|viniyoga|context|cross reference|notes|note|variant|source)\b/.test(folded)) return 'context';
     return 'basic';
   }
 
@@ -230,6 +236,8 @@
       content: '',
       featured_image_url: '',
       source_references: '',
+      google_doc_url: '',
+      topic_tags: '',
       author: '',
       published_date: '',
       updated_at: '',
@@ -271,6 +279,8 @@
       if (col.role === 'category' && blank(row.category)) row.category = String(value || '').trim();
       if (col.role === 'featured') row.featured = asBoolean(value);
       if (col.role === 'image' && blank(row.featured_image_url)) row.featured_image_url = String(value || '').trim();
+      if (col.role === 'doc' && blank(row.google_doc_url)) row.google_doc_url = String(value || '').trim();
+      if (col.role === 'tags' && blank(row.topic_tags)) row.topic_tags = String(value || '').trim();
       if (col.folded === 'title' && blank(row.title)) row.title = String(value || '').trim();
       if (col.folded === 'summary' && blank(row.summary)) row.summary = String(value || '').trim();
       if (col.folded === 'content' && blank(row.content)) row.content = String(value || '').trim();
@@ -304,7 +314,7 @@
     if (asVerified(row.verification_status)) row.verification_status = 'Verified';
     row.values = values;
     row.displayFields = displayFields.filter((field) => !blank(field.value));
-    row.searchText = [row.display_name, row.unique_id, ...row.displayFields.map((field) => field.value)].filter(Boolean).join(' ').toLowerCase();
+    row.searchText = [row.display_name, row.title, row.unique_id, row.topic_tags, row.slug, ...row.displayFields.map((field) => field.value)].filter(Boolean).join(' ').toLowerCase();
     return row;
   }
 
@@ -378,7 +388,7 @@
 
   function cacheKey(kind) {
     const cfg = sheetCfg();
-    return `bramha.sheet.v2.${cfg.id || cfg.webAppUrl || 'none'}.${kind}`;
+    return `bramha.sheet.v3.${cfg.id || cfg.webAppUrl || 'none'}.${kind}`;
   }
 
   function readCache(kind) {

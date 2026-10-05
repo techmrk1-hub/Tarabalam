@@ -68,11 +68,17 @@
     return `/articles/${slug}/`;
   }
 
+  function topicPath(row) {
+    const slug = usableNamedSlug(row?.slug) || namedSlug(row?.title || row?.slug, 'topic');
+    return `/topics/${slug}/`;
+  }
+
   function pathFor(kind, row, level) {
     if (kind === 'dharma' || kind === 'dharma_sutras') return dharmaPath(row, level);
     if (kind === 'gruhya' || kind === 'gruhya_sutras') return gruhyaPath(row, level);
     if (kind === 'mantras' || kind === 'vedic_mantras') return mantraPath(row);
     if (kind === 'articles') return articlePath(row);
+    if (kind === 'topics') return topicPath(row);
     return '/';
   }
 
@@ -106,8 +112,11 @@
     if (m) return { kind: 'mantras', slug: m[1], leaf: true };
     m = path.match(/^\/articles\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/);
     if (m) return { kind: 'articles', slug: m[1], leaf: true };
+    m = path.match(/^\/topics\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/);
+    if (m) return { kind: 'topics', slug: m[1], leaf: true };
     if (path === '/vedic-mantras/') return { kind: 'mantras', leaf: false };
     if (path === '/articles/') return { kind: 'articles', leaf: false };
+    if (path === '/topics/') return { kind: 'topics', leaf: false };
     return null;
   }
 
@@ -184,6 +193,7 @@
     gruhyaPath,
     mantraPath,
     articlePath,
+    topicPath,
     pathFor,
     parsePath,
     findRow,
