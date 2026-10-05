@@ -3,5 +3,6 @@ Allow: /
 Disallow: /internal/
 Disallow: /cms/
 Disallow: /scripts/
+Disallow: /*?id=
 
 Sitemap: https://bramha.org/sitemap.xml

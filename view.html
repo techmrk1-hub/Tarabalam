@@ -1,88 +1,32 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Article | Bramha.org</title>
-<link rel="stylesheet" href="../assets/bramha.css?v=14.1">
-<style>
-  .doc-article-wrap{max-width:1220px;margin:0 auto;padding:24px 18px 60px}
-  .doc-head{max-width:900px;margin:0 auto 20px;text-align:center}
-  .doc-head .back{display:inline-block;margin-bottom:14px;color:#e26114;text-decoration:none;font-size:13px;font-weight:600}
-  .doc-head h1{font-family:Georgia,'Times New Roman',serif;color:#4b3729;font-size:34px;line-height:1.2;font-weight:500;margin:0 0 10px}
-  .doc-head p{color:#6d5b4f;line-height:1.65;margin:0 auto;max-width:760px}
-  .doc-meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#8c745f}
-  .doc-shell{max-width:1120px;margin:0 auto;background:#f2ece5;border:1px solid #dfd2c4;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(75,55,41,.08)}
-  .doc-frame{display:block;width:100%;height:86vh;min-height:720px;border:0;background:#fff}
-  .doc-loading,.doc-error{max-width:900px;margin:40px auto;background:#fff;border:1px solid #eadfd2;border-radius:9px;padding:24px;color:#665649;text-align:center}
-  .doc-error{border-color:#e5b9b1;color:#8c3e33}
-  .doc-actions{display:flex;justify-content:center;margin:16px 0 0}
-  .doc-actions a{font-size:12px;color:#e26114;text-decoration:none;font-weight:600}
-  @media(max-width:760px){.doc-head h1{font-size:26px}.doc-article-wrap{padding-left:8px;padding-right:8px}.doc-frame{height:82vh;min-height:620px}.doc-shell{border-radius:5px}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Article | Bramha.org</title>
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://bramha.org/articles/">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/assets/library.css">
 </head>
-<body>
-<div class="v12-topbar"><span>Bramha.org — Vedic wisdom, Śāstra and traditional knowledge.</span><a href="../dharma-sutra/">Explore Śāstra</a></div>
-<header class="v12-header" id="v12Header"><div class="v12-header-inner">
-<a class="v12-brand" href="../" aria-label="Bramha.org home"><img src="../assets/visuals/bramha-logo-trim.png" alt="Bramha.org — Vedic Wisdom for Modern Life"></a>
-<button class="v12-mobile" type="button" aria-label="Menu" onclick="document.getElementById('v12Header').classList.toggle('open')">☰</button>
-<nav class="v12-nav" aria-label="Main navigation">
-<div class="shastra"><a href="../dharma-sutra/">Śāstra</a><div class="v12-menu"><a href="../dharma-sutra/">Āpastamba Dharma Sūtra</a><a href="../gruhya-sutra/">Āpastamba Gṛhya Sūtra</a></div></div>
-<div class="vedic"><a href="../vedic-mantras/">Vedic Resources</a><div class="v12-menu"><a href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles &amp; Research</a></div></div>
-<div class="tools"><a href="../tarabalam/">Traditional Tools</a><div class="v12-menu"><a href="../tarabalam/">Tarabalam</a></div></div>
-<a href="../articles/">Articles</a><a href="../about.html">About</a><a href="#footer">Contact</a><a href="../search/" aria-label="Search">⌕</a>
-</nav></div></header>
-<div class="v12-spectrum" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-
-<main class="doc-article-wrap" id="articleRoot"><div class="doc-loading">Loading article…</div></main>
-
-<footer class="v12-footer" id="footer">
-<div class="v12-connect"><h2>Connect with Bramha.org</h2><a href="mailto:contact@bramha.org" aria-label="Email">✉</a><a href="../search/" aria-label="Search">⌕</a><a href="../articles/" aria-label="Articles">▤</a></div>
-<div class="v12-footer-grid">
-<div class="v12-footer-brand"><img src="../assets/visuals/bramha-logo-trim.png" alt="Bramha.org logo"><p>A source-grounded digital platform for Śāstra, Vedic resources and traditional tools.</p></div>
-<div><h3>Śāstra</h3><a href="../dharma-sutra/">Dharma Sūtra</a><a href="../gruhya-sutra/">Gṛhya Sūtra</a><a href="../search/">Search Library</a></div>
-<div><h3>Vedic Resources</h3><a href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles</a></div>
-<div><h3>Traditional Tools</h3><a href="../tarabalam/">Tarabalam</a></div>
-<div><h3>About</h3><a href="../about.html">Mission &amp; Vision</a><a href="mailto:contact@bramha.org">Contact</a></div>
-</div><div class="v12-footer-bottom">© 2026 Bramha.org · Vedic Wisdom for Modern Life</div></footer>
-<script src="../assets/site.js"></script>
+<body data-nav="articles">
+<div id="site-header"></div>
+<main id="content" class="page">
+  <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">›</span> <a href="/articles/">Articles &amp; Research</a></nav>
+  <h1 id="pageHeading">Article</h1>
+  <div id="articleBody"><p class="notice">Loading article…</p></div>
+</main>
+<div id="site-footer"></div>
+<script src="/assets/config.js"></script>
+<script src="/assets/seo-routes.js"></script>
+<script src="/assets/sheets.js"></script>
+<script src="/assets/api.js"></script>
+<script src="/assets/articles.js"></script>
 <script>
-(function(){
-  const SHEET_ID='19A34Uz6JhvgXZXKpcbz69q6QUgFRuSjyEbnIltMx7X8';
-  const QUERY="select A,B,C,D,F,G,I,K,N,O,Q where L='Verified' and M='YES' and D<>'Homepage Slide' and Q is not null";
-  const root=document.getElementById('articleRoot');
-  const slug=new URLSearchParams(location.search).get('slug')||'';
-  const esc=s=>String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
-  const val=c=>c ? (c.f ?? c.v ?? '') : '';
-  const previewUrl=url=>{
-    const s=String(url||'').trim();
-    let m=s.match(/docs\.google\.com\/document\/d\/([a-zA-Z0-9_-]+)/);
-    if(m) return `https://docs.google.com/document/d/${m[1]}/preview`;
-    if(/docs\.google\.com\/document\/d\/e\//.test(s)) return s.includes('?')?s+'&embedded=true':s+'?embedded=true';
-    return s;
-  };
-  window.bramhaArticleView=function(resp){
-    try{
-      if(!resp || resp.status==='error' || !resp.table) throw new Error('Article feed unavailable');
-      const articles=(resp.table.rows||[]).map(r=>{
-        const c=r.c||[];
-        return {id:val(c[0]),title:val(c[1]),slug:val(c[2]),language:val(c[3]),category:val(c[4]),summary:val(c[5]),image:val(c[6]),tags:val(c[7]),featured:val(c[8]),date:val(c[9]),doc:val(c[10])};
-      });
-      const a=articles.find(x=>x.slug===slug);
-      if(!a){root.innerHTML='<div class="doc-error">Article not found or not published.</div>';return;}
-      const p=previewUrl(a.doc);
-      if(!p){root.innerHTML='<div class="doc-error">This article does not have a Google Doc link.</div>';return;}
-      document.title=`${a.title} | Bramha.org`;
-      root.innerHTML=`<div class="doc-head"><a class="back" href="./">← All Articles</a><h1>${esc(a.title)}</h1>${a.summary?`<p>${esc(a.summary)}</p>`:''}<div class="doc-meta">${a.language?`<span>${esc(a.language)}</span>`:''}${a.category?`<span>· ${esc(a.category)}</span>`:''}${a.date?`<span>· ${esc(a.date)}</span>`:''}</div></div><div class="doc-shell"><iframe class="doc-frame" title="${esc(a.title)}" src="${esc(p)}" loading="eager" referrerpolicy="strict-origin-when-cross-origin"></iframe></div><div class="doc-actions"><a href="${esc(a.doc)}" target="_blank" rel="noopener">Open original Google Doc ↗</a></div>`;
-    }catch(e){root.innerHTML='<div class="doc-error">Article could not be loaded. Check the Google Doc link and sharing settings.</div>';}
-  };
-  if(!slug){root.innerHTML='<div class="doc-error">No article was selected.</div>';return;}
-  const script=document.createElement('script');
-  const tqx='out:json;responseHandler:bramhaArticleView';
-  script.src=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=Articles&tqx=${encodeURIComponent(tqx)}&tq=${encodeURIComponent(QUERY)}`;
-  script.onerror=()=>{root.innerHTML='<div class="doc-error">Article could not be loaded.</div>';};
-  document.head.appendChild(script);
-})();
+const slug = new URLSearchParams(location.search).get('slug');
+if (!slug) location.replace('/articles/');
+else BramhaArticles.renderDoc(document.getElementById('articleBody'), BramhaRoutes.namedSlug(slug, 'article'));
 </script>
+<script type="module" src="/assets/shell.js"></script>
 </body>
 </html>

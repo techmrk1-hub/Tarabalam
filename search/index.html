@@ -3,99 +3,34 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Search the public verified Śāstra corpus across transliteration, Telugu, English, and titles.">
-  <title>Search Bramha.org</title>
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <meta name="theme-color" content="#1c1c1a">
-  <meta name="application-name" content="Bramha.org">
-  <meta property="og:site_name" content="Bramha.org">
-  <meta property="og:image" content="https://bramha.org/android-chrome-512x512.png">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:image" content="https://bramha.org/android-chrome-512x512.png">
-  <link rel="manifest" href="/site.webmanifest">
-  <link rel="stylesheet" href="../assets/brand-mark.css?v=29">
-  <link rel="stylesheet" href="../assets/brand-lockup.css?v=29">
-  <link rel="stylesheet" href="../assets/minimal.css?v=35">
-  <script src="/js/brand.js"></script>
+  <title>Search the library | Bramha.org</title>
+  <meta name="description" content="Search verified Dharma Sūtras, Gṛhya Sūtras, Vedic mantras, articles, topics and commentaries.">
+  <meta name="robots" content="noindex,follow">
+  <link rel="canonical" href="https://bramha.org/search/">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/assets/library.css">
 </head>
-<body>
-<header class="m-header">
-  <div class="m-bar">
-    <a class="m-logo" href="../" aria-label="Bramha.org home"><span class="m-brand-mark"><img src="/assets/brand/android-chrome-192x192.png" srcset="/assets/brand/android-chrome-192x192.png 192w, /assets/brand/android-chrome-512x512.png 512w" sizes="48px" alt="" width="192" height="192" decoding="async" data-brand="mark" onerror="window.brandPack&&window.brandPack(this)"></span><span>Bramha.org</span></a>
-    <button class="m-menu" type="button" aria-label="Menu" aria-expanded="false">Menu</button>
-    <nav class="m-nav" aria-label="Main">
-      <a href="../">Home</a>
-      <a href="../dharma-sutra/">Dharma Sūtra</a>
-      <a href="../gruhya-sutra/">Gṛhya Sūtra</a>
-      <a href="../vedic-mantras/">Mantras</a>
-      <a href="../articles/">Articles</a>
-      <a href="../tarabalam/">Tarabalam</a>
-      <a class="active" href="../search/">Search</a>
-      <a href="../about.html">About</a>
-    </nav>
-  </div>
-</header>
-<div class="inner-title-block"><div class="inner"><div class="breadcrumb"><a href="../">Home</a> / Search</div><h1>Search</h1><p>Search the public verified Śāstra corpus across transliteration, Telugu, English, and record titles.</p></div></div>
-<main class="inner-wrap">
-  <div class="search-box"><input id="q" placeholder="Search Sanskrit, Telugu, English, or Sūtra title"><button id="go" class="btn">Search</button></div>
-  <div id="results" class="search-results"></div>
+<body data-nav="search">
+<div id="site-header"></div>
+<main id="content" class="page">
+  <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">›</span> <span aria-current="page">Search</span></nav>
+  <h1>Search</h1>
+  <p class="lede">Results come from verified, published records. A match shows the field that contained your words.</p>
+  <form id="searchForm" class="search-box" action="/search/" method="get" role="search">
+    <label class="sr-only" for="q">Search the library</label>
+    <input id="q" name="q" type="search" placeholder="Search Sanskrit, Telugu, English, or a title">
+    <button class="btn" type="submit">Search</button>
+  </form>
+  <div id="results" class="result-list"></div>
 </main>
-<footer class="m-footer" id="footer">
-  <div class="m-footer-grid">
-    <div><div class="m-footer-brand"><span class="m-brand-lockup"><img src="/assets/brand/bramha-logo-full.webp" srcset="/assets/brand/bramha-logo-320w.webp 320w, /assets/brand/bramha-logo-480w.webp 480w, /assets/brand/bramha-logo-full.webp 1160w" sizes="(max-width: 600px) 180px, 220px" alt="Bramha.org" width="1160" height="1186" decoding="async" data-brand="lockup" onerror="window.brandPack&&window.brandPack(this)"></span></div><p>A student-friendly digital repository for verified Śāstra, Vedic knowledge, and traditional tools.</p></div>
-    <div><h3>Library</h3><a href="../dharma-sutra/">Dharma Sūtra</a><a href="../gruhya-sutra/">Gṛhya Sūtra</a><a href="../vedic-mantras/">Vedic Mantras</a><a href="../articles/">Articles</a></div>
-    <div><h3>Tools</h3><a href="../tarabalam/">Tarabalam</a><a href="../search/">Search</a></div>
-    <div><h3>Bramha.org</h3><a href="../about.html">About</a><a href="mailto:contact@bramha.org">Contact</a></div>
-  </div>
-  <div class="m-footer-bottom">© 2026 Bramha.org</div>
-</footer>
-<script src="/js/site.js"></script>
-<script src="/js/config.js?v=35"></script>
-<script src="/js/sheets.js?v=35"></script>
-<script src="/js/api.js?v=35"></script>
-<script>
-const q=document.getElementById('q'),out=document.getElementById('results');
-function hay(row){return String(row.searchText || [row.display_name,row.sanskrit_transliteration,row.telugu_script,row.english_translation,row.unique_id].filter(Boolean).join(' ')).toLowerCase();}
-async function loadKind(kind,table,fallbackQuery){
-  try{
-    const loaded=await loadCmsTable(table);
-    return loaded.rows||[];
-  }catch(err){
-    console.warn('Search CMS',kind,err);
-    return sbFetch(fallbackQuery);
-  }
-}
-async function run(){
-  const term=q.value.trim();
-  if(term.length<2){out.innerHTML='<div class="notice">Enter at least 2 characters.</div>';return;}
-  const needle=term.toLowerCase();
-  const esc=term.replace(/[,\*()]/g,' ');
-  const filter=`or=(display_name.ilike.*${encodeURIComponent(esc)}*,sanskrit_transliteration.ilike.*${encodeURIComponent(esc)}*,telugu_script.ilike.*${encodeURIComponent(esc)}*,english_translation.ilike.*${encodeURIComponent(esc)}*)`;
-  out.innerHTML='<div class="card">Searching…</div>';
-  try{
-    const[d,g]=await Promise.all([
-      loadKind('dharma','dharma_sutras',`dharma_sutras?select=unique_id,display_name,english_translation,slug&publish=eq.true&verification_status=eq.Verified&${filter}&limit=25`),
-      loadKind('gruhya','gruhya_sutras',`gruhya_sutras?select=unique_id,display_name,english_translation,slug&publish=eq.true&verification_status=eq.Verified&${filter}&limit=25`)
-    ]);
-    const rows=[
-      ...d.filter(x=>hay(x).includes(needle)).slice(0,25).map(x=>({...x,type:'Dharma Sūtra',href:`../dharma-sutra/?id=${encodeURIComponent(x.unique_id)}`})),
-      ...g.filter(x=>hay(x).includes(needle)).slice(0,25).map(x=>({...x,type:'Gṛhya Sūtra',href:`../gruhya-sutra/?id=${encodeURIComponent(x.unique_id)}`}))
-    ];
-    if(!rows.length){out.innerHTML='<div class="card empty">No public verified matches found.</div>';return;}
-    out.innerHTML=rows.map(r=>{
-      const snippet=(r.displayFields||[]).find(f=>f.role==='translation')||(r.displayFields||[]).find(f=>f.role==='content');
-      const preview=(snippet?.value||r.english_translation||'').slice(0,240);
-      return `<div class="result"><span class="badge">${escapeHtml(r.type)}</span><a href="${r.href}">${escapeHtml(r.display_name||r.unique_id)}</a><p>${escapeHtml(preview)}</p></div>`;
-    }).join('');
-  }catch(e){out.innerHTML=`<div class="notice">${escapeHtml(e.message)}</div>`;}
-}
-document.getElementById('go').onclick=run;
-q.addEventListener('keydown',e=>{if(e.key==='Enter')run();});
-const params=new URLSearchParams(location.search);
-if(params.get('q')){q.value=params.get('q');run();}
-</script>
+<div id="site-footer"></div>
+<script src="/assets/config.js"></script>
+<script src="/assets/seo-routes.js"></script>
+<script src="/assets/seo-boot.js"></script>
+<script src="/assets/sheets.js"></script>
+<script src="/assets/api.js"></script>
+<script src="/assets/topics.js"></script>
+<script src="/assets/search-page.js"></script>
+<script type="module" src="/assets/shell.js"></script>
 </body>
 </html>

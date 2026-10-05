@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Topics | Bramha.org</title>
+  <meta name="description" content="Topic pages gather verified Śāstra passages, mantras, articles and commentaries that share a published topic.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://bramha.org/topics/">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="stylesheet" href="/assets/library.css">
+</head>
+<body data-nav="topics">
+<div id="site-header"></div>
+<main id="content" class="page">
+  <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">›</span> <span aria-current="page">Topics</span></nav>
+  <h1 id="pageHeading">Topics</h1>
+  <p class="lede">A topic page collects verified records that already belong together. It does not copy their text into a second article.</p>
+  <div id="topicHost"></div>
+</main>
+<div id="site-footer"></div>
+<script src="/assets/config.js"></script>
+<script src="/assets/seo-routes.js"></script>
+<script src="/assets/seo-boot.js"></script>
+<script src="/assets/sheets.js"></script>
+<script src="/assets/api.js"></script>
+<script src="/assets/topics.js"></script>
+<script>
+const parsed = BramhaRoutes.parsePath(location.pathname);
+const slug = parsed?.slug || new URLSearchParams(location.search).get('slug');
+const host = document.getElementById('topicHost');
+if (slug) BramhaTopics.renderTopic(host, BramhaRoutes.namedSlug(slug, 'topic'));
+else BramhaTopics.renderIndex(host);
+</script>
+<script type="module" src="/assets/shell.js"></script>
+</body>
+</html>
