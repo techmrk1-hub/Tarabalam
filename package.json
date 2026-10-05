@@ -11,7 +11,7 @@
     "build": "node scripts/generate-seo.mjs",
     "generate:seo": "node scripts/generate-seo.mjs",
     "pretest": "node scripts/generate-seo.mjs",
-    "test": "node scripts/test-sheet-map.mjs && node scripts/test-live-sheet.mjs && node scripts/test-seo.mjs"
+    "test": "node scripts/test-sheet-map.mjs && node scripts/test-live-sheet.mjs && node scripts/test-seo.mjs && node scripts/test-multilingual.mjs"
   },
   "devDependencies": {
     "vite": "^7.1.5"
