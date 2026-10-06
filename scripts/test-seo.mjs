@@ -24,6 +24,11 @@ assert.equal(routes.parsePath('/gruhya-sutra/patala-1/khanda-1/sutra-3/').khanda
 assert.equal(clientRoutes.dharmaPath(dharma), routes.dharmaPath(dharma));
 assert.equal(routes.canonical('/about.html'), 'https://bramha.org/about.html');
 assert.equal(routes.namedSlug('Sri Rudram'), 'sri-rudram');
+assert.equal(clientRoutes.usableNamedSlug('Vinayaka chaviti'), 'vinayaka-chaviti');
+assert.equal(clientRoutes.usableNamedSlug('VINAYAKA CHAVITI'), 'vinayaka-chaviti');
+assert.equal(clientRoutes.usableNamedSlug('vinayaka-chaviti'), 'vinayaka-chaviti');
+assert.equal(clientRoutes.parsePath('/articles/vinayaka-chaviti/').slug, 'vinayaka-chaviti');
+assert.equal(clientRoutes.articlePath({ slug: 'Vinayaka chaviti', title: 'వినాయక చవితి ధర్మములు', article_id: 'ART-002' }), '/articles/vinayaka-chaviti/');
 assert.match(uniqueTitle('dharma', dharma), /1\.1\.1\.1 – Text, Meaning & Bhāṣyam/);
 assert.match(uniqueTitle('gruhya', gruhya), /1\.1\.3 – Text \|/);
 assert.notEqual(uniqueDescription('dharma', dharma), uniqueDescription('gruhya', gruhya));
@@ -89,5 +94,14 @@ assert.match(home, /href="prayoga\/"/);
 assert.match(home, /rel="canonical" href="https:\/\/bramha.org\/"/);
 
 assert.equal(existsSync(resolve(root, 'dharma-sutra/prasna-9/patala-1/khanda-1/sutra-1/index.html')), false);
+
+const missing = readFileSync(resolve(root, '404.html'), 'utf8');
+assert.match(missing, /id="notFound"/);
+assert.match(missing, /src="\/assets\/articles\.js"/);
+assert.match(missing, /BramhaArticles\.recoverRoute\(\)/);
+const articleScript = readFileSync(resolve(root, 'assets/articles.js'), 'utf8');
+assert.match(articleScript, /function renderDoc/);
+assert.match(articleScript, /function recoverRoute/);
+assert.match(articleScript, /loadPublicArticle/);
 
 console.log('seo tests passed');
