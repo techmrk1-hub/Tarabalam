@@ -32,9 +32,9 @@
       <a class="btn secondary" href="dharma-sutra/">Browse Śāstra</a>
     </div>
     <form id="librarySearch" class="library-search" action="/search/" method="get" role="search">
-      <label for="q">Search the library</label>
+      <label for="q">Search Śāstra, Vedic texts, articles, or Astro tools</label>
       <div class="row">
-        <input id="q" name="q" type="search" placeholder="Search a sūtra, mantra, topic, or article" autocomplete="off">
+        <input id="q" name="q" type="search" placeholder="Search Śāstra, Vedic texts, articles, or Astro tools" autocomplete="off">
         <button class="btn" type="submit">Search</button>
       </div>
       <div class="query-row" aria-label="Example queries">
@@ -43,6 +43,7 @@
         <button type="button" data-query="gruhapravesha tithi">gruhapravesha tithi</button>
         <button type="button" data-query="devatarpanam rishi tarpanam">devatarpanam rishi tarpanam</button>
         <button type="button" data-query="sandhyavandanam">sandhyavandanam</button>
+        <button type="button" data-query="tarabalam">tarabalam</button>
       </div>
     </form>
   </section>
@@ -94,18 +95,10 @@
     </ol>
   </section>
 
-  <section class="page">
-    <div class="section-head">
-      <h2>Browse by topic</h2>
-      <p>Topics gather verified passages, articles and notes. They are not written by hand a second time.</p>
-    </div>
-    <div id="homeTopics" class="topic-list"></div>
-  </section>
-
   <section class="page" id="featured">
     <div class="section-head"><h2>From the library</h2></div>
     <div id="featuredSlides" class="card-list"></div>
-    <p class="verify-note">Further indexes: <a href="bhashyam/">commentaries</a> · <a href="prayoga/">Prayoga</a> · <a href="topics/">topics</a> · <a href="tarabalam/">Tarabalam</a></p>
+    <p class="verify-note">Further indexes: <a href="bhashyam/">commentaries</a> · <a href="prayoga/">Prayoga</a> · <a href="tarabalam/">Tarabalam</a></p>
   </section>
 </main>
 <div id="site-footer"></div>
@@ -114,7 +107,6 @@
 <script src="/assets/seo-boot.js"></script>
 <script src="/assets/sheets.js"></script>
 <script src="/assets/api.js"></script>
-<script src="/assets/topics.js"></script>
 <script src="/assets/home.js"></script>
 <script type="module" src="/assets/shell.js"></script>
 </body>

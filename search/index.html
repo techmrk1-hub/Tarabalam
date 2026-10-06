@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Search the library | Bramha.org</title>
-  <meta name="description" content="Search verified Dharma Sūtras, Gṛhya Sūtras, Vedic mantras, articles, topics and commentaries.">
+  <meta name="description" content="Search verified Dharma Sūtras, Gṛhya Sūtras, Vedic texts, articles, commentaries and Astro tools.">
   <meta name="robots" content="noindex,follow">
   <link rel="canonical" href="https://bramha.org/search/">
   <link rel="icon" href="/favicon.png" type="image/png">
@@ -15,10 +15,10 @@
 <main id="content" class="page">
   <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">›</span> <span aria-current="page">Search</span></nav>
   <h1>Search</h1>
-  <p class="lede">Results come from verified, published records. A match shows the field that contained your words.</p>
+  <p class="lede">One search across verified, published Śāstra, Vedic texts, articles, commentaries, and Astro tools.</p>
   <form id="searchForm" class="search-box" action="/search/" method="get" role="search">
-    <label class="sr-only" for="q">Search the library</label>
-    <input id="q" name="q" type="search" placeholder="Search Sanskrit, Telugu, English, or a title">
+    <label class="sr-only" for="q">Search Śāstra, Vedic texts, articles, or Astro tools</label>
+    <input id="q" name="q" type="search" placeholder="Search Śāstra, Vedic texts, articles, or Astro tools">
     <button class="btn" type="submit">Search</button>
   </form>
   <div id="results" class="result-list"></div>
@@ -29,8 +29,7 @@
 <script src="/assets/seo-boot.js"></script>
 <script src="/assets/sheets.js"></script>
 <script src="/assets/api.js"></script>
-<script src="/assets/topics.js"></script>
-<script src="/assets/search-page.js"></script>
+<script type="module" src="/assets/search-page.js"></script>
 <script type="module" src="/assets/shell.js"></script>
 </body>
 </html>
