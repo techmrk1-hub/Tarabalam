@@ -41,11 +41,11 @@ Script View — తెలుగు, देवनागरी, ಕನ್ನಡ, �
 
 The choice is stored in `localStorage` as `bramha_script_view` and follows the reader through the session.
 
-It applies to Dharma Sūtra text, Gṛhya Sūtra text, Vedic text, Sanskrit quotations, Telugu explanations, commentary text, and an article title, summary, and stored body. A Google Doc embedded in an article stays in the document’s own script. English interface labels and stored English-only fields are left as written.
+It applies to Dharma Sūtra text, Gṛhya Sūtra text, Vedic text, Sanskrit quotations, Telugu explanations, commentary text, and an article title, summary, breadcrumb title, and body. Telugu keeps the Google Doc embed. Any other Script View asks `POST /functions/v1/article-doc-content` for cleaned article HTML, then converts text nodes through the Aksharamukha function. The HTML tags are not converted. English interface labels and stored English-only fields are left as written.
 
 ## Failure
 
-If conversion fails, the page shows the Telugu original. The visitor does not see the provider error, and the field is not left blank.
+If conversion fails, the page shows the Telugu original. An article says “This script view is temporarily unavailable. Showing the Telugu original.” The visitor does not see the provider error, and the field is not left blank.
 
 ## Retired semantic translation
 
