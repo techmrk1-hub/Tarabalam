@@ -8,13 +8,12 @@
   });
   document.querySelectorAll('[data-query]').forEach((button) => {
     button.addEventListener('click', () => {
-      if (input) input.value = button.dataset.query || '';
-      input?.focus();
+      const term = button.dataset.query || '';
+      location.href = term ? `/search/?q=${encodeURIComponent(term)}` : '/search/';
     });
   });
 
   const featured = document.getElementById('featuredSlides');
-  const topics = document.getElementById('homeTopics');
 
   function imageUrl(value) {
     const raw = String(value || '').trim();
@@ -49,21 +48,5 @@
     }
   }
 
-  async function loadTopics() {
-    if (!topics || !window.BramhaTopics) return;
-    try {
-      const found = await window.BramhaTopics.list();
-      if (!found.length) {
-        topics.innerHTML = '<p class="empty">No verified topic pages are currently available. A topic appears here when a verified record carries a topic tag, or when a verified topic is published in the library database.</p>';
-        return;
-      }
-      topics.innerHTML = found.slice(0, 12).map((topic) => `<a class="topic-card" href="${topic.href}"><h3>${window.escapeHtml(topic.title)}</h3><p>${topic.count} verified record${topic.count === 1 ? '' : 's'}</p></a>`).join('');
-    } catch (error) {
-      topics.innerHTML = '<p class="error">Unable to load topics. Please try again.</p>';
-      console.warn(error);
-    }
-  }
-
   loadFeatured();
-  loadTopics();
 })();

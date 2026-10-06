@@ -1,3 +1,5 @@
+import { SEARCH_PLACEHOLDER } from './search-engine.mjs';
+
 const NAV = [
   { id: 'home', label: 'Home', href: '/' },
   {
@@ -11,16 +13,15 @@ const NAV = [
   },
   { id: 'vedic', label: 'Vedic Texts', href: '/vedic-mantras/' },
   { id: 'articles', label: 'Articles & Research', href: '/articles/' },
-  { id: 'topics', label: 'Topics', href: '/topics/' },
-  { id: 'search', label: 'Search', href: '/search/' },
   {
-    id: 'tools',
-    label: 'Traditional Tools',
+    id: 'astro',
+    label: 'Astro',
     href: '/tarabalam/',
     children: [
       { id: 'tarabalam', label: 'Tarabalam', href: '/tarabalam/' }
     ]
   },
+  { id: 'search', label: 'Search', href: '/search/' },
   { id: 'about', label: 'About', href: '/about.html' }
 ];
 
@@ -64,8 +65,8 @@ export function headerHtml(active = '') {
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
     <nav id="site-nav" class="site-nav" aria-label="Main">${links}</nav>
     <form class="header-search" action="/search/" method="get" role="search">
-      <label class="sr-only" for="header-q">Search the library</label>
-      <input id="header-q" name="q" type="search" placeholder="Search the library" autocomplete="off">
+      <label class="sr-only" for="header-q">${esc(SEARCH_PLACEHOLDER)}</label>
+      <input id="header-q" name="q" type="search" placeholder="${esc(SEARCH_PLACEHOLDER)}" autocomplete="off">
       <button type="submit">Search</button>
     </form>
   </div>
@@ -88,7 +89,6 @@ export function footerHtml() {
     </div>
     <div>
       <h2>Study</h2>
-      <a href="/topics/">Topics</a>
       <a href="/search/">Search</a>
       <a href="/bhashyam/">Commentaries</a>
       <a href="/prayoga/">Prayoga</a>
