@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&family=Noto+Serif+Devanagari:wght@500;600&family=Noto+Serif+Telugu:wght@500;600&family=Source+Serif+4:opsz,wght@8..60,460;8..60,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600&family=Noto+Serif+Devanagari:wght@500;600&family=Noto+Serif+Kannada:wght@500;600&family=Noto+Serif+Tamil:wght@500;600&family=Noto+Serif+Telugu:wght@500;600&family=Source+Serif+4:opsz,wght@8..60,460;8..60,600&display=swap');
 
 :root {
   --maroon: #6e2430;
@@ -16,6 +16,8 @@
   --serif: "Source Serif 4", "Noto Serif", Georgia, serif;
   --sans: "Noto Sans", "Segoe UI", sans-serif;
   --deva: "Noto Serif Devanagari", serif;
+  --kannada: "Noto Serif Kannada", serif;
+  --tamil: "Noto Serif Tamil", serif;
   --telugu: "Noto Serif Telugu", serif;
   --shell: min(1120px, calc(100% - 32px));
   --header: 76px;
@@ -208,6 +210,21 @@ p { margin: 0 0 0.8em; }
 .account-layout { display: grid; grid-template-columns: 280px 1fr; gap: 18px; }
 .account-form { display: grid; gap: 8px; }
 .doc-frame { width: 100%; min-height: 78vh; border: 1px solid var(--line); border-radius: 8px; background: white; }
+.transliterable-content { line-height: 1.8; }
+.transliterable-content h1,
+.transliterable-content h2,
+.transliterable-content h3 { font-family: inherit; margin: 1.1em 0 0.4em; }
+.script-text[data-script="Telugu"],
+.transliterable-content[data-script="Telugu"] { font-family: var(--telugu); }
+.script-text[data-script="Devanagari"],
+.transliterable-content[data-script="Devanagari"] { font-family: var(--deva); }
+.script-text[data-script="Kannada"],
+.transliterable-content[data-script="Kannada"] { font-family: var(--kannada); }
+.script-text[data-script="Tamil"],
+.transliterable-content[data-script="Tamil"] { font-family: var(--tamil); }
+.script-text[data-script="IAST"],
+.transliterable-content[data-script="IAST"] { font-family: var(--serif); }
+#articleBody > .script-status { margin-bottom: 12px; }
 .seo-tree { list-style: none; padding: 0; margin: 0; }
 .seo-tree li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); }
 .seo-tree a { text-decoration: none; font-family: var(--serif); font-size: 1.15rem; }
