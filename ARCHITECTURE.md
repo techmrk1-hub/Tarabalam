@@ -80,6 +80,8 @@ Sign-in is optional and uses the publishable key with Supabase Auth. Bookmarks, 
 
 Pages without a verified row are not created. Search is omitted from the sitemap.
 
+Until that file exists, GitHub Pages serves `404.html` for `/articles/<slug>/`. That page reads the live Articles tab and renders the same article view when the row is Verified and published. The daily SEO action, or a manual `workflow_dispatch` run, then writes the static page. The Sheet does not commit to Git.
+
 ## Data flow
 
 ```

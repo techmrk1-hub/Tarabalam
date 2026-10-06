@@ -81,8 +81,8 @@ npm run build
 
 1. Edit the Google Sheet. Row 1 of each tab is the schema.
 2. Mark a row **Verified** and **Publish = YES** when it is ready.
-3. The site reads the public Sheet in the browser. Unpublished rows are dropped before display.
-4. Run `npm run generate:seo` (or the GitHub Action `.github/workflows/generate-seo.yml`) so permanent HTML pages contain the verified text for search engines.
+3. The site reads the public Sheet in the browser. Unpublished rows are dropped before display. A verified article opens at `/articles/<slug>/` immediately, even before a static file exists.
+4. Run `npm run generate:seo`, or start the GitHub Action `.github/workflows/generate-seo.yml` with **workflow_dispatch**, so permanent HTML, the sitemap, and Open Graph tags catch up. The daily schedule remains. There is no Sheet polling.
 
 The Sheet must stay shared as **Anyone with the link → Viewer**. The browser cache is 45 seconds. `?refresh=1` bypasses it.
 
