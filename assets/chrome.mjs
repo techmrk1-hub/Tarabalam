@@ -109,8 +109,8 @@ export function mountChrome() {
   const active = document.body?.dataset.nav || '';
   const headerHost = document.getElementById('site-header');
   const footerHost = document.getElementById('site-footer');
-  if (headerHost && !headerHost.querySelector('.site-header')) headerHost.innerHTML = headerHtml(active);
-  if (footerHost && !footerHost.querySelector('.site-footer')) footerHost.innerHTML = footerHtml();
+  if (headerHost) headerHost.innerHTML = headerHtml(active);
+  if (footerHost) footerHost.innerHTML = footerHtml();
   const root = document.querySelector('.site-header');
   const menu = root?.querySelector('.menu-btn');
   menu?.addEventListener('click', () => {
