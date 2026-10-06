@@ -44,6 +44,12 @@ Deno.serve(async (req) => {
       text,
       nativize: String(nativize)
     });
+    // Article prose asks for nativize. Tamil still prints phonetic
+    // superscripts until these post-options run. Sutra text sends
+    // nativize false and keeps the scholarly markers.
+    if (nativize && target === 'Tamil') {
+      params.set('postoptions', 'TamilRemoveNumbers,TamilRemoveApostrophe');
+    }
     const response = await fetch(`${ENDPOINT}?${params.toString()}`);
     if (!response.ok) throw new Error('SCRIPT_PROVIDER_FAILED');
     const rendered = await response.text();

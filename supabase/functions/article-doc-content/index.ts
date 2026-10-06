@@ -8,6 +8,7 @@ const SUPABASE_URL = Deno.env.get('SUPABASE_URL') ?? '';
 const SERVICE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
 const db = createClient(SUPABASE_URL, SERVICE_KEY);
 const FRESH_MS = 15 * 60 * 1000;
+const CLEANER_VERSION = '2';
 const MAX_HTML = 1_500_000;
 
 Deno.serve(async (req) => {
@@ -20,10 +21,10 @@ Deno.serve(async (req) => {
     if (!docId) return json({ error: 'A public Google Doc is required' }, 400);
 
     const { data: cached } = await db.from('article_doc_sources')
-      .select('html, content_hash, fetched_at')
+      .select('html, content_hash, fetched_at, cleaner_version')
       .eq('doc_id', docId)
       .maybeSingle();
-    if (cached?.html && Date.now() - Date.parse(cached.fetched_at) < FRESH_MS) {
+    if (cached?.html && cached.cleaner_version === CLEANER_VERSION && Date.now() - Date.parse(cached.fetched_at) < FRESH_MS) {
       return json({ html: cached.html, content_hash: cached.content_hash, doc_id: docId, cached: true });
     }
 
@@ -44,6 +45,7 @@ Deno.serve(async (req) => {
       article_id: articleId,
       content_hash: contentHash,
       html,
+      cleaner_version: CLEANER_VERSION,
       fetched_at: new Date().toISOString()
     }, { onConflict: 'doc_id' });
     return json({ html, content_hash: contentHash, doc_id: docId, cached: false });
