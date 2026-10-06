@@ -12,12 +12,22 @@
 <body data-nav="home">
 <div id="site-header"></div>
 <main id="content" class="page">
-  <p class="eyebrow">404</p>
-  <h1>This address is not a public page</h1>
-  <p class="lede">The passage may be unpublished, or the link may be mistyped. Search the verified library instead.</p>
-  <p><a class="btn" href="/search/">Search the library</a> <a class="btn secondary" href="/">Return home</a></p>
+  <div id="notFound">
+    <p class="eyebrow">404</p>
+    <h1>This address is not a public page</h1>
+    <p class="lede">The passage may be unpublished, or the link may be mistyped. Search the verified library instead.</p>
+    <p><a class="btn" href="/search/">Search the library</a> <a class="btn secondary" href="/">Return home</a></p>
+  </div>
 </main>
 <div id="site-footer"></div>
+<script src="/assets/config.js"></script>
+<script src="/assets/seo-routes.js"></script>
+<script src="/assets/sheets.js"></script>
+<script src="/assets/api.js"></script>
+<script src="/assets/articles.js"></script>
+<script>
+BramhaArticles.recoverRoute();
+</script>
 <script type="module" src="/assets/shell.js"></script>
 </body>
 </html>

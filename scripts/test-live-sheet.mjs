@@ -1,5 +1,9 @@
 import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
 import { loadKind, loadSheetsApi, publicArticles } from './lib/load-sheet.mjs';
+
+const require = createRequire(import.meta.url);
+const routes = require('../assets/seo-routes.js');
 
 const api = loadSheetsApi();
 const dharma = await loadKind(api, 'Dharma Sutra', 'dharma');
@@ -13,4 +17,10 @@ const article = publicArticles(articles.publicRows).find((row) => row.slug === '
 assert.ok(article, 'missing upakarma article');
 assert.match(article.google_doc_url, /docs\.google\.com\/document\/d\//);
 assert.equal(publicArticles(articles.publicRows).some((row) => row.language === 'Homepage Slide'), false);
+const vinayaka = publicArticles(articles.publicRows).find((row) => row.article_id === 'ART-002');
+assert.ok(vinayaka, 'missing ART-002');
+assert.equal(vinayaka.verification_status, 'Verified');
+assert.equal(vinayaka.publish, true);
+assert.match(vinayaka.google_doc_url, /docs\.google\.com\/document\/d\//);
+assert.equal(routes.articlePath(vinayaka), '/articles/vinayaka-chaviti/');
 console.log(`live sheet tests passed (${dharma.publicRows.length} dharma)`);

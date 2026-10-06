@@ -1,5 +1,10 @@
 name: Generate SEO pages
 
+# A verified Sheet article is readable at /articles/<slug>/ immediately.
+# This workflow only writes the permanent HTML, sitemap, and Open Graph files.
+# Run it by hand with workflow_dispatch when a new article should be crawled
+# before the daily schedule. Do not poll the Sheet from Actions.
+
 on:
   workflow_dispatch:
   schedule:

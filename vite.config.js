@@ -1,4 +1,4 @@
-import { createReadStream, existsSync, statSync } from 'node:fs';
+import { createReadStream, existsSync, readFileSync, statSync } from 'node:fs';
 import { dirname, extname, join, normalize, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
@@ -34,9 +34,11 @@ function staticRoot() {
             if (url.startsWith('/@') || url.startsWith('/node_modules') || url.startsWith('/__vite')) return next();
             const ext = extname(url);
             if (ext && ext !== '.html') return next();
+            const missing = readFileSync(join(root, '404.html'));
             res.statusCode = 404;
             res.setHeader('Content-Type', 'text/html; charset=utf-8');
-            createReadStream(join(root, '404.html')).pipe(res);
+            res.setHeader('Content-Length', missing.length);
+            res.end(missing);
             return;
           }
           res.setHeader('Content-Type', types[extname(file)] || 'application/octet-stream');
