@@ -7,7 +7,10 @@ const KEEP = new Set([
   'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'br', 'a', 'strong', 'em', 'b', 'i',
   'ul', 'ol', 'li', 'blockquote', 'hr', 'table', 'thead', 'tbody', 'tr', 'th', 'td'
 ]);
-const UNWRAP = new Set(['html', 'body', 'div', 'span', 'font', 'section', 'article', 'header', 'footer']);
+const UNWRAP = new Set(['html', 'body', 'span', 'font', 'section', 'article']);
+// Google's HTML export puts the running header and footer in div/header/footer.
+// Those regions are not the article. Drop the whole subtree.
+const CHROME = new Set(['div', 'header', 'footer']);
 const DROP = new Set(['script', 'style', 'noscript', 'iframe', 'object', 'embed', 'svg', 'img', 'link', 'meta', 'head']);
 const VOID = new Set(['br', 'hr']);
 
@@ -16,6 +19,7 @@ export function cleanDocHtml(raw) {
   const css = [...source.matchAll(/<style[\s\S]*?<\/style>/gi)].map((match) => match[0]).join('\n');
   const bold = classesWith(css, /font-weight:\s*(700|bold)/i);
   const italic = classesWith(css, /font-style:\s*italic/i);
+  const centered = classesWith(css, /text-align:\s*center/i);
   const bodyMatch = source.match(/<body[^>]*>([\s\S]*)<\/body>/i);
   const body = bodyMatch ? bodyMatch[1] : source;
   const root = { tag: '#root', children: [] };
@@ -23,16 +27,19 @@ export function cleanDocHtml(raw) {
   let skipping = 0;
   for (const token of tokenize(body)) {
     if (token.type === 'text') {
-      if (!skipping) stack[stack.length - 1].children.push(decodeEntities(token.value));
+      if (!skipping) stack[stack.length - 1].children.push(normalizeText(token.value));
       continue;
     }
     const tag = token.tag;
     if (token.type === 'end') {
-      if (skipping && DROP.has(tag)) skipping -= 1;
-      else if (!skipping) closeTag(stack, tag);
+      if (skipping && (DROP.has(tag) || CHROME.has(tag))) skipping -= 1;
+      else if (!skipping) {
+        if (tag === 'span' || tag === 'font') closeEmphasis(stack, tag);
+        else closeTag(stack, tag);
+      }
       continue;
     }
-    if (DROP.has(tag)) {
+    if (DROP.has(tag) || CHROME.has(tag)) {
       if (!token.self) skipping += 1;
       continue;
     }
@@ -40,14 +47,14 @@ export function cleanDocHtml(raw) {
     if (token.type !== 'start') continue;
     const emphasis = emphasisTag(token, bold, italic);
     if (emphasis) {
-      const node = { tag: emphasis, children: [] };
+      const node = { tag: emphasis, from: token.tag, children: [] };
       stack[stack.length - 1].children.push(node);
       if (!token.self) stack.push(node);
       continue;
     }
     if (UNWRAP.has(tag)) continue;
     if (!KEEP.has(tag)) continue;
-    const node = { tag, attrs: attributesFor(tag, token.attrs), children: [] };
+    const node = { tag, attrs: attributesFor(tag, token.attrs, centered), children: [] };
     stack[stack.length - 1].children.push(node);
     if (!VOID.has(tag) && !token.self) stack.push(node);
   }
@@ -73,10 +80,19 @@ function emphasisTag(token, bold, italic) {
   return '';
 }
 
-function attributesFor(tag, attrs) {
-  if (tag !== 'a') return {};
-  const href = safeHref(attrs.href || '');
-  return href ? { href } : {};
+function attributesFor(tag, attrs, centered) {
+  const out = {};
+  if (tag === 'a') {
+    const href = safeHref(attrs.href || '');
+    if (href) out.href = href;
+  }
+  if (isCentered(attrs, centered)) out.class = 'doc-center';
+  return out;
+}
+
+function isCentered(attrs, centered) {
+  const classes = String(attrs?.class || '').split(/\s+/).filter(Boolean);
+  return classes.some((name) => centered.has(name));
 }
 
 function safeHref(value) {
@@ -94,6 +110,11 @@ function safeHref(value) {
   } catch {
     return '';
   }
+}
+
+function closeEmphasis(stack, tag) {
+  const top = stack[stack.length - 1];
+  if (top && top.from === tag) stack.pop();
 }
 
 function closeTag(stack, tag) {
@@ -155,19 +176,47 @@ function escapeText(value) {
     .replace(/"/g, '&quot;');
 }
 
+const NAMED_ENTITIES = {
+  amp: '&',
+  lt: '<',
+  gt: '>',
+  quot: '"',
+  apos: "'",
+  nbsp: ' ',
+  ndash: '\u2013',
+  mdash: '\u2014',
+  hellip: '\u2026',
+  lsquo: '\u2018',
+  rsquo: '\u2019',
+  ldquo: '\u201c',
+  rdquo: '\u201d',
+  sbquo: '\u201a',
+  bdquo: '\u201e',
+  bull: '\u2022',
+  middot: '\u00b7',
+  times: '\u00d7',
+  divide: '\u00f7',
+  laquo: '\u00ab',
+  raquo: '\u00bb',
+  copy: '\u00a9',
+  reg: '\u00ae',
+  trade: '\u2122',
+  deg: '\u00b0',
+  plusmn: '\u00b1'
+};
+
+function normalizeText(value) {
+  return decodeEntities(value).replace(/[ \t\f\v]+/g, ' ');
+}
+
 function decodeEntities(value) {
   return String(value)
     .replace(/&#x([0-9a-f]+);/gi, (_, hex) => safeChar(Number.parseInt(hex, 16)))
     .replace(/&#(\d+);/g, (_, dec) => safeChar(Number(dec)))
-    .replace(/&nbsp;/gi, '\u00a0')
-    .replace(/&ldquo;/gi, '\u201c')
-    .replace(/&rdquo;/gi, '\u201d')
-    .replace(/&middot;/gi, '\u00b7')
-    .replace(/&times;/gi, '\u00d7')
-    .replace(/&quot;/gi, '"')
-    .replace(/&lt;/gi, '<')
-    .replace(/&gt;/gi, '>')
-    .replace(/&amp;/gi, '&');
+    .replace(/&([a-zA-Z]+);/g, (entity, name) => {
+      const decoded = NAMED_ENTITIES[name.toLowerCase()];
+      return decoded === undefined ? entity : decoded;
+    });
 }
 
 function safeChar(code) {
