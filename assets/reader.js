@@ -69,12 +69,10 @@
     else if (role === 'translit') { p.className = 'translit'; p.lang = 'sa-Latn'; }
     else if (role === 'padaccheda' || /padaccheda|padapatha/.test(folded)) p.className = 'padaccheda';
     p.textContent = field.value;
-    p.dataset.original = field.value;
+    p.dataset.canonical = field.value;
     block.dataset.heading = field.heading || '';
     block.dataset.role = role;
-    const sourceScript = role === 'deva' || role === 'telugu' || role === 'translit' || role === 'padaccheda' || p.classList.contains('padaccheda');
-    if (sourceScript) block.dataset.scriptSource = '1';
-    else if (!/^(source|source page|source url|source references)$/i.test(field.heading || '')) block.dataset.explain = '1';
+    block.dataset.scriptText = '1';
     block.appendChild(p);
     return block;
   }
@@ -234,6 +232,7 @@
     mode = next;
     try { sessionStorage.setItem('bramha.reader.mode', next); } catch { /* ignore */ }
     applyMode();
+    window.BramhaScripts?.refresh?.();
   }
 
   function render(record) {
@@ -378,6 +377,7 @@
     document.querySelectorAll('#readerViewbar button').forEach((button) => {
       button.setAttribute('aria-pressed', button.dataset.mode === 'all' ? 'true' : 'false');
     });
+    enhancePassage({});
   }
 
   async function loadIndex() {
@@ -437,6 +437,7 @@
     host.classList.toggle('is-compare');
     $('compareToggle').setAttribute('aria-pressed', host.classList.contains('is-compare') ? 'true' : 'false');
     renderCommentaries();
+    window.BramhaScripts?.refresh?.();
   });
   function navClick(step) {
     return (event) => {
