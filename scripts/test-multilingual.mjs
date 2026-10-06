@@ -12,7 +12,7 @@ assert.deepEqual(SCRIPTS.map((item) => item.label), ['తెలుగు', 'द�
 
 const telugu = 'ధర్మః';
 assert.equal(conversionSource(telugu), 'Telugu');
-assert.equal(conversionSource('धर్मः'), 'Devanagari');
+assert.equal(conversionSource('धर्मः'), 'Devanagari');
 assert.equal(conversionSource('ಧರ್ಮಃ'), 'Kannada');
 assert.equal(conversionSource('தர்ம'), 'Tamil');
 assert.equal(conversionSource('dharmaḥ'), 'IAST');
@@ -20,7 +20,7 @@ assert.equal(conversionSource('English meaning'), '');
 assert.equal(shouldRequestScript(telugu, 'Telugu'), false);
 assert.equal(shouldRequestScript(telugu, 'Kannada'), true);
 assert.equal(shouldRequestScript('English meaning', 'Kannada'), false);
-assert.equal(shouldRequestScript('धर్मः', 'Telugu'), false);
+assert.equal(shouldRequestScript('धर्मः', 'Telugu'), false);
 assert.equal(scriptCacheKey({ source: 'Telugu', target: 'Devanagari', hash: 'abc', nativize: false }), 'Telugu|Devanagari|abc|false');
 
 const languages = fs.readFileSync(new URL('../assets/languages.mjs', import.meta.url), 'utf8');
@@ -99,7 +99,7 @@ assert.match(cleanup, /translation_jobs/);
 assert.doesNotMatch(cleanup, /^\s*drop table/im);
 
 const scriptSamples = [
-  ['Devanagari', 'धर్मः'],
+  ['Devanagari', 'धर्मः'],
   ['Kannada', 'ಧರ್ಮಃ'],
   ['Tamil', 'த'],
   ['IAST', 'dharmaḥ']
