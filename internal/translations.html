@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Translation review | Bramha.org</title>
+  <title>Script view | Bramha.org</title>
   <meta name="robots" content="noindex,nofollow">
   <link rel="icon" href="/favicon.png" type="image/png">
   <link rel="stylesheet" href="/assets/library.css">
@@ -11,67 +11,12 @@
 <body data-nav="about">
 <div id="site-header"></div>
 <main id="content" class="page">
-  <p class="eyebrow">Content team</p>
-  <h1>Telugu translations</h1>
-  <p class="lede">Telugu is the editorial master. Generating a translation creates a draft for review. It does not verify or publish that draft.</p>
-  <div class="account-form">
-    <label for="adminSecret">Translation admin secret</label>
-    <input id="adminSecret" type="password" autocomplete="off">
-    <button id="saveSecret" class="btn" type="button">Use secret for this tab</button>
-  </div>
-  <p id="adminNote" class="notice">The Google Translation key stays on the server. This page never stores it.</p>
-  <div class="controls">
-    <div>
-      <label for="collection">Collection</label>
-      <select id="collection">
-        <option value="dharma">Dharma Sūtra</option>
-        <option value="gruhya">Gṛhya Sūtra</option>
-        <option value="articles">Articles</option>
-        <option value="mantras">Vedic mantras</option>
-      </select>
-    </div>
-    <div>
-      <label for="record">Record</label>
-      <select id="record"></select>
-    </div>
-  </div>
-  <div class="mode-bar" id="langPick">
-    <span class="kicker">Generate selected</span>
-    <label><input type="checkbox" value="en" checked> English</label>
-    <label><input type="checkbox" value="hi" checked> Hindi</label>
-    <label><input type="checkbox" value="kn" checked> Kannada</label>
-    <label><input type="checkbox" value="ta" checked> Tamil</label>
-    <button id="generateSelected" class="btn secondary" type="button">Generate Selected</button>
-    <button id="generateAll" class="btn" type="button">Generate All Languages</button>
-  </div>
-  <h2>Telugu original</h2>
-  <pre id="teluguOriginal" class="reader"></pre>
-  <div id="langStatus" class="card-list"></div>
-  <h2>Terminology</h2>
-  <p>Leave this empty until the content team has reviewed a term. Approved terms are restored after translation and are not a substitute for review.</p>
-  <form id="termForm" class="account-form">
-    <label for="termSource">Telugu term</label>
-    <input id="termSource" required>
-    <label for="termLanguage">Target language</label>
-    <select id="termLanguage">
-      <option value="en">English</option>
-      <option value="hi">Hindi</option>
-      <option value="kn">Kannada</option>
-      <option value="ta">Tamil</option>
-    </select>
-    <label for="termTarget">Approved target term</label>
-    <input id="termTarget" required>
-    <label for="termNotes">Notes</label>
-    <input id="termNotes">
-    <label><input id="termExact" type="checkbox"> Preserve the Telugu term exactly</label>
-    <button class="btn" type="submit">Save term</button>
-  </form>
+  <p class="eyebrow">Content</p>
+  <h1>Script view</h1>
+  <p class="lede">Bramha.org does not translate the meaning of Telugu content. On a passage or article, Script View shows that same text in Telugu, Devanagari, Kannada, Tamil, or IAST.</p>
+  <p><a class="btn" href="/dharma-sutra/">Open the Dharma Sūtra</a></p>
 </main>
 <div id="site-footer"></div>
-<script src="/assets/config.js"></script>
-<script src="/assets/sheets.js"></script>
-<script src="/assets/api.js"></script>
-<script src="/assets/translation-admin.js"></script>
 <script type="module" src="/assets/shell.js"></script>
 </body>
 </html>

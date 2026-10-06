@@ -1,162 +1,68 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {
-  TARGETS,
-  explanatoryFields,
-  sourceHash,
-  protectText,
-  restoreText,
-  prepareFields,
-  rebuildFields,
-  translationRequestBody,
-  textsFromProvider,
-  chooseTranslation,
-  reviewPatch,
-  publicSearchHit,
-  scriptCacheKey,
-  detectScript
+  SCRIPTS,
+  conversionSource,
+  shouldRequestScript,
+  scriptCacheKey
 } from '../assets/content-protect.mjs';
 
-const deva = 'धर्मज्ञसमयः प्रमाणम् ।';
-const telugu = 'ఆపస్తంబుడు ఇలా చెప్పారు —';
-const sample = `${telugu}\n${deva}\nదీనికి భావము ఇది.`;
+assert.deepEqual(SCRIPTS.map((item) => item.id), ['Telugu', 'Devanagari', 'Kannada', 'Tamil', 'IAST']);
+assert.deepEqual(SCRIPTS.map((item) => item.label), ['తెలుగు', 'देवनागरी', 'ಕನ್ನಡ', 'தமிழ்', 'IAST']);
 
-function mockTranslate(text, target) {
-  return text.replace(/[\u0C00-\u0C7F]+/g, (word) => `${target}:${word}`);
-}
-
-async function roundTrip(fields, target, terms = [], mutate = (value) => value) {
-  const items = prepareFields(fields, terms);
-  const translated = items.map((item) => (item.skip ? item.original : mutate(mockTranslate(item.protectedText, target))));
-  return rebuildFields(items, translated);
-}
-
-const plain = await roundTrip({ summary: 'ఉపాకర్మ అవశ్యం కర్మ' }, 'en');
-assert.equal(plain.summary, 'en:ఉపాకర్మ en:అవశ్యం en:కర్మ');
-
-for (const target of TARGETS) {
-  const fields = await roundTrip({ summary: 'తెలుగు వాక్యం' }, target);
-  assert.ok(fields.summary.startsWith(`${target}:`), target);
-}
-
-const html = await roundTrip({ content: '<p>తెలుగు వాక్యం</p>' }, 'hi');
-assert.ok(html.content.includes('<p>'), 'html tag preserved');
-assert.ok(html.content.includes('hi:తెలుగు'), 'html prose translated');
-
-const quoted = await roundTrip({ content: sample }, 'kn');
-assert.ok(quoted.content.includes(deva), 'devanagari quotation restored');
-assert.ok(quoted.content.includes('kn:ఆపస్తంబుడు'), 'telugu prose translated');
-assert.equal(sample.includes(deva), true);
-
-const terms = [{ source_term: 'ఉపాకర్మ', target_term: 'Upākarman', active: true }];
-const termed = await roundTrip({ title: 'ఉపాకర్మ యొక్క ప్రాముఖ్యత' }, 'en', terms);
-assert.ok(termed.title.includes('Upākarman'), termed.title);
-assert.ok(!termed.title.includes('en:ఉపాకర్మ'));
-
-const linked = await roundTrip({
-  notes: 'చూడండి https://bramha.org/dharma-sutra/prasna-1/patala-1/khanda-1/sutra-1/ మరియు Praśna 1.'
-}, 'ta');
-assert.ok(linked.notes.includes('https://bramha.org/dharma-sutra/prasna-1/patala-1/khanda-1/sutra-1/'));
-assert.ok(linked.notes.includes('Praśna 1'));
-assert.ok(linked.notes.includes('ta:చూడండి'));
-
-const empty = await roundTrip({ title: '', summary: '   ', content: 'వాక్యం' }, 'en');
-assert.equal(empty.title, '');
-assert.equal(empty.summary, '   ');
-assert.ok(empty.content.startsWith('en:'));
-
-const large = Array.from({ length: 40 }, (_, index) => `<p>పేరా ${index} ధర్మం ${deva}</p>`).join('');
-const largeOut = await roundTrip({ content: large }, 'en');
-assert.equal(largeOut.content.split(deva).length, 41);
-assert.ok(largeOut.content.includes('<p>'));
-
-const encoded = await roundTrip({ content: sample }, 'en', [], (value) => value
-  .replaceAll('[', '&#91;')
-  .replaceAll(']', '&#93;'));
-assert.ok(encoded.content.includes(deva));
-
-assert.throws(() => restoreText('[[BRAMHA_PROTECTED_001]] leftover', []), /PLACEHOLDER_LOST/);
-
-const record = {
-  displayFields: [
-    { heading: 'Sanskrit (Devanagari)', role: 'deva', value: deva },
-    { heading: 'Simple Explanation', role: 'simple', value: 'సరళమైన భావం' },
-    { heading: 'Source', role: 'content', value: 'Āpastamba' }
-  ]
-};
-const explain = explanatoryFields(record);
-assert.deepEqual(Object.keys(explain), ['Simple Explanation']);
-assert.equal(detectScript(deva), 'Devanagari');
-assert.equal(detectScript('ధర్మం'), 'Telugu');
-
-const hashA = await sourceHash(explain);
-const hashB = await sourceHash({ 'Simple Explanation': 'సరళమైన భావం' });
-const hashC = await sourceHash({ 'Simple Explanation': 'మారిన భావం' });
-assert.equal(hashA, hashB);
-assert.notEqual(hashA, hashC);
-
-const translations = [
-  { language: 'kn', review_status: 'Needs Review', publish: false, source_hash: hashA, fields: { 'Simple Explanation': 'draft' } },
-  { language: 'en', review_status: 'Verified', publish: true, source_hash: hashA, fields: { 'Simple Explanation': 'A plain meaning' } },
-  { language: 'hi', review_status: 'Verified', publish: true, source_hash: 'stale', fields: { 'Simple Explanation': 'old' } }
-];
-assert.equal(chooseTranslation({ language: 'te', translations, hash: hashA }).mode, 'original');
-assert.equal(chooseTranslation({ language: 'kn', translations, hash: hashA }).mode, 'fallback');
-assert.match(chooseTranslation({ language: 'kn', translations, hash: hashA }).notice, /Kannada translation is not yet verified/);
-assert.equal(chooseTranslation({ language: 'en', translations, hash: hashA }).fields['Simple Explanation'], 'A plain meaning');
-assert.equal(chooseTranslation({ language: 'hi', translations, hash: hashA }).mode, 'fallback');
-
-assert.equal(reviewPatch('verify', { review_status: 'Needs Review' }).review_status, 'Verified');
-assert.equal(reviewPatch('reject', {}).publish, false);
-assert.throws(() => reviewPatch('publish', { review_status: 'Needs Review' }), /Verify the translation/);
-assert.deepEqual(reviewPatch('publish', { review_status: 'Verified' }), { publish: true });
-assert.equal(reviewPatch('unpublish', {}).publish, false);
-assert.equal(reviewPatch('outdated', {}).review_status, 'Outdated');
-
-const hit = publicSearchHit(translations[1], {
-  sourceHash: hashA,
-  href: '/dharma-sutra/prasna-1/patala-1/khanda-1/sutra-1/',
-  title: '1.1.1.1',
-  where: '1.1.1.1',
-  type: 'Dharma Sūtra'
-}, 'plain');
-assert.equal(hit.language, 'English');
-assert.equal(hit.source, 'Telugu Original');
-assert.equal(hit.translation, 'Verified');
-assert.equal(publicSearchHit(translations[0], { sourceHash: hashA }, 'draft'), null);
-assert.equal(publicSearchHit(translations[2], { sourceHash: hashA }, 'old'), null);
-
-const body = translationRequestBody({
-  texts: ['తెలుగు'],
-  target: 'en',
-  format: 'text',
-  projectId: 'demo-project',
-  location: 'us-central1',
-  model: 'general/translation-llm'
-});
-assert.equal(body.source, 'te');
-assert.equal(body.target, 'en');
-assert.equal(body.model, 'projects/demo-project/locations/us-central1/models/general/translation-llm');
-assert.deepEqual(textsFromProvider({ data: { translations: [{ translatedText: 'Telugu' }] } }, 1), ['Telugu']);
-assert.throws(() => textsFromProvider({ data: { translations: [] } }, 1), /TRANSLATION_PROVIDER_FAILED/);
-
+const telugu = 'ధర్మః';
+assert.equal(conversionSource(telugu), 'Telugu');
+assert.equal(conversionSource('धर्मः'), 'Devanagari');
+assert.equal(conversionSource('ಧರ್ಮಃ'), 'Kannada');
+assert.equal(conversionSource('தர்ம'), 'Tamil');
+assert.equal(conversionSource('dharmaḥ'), 'IAST');
+assert.equal(conversionSource('English meaning'), '');
+assert.equal(shouldRequestScript(telugu, 'Telugu'), false);
+assert.equal(shouldRequestScript(telugu, 'Kannada'), true);
+assert.equal(shouldRequestScript('English meaning', 'Kannada'), false);
+assert.equal(shouldRequestScript('धर्मः', 'Telugu'), false);
 assert.equal(scriptCacheKey({ source: 'Telugu', target: 'Devanagari', hash: 'abc', nativize: false }), 'Telugu|Devanagari|abc|false');
 
-const edge = fs.readFileSync(new URL('../supabase/functions/translate-content/index.ts', import.meta.url), 'utf8');
-assert.match(edge, /google-translation-llm/);
-assert.match(edge, /translation\.googleapis\.com\/language\/translate\/v2/);
-assert.match(edge, /review_status: 'Needs Review'/);
-assert.match(edge, /publish: false/);
-assert.doesNotMatch(edge, /GOOGLE_TRANSLATE_API_KEY\s*=\s*['"][A-Za-z0-9]/);
-assert.equal(
-  fs.readFileSync(new URL('../assets/content-protect.mjs', import.meta.url), 'utf8'),
-  fs.readFileSync(new URL('../supabase/functions/translate-content/content-protect.mjs', import.meta.url), 'utf8')
-);
+const languages = fs.readFileSync(new URL('../assets/languages.mjs', import.meta.url), 'utf8');
+assert.match(languages, /Script View/);
+assert.match(languages, /bramha_script_view/);
+assert.match(languages, /\/functions\/v1\/aksharamukha/);
+assert.match(languages, /nativize: false/);
+assert.doesNotMatch(languages, /aksharamukha-plugin\.appspot\.com/);
+assert.doesNotMatch(languages, /content_translations/);
+assert.doesNotMatch(languages, /Content Language/);
+assert.doesNotMatch(languages, /translate-content/);
 
-const protectedSample = protectText(sample, terms);
-assert.ok(protectedSample.text.includes('[[BRAMHA_PROTECTED_'));
-assert.ok(!protectedSample.text.includes(deva));
-assert.equal(restoreText(protectedSample.text, protectedSample.tokens), sample);
+const reader = fs.readFileSync(new URL('../assets/reader.js', import.meta.url), 'utf8');
+assert.match(reader, /dataset\.canonical/);
+assert.doesNotMatch(reader, /data-explain/);
+
+const search = fs.readFileSync(new URL('../assets/search-page.js', import.meta.url), 'utf8');
+assert.doesNotMatch(search, /content_translations/);
+
+const retiredPage = fs.readFileSync(new URL('../internal/translations.html', import.meta.url), 'utf8');
+assert.doesNotMatch(retiredPage, /Generate All/);
+assert.doesNotMatch(retiredPage, /translation-admin/);
+
+const retiredFunction = fs.readFileSync(new URL('../supabase/functions/translate-content/index.ts', import.meta.url), 'utf8');
+assert.match(retiredFunction, /Semantic translation has been removed/);
+assert.doesNotMatch(retiredFunction, /translation\.googleapis\.com/);
+assert.equal(fs.existsSync(new URL('../assets/translation-admin.js', import.meta.url)), false);
+
+const akshara = fs.readFileSync(new URL('../supabase/functions/aksharamukha/index.ts', import.meta.url), 'utf8');
+assert.match(akshara, /script_renderings/);
+assert.match(akshara, /source_script/);
+assert.match(akshara, /target_script/);
+assert.match(akshara, /source_hash/);
+assert.match(akshara, /nativize/);
+assert.match(akshara, /aksharamukha-plugin\.appspot\.com/);
+assert.match(akshara, /Telugu/);
+assert.match(akshara, /IAST/);
+
+const cleanup = fs.readFileSync(new URL('../supabase/migrations/20261006180000_retire_semantic_translation.sql', import.meta.url), 'utf8');
+assert.match(cleanup, /content_translations/);
+assert.match(cleanup, /translation_jobs/);
+assert.doesNotMatch(cleanup, /^\s*drop table/im);
 
 const scriptSamples = [
   ['Devanagari', 'धर्मः'],
@@ -164,19 +70,17 @@ const scriptSamples = [
   ['Tamil', 'த'],
   ['IAST', 'dharmaḥ']
 ];
-const teluguSource = 'ధర్మః';
 for (const [target, needle] of scriptSamples) {
-  const untouched = teluguSource;
   const response = await fetch(`https://aksharamukha-plugin.appspot.com/api/public?${new URLSearchParams({
     source: 'Telugu',
     target,
-    text: teluguSource,
+    text: telugu,
     nativize: 'false'
   })}`);
   assert.equal(response.ok, true, target);
   const rendered = await response.text();
-  assert.equal(teluguSource, untouched);
+  assert.equal(telugu, 'ధర్మః');
   assert.ok(rendered.includes(needle), `${target} rendered ${rendered}`);
 }
 
-console.log('multilingual content tests passed');
+console.log('script view tests passed');
