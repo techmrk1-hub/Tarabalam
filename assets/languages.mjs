@@ -14,7 +14,7 @@ function rememberScript(value) {
   try { localStorage.setItem(SCRIPT_KEY, value); } catch { /* private mode */ }
 }
 
-function scriptBar(pressed, onPick) {
+function scriptBar(pressed, onPick, pending = '') {
   let host = document.getElementById('scriptView');
   if (!host) {
     host = document.createElement('div');
@@ -34,6 +34,7 @@ function scriptBar(pressed, onPick) {
     button.textContent = item.label;
     button.dataset.value = item.id;
     button.setAttribute('aria-pressed', item.id === pressed ? 'true' : 'false');
+    if (item.id === pending) button.dataset.pending = 'true';
     button.addEventListener('click', () => onPick(item.id));
     host.appendChild(button);
   });
@@ -149,54 +150,83 @@ function articleStatus(host, text) {
   node.textContent = text;
 }
 
-function showDocFrame(host, visible) {
-  const frame = host.querySelector('iframe.doc-frame');
-  const local = host.querySelector('#articleScriptBody');
-  if (!frame) {
-    if (local) local.hidden = false;
-    return;
-  }
-  frame.hidden = !visible;
-  if (local) local.hidden = visible;
-}
-
-function restoreText(nodes) {
-  nodes.forEach((node) => { node.nodeValue = canonicalText(node); });
-}
-
-async function localArticle(host, row) {
-  const existing = host.querySelector('#articleScriptBody');
-  const docUrl = articleDocUrl(row, host);
-  if (!docUrl) {
-    const stored = existing || host.querySelector('article.reader');
-    if (!stored) return null;
-    stored.id = 'articleScriptBody';
-    stored.classList.add('transliterable-content');
-    markContent(stored);
-    return stored;
-  }
-  const articleId = row?.article_id || row?.unique_id || '';
-  const loaded = await fetchArticleHtml(docUrl, articleId);
-  let local = existing;
-  if (!local) {
-    local = document.createElement('article');
-    local.id = 'articleScriptBody';
-    local.className = 'transliterable-content';
-    markContent(local);
-    host.appendChild(local);
-  }
-  if (local.dataset.sourceHash !== loaded.hash) {
-    local.innerHTML = loaded.html;
-    local.dataset.sourceHash = loaded.hash;
-  }
+function buildArticle(html) {
+  const local = document.createElement('article');
+  local.id = 'articleScriptBody';
+  local.className = 'transliterable-content';
+  local.setAttribute('data-bramha-content', 'true');
+  local.setAttribute('data-article-body', 'true');
+  local.innerHTML = html;
   return local;
 }
 
-async function convertScript(text, target) {
+function commitArticle(host, element) {
+  const status = host.querySelector(':scope > .script-status');
+  host.replaceChildren(element);
+  if (status) host.prepend(status);
+}
+
+async function articleSource(host, row) {
+  const docUrl = articleDocUrl(row, host);
+  if (host._docSource?.html && host._docSource.url === docUrl) return host._docSource;
+  if (!docUrl) {
+    const stored = host.querySelector('article.reader');
+    const html = stored?.innerHTML || '';
+    if (!html.trim()) throw new Error('doc');
+    host._docSource = { url: '', html, hash: 'stored' };
+    return host._docSource;
+  }
+  const articleId = row?.article_id || row?.unique_id || '';
+  const loaded = await fetchArticleHtml(docUrl, articleId);
+  const html = stripDocumentChrome(loaded.html);
+  host._docSource = { url: docUrl, html, hash: loaded.hash };
+  return host._docSource;
+}
+
+function stripDocumentChrome(html) {
+  const doc = new DOMParser().parseFromString(`<div id="bramha-doc">${html}</div>`, 'text/html');
+  const root = doc.getElementById('bramha-doc');
+  if (!root) return html;
+  trimChromeEdge(root, true);
+  trimChromeEdge(root, false);
+  const named = {
+    mdash: '\u2014', ndash: '\u2013', hellip: '\u2026',
+    lsquo: '\u2018', rsquo: '\u2019', ldquo: '\u201c', rdquo: '\u201d',
+    amp: '&', nbsp: ' ', quot: '"', apos: "'"
+  };
+  const walker = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) {
+    walker.currentNode.nodeValue = walker.currentNode.nodeValue.replace(/&([a-zA-Z]+);/g, (entity, name) => {
+      const decoded = named[name.toLowerCase()];
+      return decoded === undefined ? entity : decoded;
+    });
+  }
+  return root.innerHTML;
+}
+
+function trimChromeEdge(root, fromStart) {
+  const indic = /[\u0900-\u097F\u0B80-\u0BFF\u0C00-\u0C7F\u0C80-\u0CFF]/;
+  const nodes = fromStart ? [...root.children] : [...root.children].reverse();
+  const edge = [];
+  for (const node of nodes) {
+    if (node.tagName === 'HR') {
+      edge.push(node);
+      continue;
+    }
+    if (node.querySelector && node.querySelector('h1,h2,h3,h4,h5,h6')) break;
+    const text = (node.textContent || '').replace(/\s+/g, ' ').trim();
+    if (!text || text.length >= 80 || indic.test(text)) break;
+    edge.push(node);
+  }
+  if (!edge.some((node) => node.tagName === 'HR')) return;
+  edge.forEach((node) => node.remove());
+}
+
+async function convertScript(text, target, nativize = false) {
   const source = conversionSource(text);
   if (!shouldRequestScript(text, target)) return text;
   const hash = await sha256Hex(text);
-  const cacheKey = scriptCacheKey({ source, target, hash, nativize: false });
+  const cacheKey = scriptCacheKey({ source, target, hash, nativize });
   try {
     const hit = sessionStorage.getItem(`bramha.script.${cacheKey}`);
     if (hit) return hit;
@@ -209,7 +239,7 @@ async function convertScript(text, target) {
       apikey: cfg.supabasePublishableKey,
       authorization: `Bearer ${cfg.supabasePublishableKey}`
     },
-    body: JSON.stringify({ text, source, target, nativize: false })
+    body: JSON.stringify({ text, source, target, nativize })
   });
   if (!response.ok) throw new Error('script');
   const payload = await response.json();
@@ -219,7 +249,7 @@ async function convertScript(text, target) {
   return rendered;
 }
 
-async function paintTextNodes(nodes, script, current = () => true) {
+async function paintTextNodes(nodes, script, current = () => true, nativize = false) {
   let failed = false;
   const groups = new Map();
   nodes.forEach((node) => {
@@ -238,7 +268,7 @@ async function paintTextNodes(nodes, script, current = () => true) {
         continue;
       }
       try {
-        const rendered = await convertScript(canonical, script);
+        const rendered = await convertScript(canonical, script, nativize);
         if (!current()) return;
         group.forEach((node) => {
           if (canonicalText(node) === canonical) node.nodeValue = rendered;
@@ -264,7 +294,7 @@ async function paintNodes(nodes, script, current = () => true) {
       return;
     }
     try {
-      const rendered = await convertScript(canonical, script);
+      const rendered = await convertScript(canonical, script, false);
       if (current() && node.dataset.canonical === canonical) node.textContent = rendered;
     } catch {
       if (current()) node.textContent = canonical;
@@ -298,75 +328,121 @@ export async function applyReader() {
   await paintReader(rememberedScript());
 }
 
+const ARTICLE_NATIVIZE = true;
+let articleShown = 'Telugu';
+let articleTicket = 0;
+
 export async function applyArticle(row) {
   const host = document.getElementById('articleBody');
   if (!host) return;
   if (row) host._article = row;
   const article = host._article || null;
   const mount = document.getElementById('contentLanguageMount') || host.parentElement;
-  let script = rememberedScript();
-  let ticket = 0;
   const unavailable = 'This script view is temporarily unavailable. Showing the Telugu original.';
 
-  async function paint() {
-    const current = ++ticket;
-    const bar = scriptBar(script, async (next) => {
-      script = next;
-      rememberScript(next);
-      await paint();
-    });
+  function placeBar(pressed, pending) {
+    const bar = scriptBar(pressed, (next) => { paint(next); }, pending);
     if (mount.id === 'contentLanguageMount') mount.replaceChildren(bar);
     else if (!bar.parentElement) mount.insertBefore(bar, host);
-    const chrome = articleChrome();
-    chrome.forEach(markContent);
-    chrome.forEach((node) => face(node, script));
-    if (script === 'Telugu') {
-      articleStatus(host, '');
-      showDocFrame(host, true);
-      const local = host.querySelector('#articleScriptBody');
-      const frame = host.querySelector('iframe.doc-frame');
-      if (local && !frame) face(local, 'Telugu');
-      const body = local && !frame ? contentTextNodes(local) : [];
-      const failed = await paintNodes(chrome, 'Telugu', () => current === ticket);
-      const bodyFailed = await paintTextNodes(body, 'Telugu', () => current === ticket);
-      if (current === ticket) notice(bar, failed || bodyFailed ? unavailable : '');
-      return;
-    }
-    articleStatus(host, 'Preparing this script view...');
-    host.setAttribute('aria-busy', 'true');
-    let local = null;
-    try {
-      local = await localArticle(host, article);
-    } catch { /* show the Telugu document below */ }
-    if (current !== ticket) return;
-    if (!local) {
-      articleStatus(host, '');
-      host.removeAttribute('aria-busy');
-      showDocFrame(host, true);
-      await paintNodes(chrome, 'Telugu', () => current === ticket);
-      notice(bar, unavailable);
-      return;
-    }
-    face(local, script);
-    showDocFrame(host, false);
-    const chromeFailed = await paintNodes(chrome, script, () => current === ticket);
-    const bodyFailed = await paintTextNodes(contentTextNodes(local), script, () => current === ticket);
-    if (current !== ticket) return;
-    articleStatus(host, '');
-    host.removeAttribute('aria-busy');
-    if (chromeFailed || bodyFailed) {
-      restoreText(contentTextNodes(local));
-      chrome.forEach((node) => face(node, 'Telugu'));
-      await paintNodes(chrome, 'Telugu', () => current === ticket);
-      if (local && !host.querySelector('iframe.doc-frame')) face(local, 'Telugu');
-      showDocFrame(host, true);
-      notice(bar, unavailable);
-      return;
-    }
-    notice(bar, '');
+    return bar;
   }
 
-  await paint();
+  async function planChrome(script, alive) {
+    const nodes = articleChrome();
+    nodes.forEach(markContent);
+    const plan = [];
+    let failed = false;
+    await Promise.all(nodes.map(async (node) => {
+      const canonical = canonicalOf(node);
+      if (!alive()) return;
+      try {
+        const rendered = shouldRequestScript(canonical, script)
+          ? await convertScript(canonical, script, ARTICLE_NATIVIZE)
+          : canonical;
+        if (!alive()) return;
+        plan.push({ node, rendered });
+      } catch {
+        failed = true;
+      }
+    }));
+    return { plan, failed };
+  }
+
+  function applyChrome(plan, script) {
+    plan.forEach(({ node, rendered }) => {
+      node.textContent = rendered;
+      face(node, script);
+    });
+  }
+
+  function restoreChrome() {
+    articleChrome().forEach((node) => {
+      if (!node.dataset.canonical) return;
+      node.textContent = node.dataset.canonical;
+      face(node, 'Telugu');
+    });
+  }
+
+  function fail(html) {
+    articleStatus(host, '');
+    host.removeAttribute('aria-busy');
+    restoreChrome();
+    if (html) {
+      const draft = buildArticle(html);
+      face(draft, 'Telugu');
+      commitArticle(host, draft);
+    } else {
+      host.querySelectorAll('#articleScriptBody').forEach((node) => node.remove());
+      const frame = host.querySelector('iframe.doc-frame');
+      if (frame) frame.hidden = false;
+    }
+    articleShown = 'Telugu';
+    rememberScript('Telugu');
+    notice(placeBar('Telugu', ''), unavailable);
+  }
+
+  async function paint(requested) {
+    const ready = host.querySelector('#articleScriptBody');
+    if (requested === articleShown && ready && !host.querySelector('iframe.doc-frame')) return;
+    const current = ++articleTicket;
+    const pending = requested === articleShown ? '' : requested;
+    placeBar(articleShown, pending);
+    articleStatus(host, 'Preparing this script view...');
+    host.setAttribute('aria-busy', 'true');
+    let source = null;
+    try {
+      source = await articleSource(host, article);
+    } catch { /* the embedded document remains until this fails closed */ }
+    if (current !== articleTicket) return;
+    if (!source?.html) {
+      fail('');
+      return;
+    }
+    const draft = buildArticle(source.html);
+    const bodyFailed = await paintTextNodes(
+      contentTextNodes(draft),
+      requested,
+      () => current === articleTicket,
+      ARTICLE_NATIVIZE
+    );
+    if (current !== articleTicket) return;
+    const chrome = await planChrome(requested, () => current === articleTicket);
+    if (current !== articleTicket) return;
+    if (bodyFailed || chrome.failed || chrome.plan.length !== articleChrome().length) {
+      fail(source.html);
+      return;
+    }
+    face(draft, requested);
+    commitArticle(host, draft);
+    applyChrome(chrome.plan, requested);
+    articleShown = requested;
+    rememberScript(requested);
+    articleStatus(host, '');
+    host.removeAttribute('aria-busy');
+    notice(placeBar(articleShown, ''), '');
+  }
+
+  await paint(rememberedScript());
 }
 
 window.BramhaScripts = { refresh: refreshScript };
