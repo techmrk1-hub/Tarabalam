@@ -213,7 +213,20 @@ p { margin: 0 0 0.8em; }
 .transliterable-content { line-height: 1.8; }
 .transliterable-content h1,
 .transliterable-content h2,
-.transliterable-content h3 { font-family: inherit; margin: 1.1em 0 0.4em; }
+.transliterable-content h3,
+.transliterable-content h4 { font-family: inherit; margin: 1.15em 0 0.4em; }
+.transliterable-content h1 { font-size: 1.45rem; }
+.transliterable-content h2 { font-size: 1.28rem; }
+.transliterable-content h3 { font-size: 1.15rem; }
+.transliterable-content p { margin: 0.75em 0; }
+.transliterable-content .doc-center { text-align: center; }
+.transliterable-content ul,
+.transliterable-content ol { margin: 0.6em 0 0.6em 1.3em; }
+.transliterable-content blockquote {
+  margin: 1em 0 1em 0.4em; padding-left: 0.9em; border-left: 2px solid var(--gold-line);
+}
+.transliterable-content a { color: var(--maroon); }
+.transliterable-content hr { border: 0; border-top: 1px solid var(--line); margin: 1.4em 0; }
 .script-text[data-script="Telugu"],
 .transliterable-content[data-script="Telugu"] { font-family: var(--telugu); }
 .script-text[data-script="Devanagari"],
@@ -276,6 +289,9 @@ p { margin: 0 0 0.8em; }
 }
 .lang-bar button[aria-pressed="true"], .script-bar button[aria-pressed="true"] {
   background: var(--maroon); color: #fffaf3;
+}
+.script-bar button[data-pending="true"] {
+  opacity: 0.72; box-shadow: inset 0 0 0 1px var(--gold);
 }
 #teluguOriginal { white-space: pre-wrap; max-height: 320px; overflow: auto; }
 #langStatus pre { white-space: pre-wrap; }
